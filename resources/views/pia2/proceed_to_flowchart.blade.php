@@ -142,10 +142,20 @@
 
 <form action="proceed_to_end" method="post">
     @csrf
-    <label>Upload your data flow here:</label><br>
-    <input type="file" id="myFile" name="filename">
+    <div class="form-group">
+        <label for="FileName">File input</label>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" name="FileName">
+                <label class="custom-file-label" for="FileName">Choose file</label>
+            </div>
+            <div class="input-group-append">
+                <span class="input-group-text">Upload</span>
+            </div>
+        </div>
+    <br><button type="submit" class="btn btn-primary">Next</button>
+</div>
 
-    <br><button type="submit" class="btn btn-primary" value="1" name="value">Proceed</button>
-</form>
+
 
 @stop

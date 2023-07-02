@@ -45,17 +45,13 @@ class PiaController extends Controller
         return view('pia/recommended_privacy_solutions', ['value' => $value]);
     }
 
-    public function proceed_to_end(Request $request)
+
+
+
+    public function proceed_to_start()
     {
-        $value = $request->input('value');
-    
-        return view('pia/end_of_pia', ['value' => $value]);
+        return view('pia2/proceed_to_start');
     }
-    
-
-
-
-
     
     public function proceed_to_process()
     {   
@@ -68,5 +64,9 @@ class PiaController extends Controller
     public function proceed_to_flowchart()
     {   
         return view('pia2/proceed_to_flowchart');
+    }
+    public function proceed_to_end(Request $request)
+    {
+        return view('pia2/proceed_to_end');
     }
 }

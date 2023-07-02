@@ -245,9 +245,35 @@ injuries to major injuries); and</p>
 
       <img src="img/NPC PTK.png" alt="Image Description" width="600" height="500" class="rounded mx-auto d-block">
 
+<form>
+  <div class="card card-primary">
+    <div class="card-header">
+    <h3 class="card-title">Risk Assessment</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-8">
+          <label>Threat/Vulnerability</label>
+          <input type="text" class="form-control">
+        </div>
+        <div class="col-2">
+        <label>Impact</label>
+        <input type="text" class="form-control">
+        </div>
+        <div class="col-2">
+        <label>Probability</label>
+        <input type="text" class="form-control">
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+    <button type="submit" class="btn btn-success">Add</button>
+  </div>
+</form>
+
 <form action="proceed_to_flowchart" method="post">
     @csrf
-        <div class="card-body">
+        <div class="card card-primary">
             <table>
                 <tr>
                     <th>Threat/Vulnerability</th>
@@ -256,20 +282,9 @@ injuries to major injuries); and</p>
                     <th>Risk</th>
                 </tr>
                 <tr>
-                    <th><input class="form-control"></th>
-                    <th><input class="form-control"></th>
-                    <th><input class="form-control"></th>
-                    <th><input class="form-control"></th>
                 </tr>
             </table>
         </div>
-        <button class="btn btn-secondary">Add</button>
-        <button class="btn btn-secondary">Edit</button>
-        <button class="btn btn-secondary">Delete</button>
-
-    <div class="card-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
+      <button type="submit" class="btn btn-primary">Next</button>
 </form>
-
 @stop

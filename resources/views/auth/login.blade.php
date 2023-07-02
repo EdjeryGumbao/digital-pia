@@ -25,7 +25,6 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
-
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
@@ -33,6 +32,9 @@
                 <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
             </label>
         </div>
+        <p class="block mt-4">
+            <a class="ml-2 text-sm text-gray-600" href="{{ url('/register') }}">Register</a>
+        </p>
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
