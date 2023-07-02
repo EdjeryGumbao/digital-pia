@@ -4,118 +4,136 @@
 
 @section('content')
 
-<p>Welcome to the Process</p>
-
 <form action="proceed_to_risk_assessment" method="post">
     @csrf
     <div class="card-body">
+        <div class="card card-primary">
+            <div class="card-header">
+            <h3 class="card-title">Process</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Process Name:</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Data Subject:</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Form used:</label>
+                    <input type="text" class="form-control">
+                    <form id="addDataField">
+                        <label for="exampleInputEmail1">Data Fields:</label>
+                        <div id="inp-group"></div>
+                        <button id="add" type="button" class="btn btn-secondary">Add Data field</button>
+                        <input type="hidden" id="dataCollected" name="dataCollected">
+                    </form>
+                </div>
 
-        <form id="myForm">
-            <div id="inp-group"></div>
-            <button id="add" type="button">Add Input</button>
-            <input type="hidden" id="dataCollected" name="dataCollected">
-            <button type="submit">Submit</button>
-        </form>
-        
-        <div class="form-group">
-            <label>Process Name:</label>
-            <input class="form-control">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Purpose/s for Processing:</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Security Measure/s:</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Process Narrative:</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+            </div>
+            <!-- /.card-body -->
         </div>
-        <div class="form-group">
-            <label>Data Subject:</label>
-            <textarea class="form-control" rows="3"></textarea>
+        <!-- /.card -->
+        <br>
+        <h1>Process-level Analysis: Data Lifecycle</h1>
+        <div class="card card-primary">
+            <div class="card-header">
+            <h3 class="card-title">Data Collection</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Data Source:</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Collection Method:</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Timing of Collection:</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-header">
+            <h3 class="card-title">Data Use</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Is the data being used as is, or does it undergo further processing?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Is there automated decision-making?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-header">
+            <h3 class="card-title">Data Disclosure</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Is data being transferred to third parties?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Third-party recipients</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Purpose/s of the transfer to the third party?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Is the personal data transferred outside of the Philippines? If so, where?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                
+            </div>
+            <!-- /.card-body -->
+            <div class="card-header">
+            <h3 class="card-title">Data Storage or Disposal</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Retention period</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Location of data/how stored</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Is personal data being destroyed?</label>
+                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                </div>
+            </div>
+            <!-- /.card-body -->
         </div>
-        <div class="form-group">
-            <label>Data Fields:</label>
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Purpose/s for Processing:</label>
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Security Measure/s:</label>
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-            <label>Process Narrative: </label>
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
-    </div>
-
-    <div class="card-body">
-        <table>
-            <tr>
-                <th colspan="2" class="text-center">Process-level Analysis: Data Lifecycle</th>
-            </tr>
-            <tr>
-                <th colspan="2" class="text-center">Data Collection</th>
-            </tr>
-            <tr>
-                <td>Data Source:</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Collection Method:</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Timing of Collection:</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <th colspan="2" class="text-center">Data Use</th>
-            </tr>
-            <tr>
-                <td>Is the data being used as is, or does it undergo further processing? </td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Is there automated decision-making? </td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <th colspan="2" class="text-center">Data Disclosure</th>
-            </tr>
-            <tr>
-                <td>Is data being transferred to third parties?</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Third-party recipients</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Purpose/s of the transfer to the third party?</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Is the personal data transferred outside of the Philippines? If so, where? </td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-
-            <tr>
-                <th colspan="2" class="text-center">Data Storage or Disposal</th>
-            </tr>
-            <tr>
-                <td>Retention period</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Location of data/how stored</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <td>Is personal data being destroyed?</td>
-                <td><textarea class="form-control" rows="3"></textarea></td>
-            </tr>
-        </table>
-    </div>
-
+        <!-- /.card -->
     <div class="card-footer">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
@@ -179,10 +197,10 @@
         console.log('Collected data:', values);
 
         // After your custom logic, submit the form
-        document.getElementById('myForm').submit();
+        document.getElementById('addDataField').submit();
     }
 
-    const form = document.getElementById('myForm');
+    const form = document.getElementById('addDataField');
         form.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the form from submitting by default
         submitForm(); // Call your custom function
