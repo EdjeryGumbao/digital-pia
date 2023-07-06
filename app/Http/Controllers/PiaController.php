@@ -418,6 +418,7 @@ class PiaController extends Controller
 
     public function pialist(Request $request)
     {
+        $this->reset();
         $data = PrivacyImpactAssessment::all();
 
         return view('pialist', compact('data'));
@@ -429,12 +430,35 @@ class PiaController extends Controller
             'PrivacyImpactAssessmentID' => 'required|integer',
         ]);
         $ID = $request->get('PrivacyImpactAssessmentID');
-        $Process = Process::where('PrivacyImpactAssessmentID', $ID)->get();
+        $Process = Process::where('PrivacyImpactAssessmentID', $ID)->first();
         $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $ID)->first();
         session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
         session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
 
         return view('pia2/proceed_to_process', compact('Process'));
+    }
+
+    public function view_pia(Request $request)
+    {
+        $request->validate([
+            'PrivacyImpactAssessmentID' => 'required|integer',
+        ]);
+        $ID = $request->get('PrivacyImpactAssessmentID');
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $ID)->first();
+        session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
+        session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
+
+        $privacyImpactAssessment = PrivacyImpactAssessment::with([
+            Process::class,
+            DataFields::class,
+            RiskManagement::class,
+            DataFlow::class,
+        ])->where('PrivacyImpactAssessmentID', $ID)
+          ->first();
+          
+        //return view('pialist', compact('privacyImpactAssessments'));
+
+        return view('viewpia', compact('privacyImpactAssessments'));
     }
 
     public function delete_riskmanagement(Request $request)
