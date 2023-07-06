@@ -139,23 +139,76 @@
     </ul>
 </ul>
 
+<p><strong>Please Submit a PNG file</strong></p>
 
-<form action="proceed_to_end" method="post">
+<form action="InsertDataFlow" method="post" enctype='multipart/form-data'>
     @csrf
     <div class="form-group">
         <label for="FileName">File input</label>
         <div class="input-group">
             <div class="custom-file">
-                <input type="file" class="custom-file-input" name="FileName">
-                <label class="custom-file-label" for="FileName">Choose file</label>
+                <input type="file" class="custom-file-input" id="image" name="image" onchange="updateFileName(this)">
+                <label class="custom-file-label" for="image">Choose file</label>
             </div>
             <div class="input-group-append">
-                <span class="input-group-text">Upload</span>
+                <button type="submit" class="input-group-text">Upload</button>
             </div>
         </div>
-    <br><button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
+
+@if (session('success'))
+    <div class="alert alert-success">{{ session('message') }}</div>
+@endif
+
+@foreach ($errors->all() as $error)
+    <p class="text-danger">{{ $error }}</p>
+@endforeach
+
+<br>
+<h2>Uploaded Image</h2>
+<div class="row">
+    @if(isset($DataFlow))
+        @foreach ($DataFlow as $image)
+            @if ($image->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="/images/{{ $image->FileName }}" alt="{{ $image->FileName }}" class="card-img-top">
+                        <div class="card-body">                                
+                            <form action="delete_dataflow" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-danger" name="DataFlowID" value="{{ $image->DataFlowID }}">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    @endif
 </div>
 
 
+<div class="d-flex">
+    <div class="p-2">
+        <form action="proceed_to_process" method="post">
+            @csrf
+            <button type="submit" class="btn btn-secondary">Back</button>
+        </form>
+    </div>
+    <div class="ml-auto p-2">
+        <form action="proceed_to_end" method="post">
+            @csrf
+            <button type="submit" class="btn btn-primary">Next</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateFileName(input) {
+        var fileName = input.files[0].name;
+        var label = input.nextElementSibling;
+        label.textContent = fileName;
+    }
+</script>
 
 @stop

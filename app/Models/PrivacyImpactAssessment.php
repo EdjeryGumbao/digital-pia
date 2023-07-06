@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrivacyImpactAssessment extends Model
 {
+    use HasFactory;
+
+    protected $table = 'privacy_impact_assessment';
+
     protected $primaryKey = 'PrivacyImpactAssessmentID';
 
     protected $fillable = [

@@ -7,7 +7,7 @@
 
     <a href="{{ url('/system_description') }}" class="btn btn-primary">Start Privacy Impact Assessment</a><br><br>
 
-    <a href="{{ url('/start') }}" class="btn btn-primary">Start Privacy Impact Assessment v2</a>
-    
-    
+    <a href="{{ url('/proceed_to_start') }}" class="btn btn-primary">Start Privacy Impact Assessment v2</a>
+    {{ session('')}}
+
 @stop

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('data_fields', function (Blueprint $table) {
             $table->id('DataFieldsID');
-            $table->unsignedBigInteger('ProcessID');
+            $table->unsignedBigInteger('PrivacyImpactAssessmentID');
             $table->string('FormUsed');
             $table->json('Datacollected');
             $table->timestamps();

@@ -6,6 +6,6 @@
 
 <p>Your Input has now been Submitted</p>
 
-<a href="{{ url('dashboard') }}" class="btn btn-primary">Proceed to Dashboard</a>
+<a href="{{ url('/dashboard') }}" class="btn btn-primary">Proceed to Dashboard</a>
 
 @stop

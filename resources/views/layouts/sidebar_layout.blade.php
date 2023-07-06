@@ -28,6 +28,9 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- bs-custom-file-input -->
+  <script src="../../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -97,6 +100,14 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('pialist') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                PIA List
               </p>
             </a>
           </li>

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PrivacyImpactAssessmentVersion extends Model
 {
     use HasFactory;
+    protected $table = 'privacy_impact_assessment_version';
 
     protected $primaryKey = 'PrivacyImpactAssessmentVersionID';
 

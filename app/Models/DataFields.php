@@ -9,11 +9,17 @@ class DataFields extends Model
 {
     use HasFactory;
 
+    protected $table = 'data_fields';
+
     protected $primaryKey = 'DataFieldsID';
     
     protected $fillable = [
-        'ProcessID',
+        'PrivacyImpactAssessmentID',
         'FormUsed',
         'Datacollected',
+    ];
+
+    protected $casts = [
+        'Datacollected' => 'array',
     ];
 }

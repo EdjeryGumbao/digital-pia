@@ -4,45 +4,85 @@
 
 @section('content')
 
-<form action="proceed_to_risk_assessment" method="post">
+@php
+    $ProcessID = $Process->ProcessID ?? '';
+    $ProcessName = $Process->ProcessName ?? '';
+    $DataSubject = $Process->DataSubject ?? '';
+    $DataFieldsID = $Process->DataFieldsID ?? '';
+    $PurposeforProcessing = $Process->PurposeforProcessing ?? '';
+    $SecurityMeasure = $Process->SecurityMeasure ?? '';
+    $ProcessNarrative = $Process->ProcessNarrative ?? '';
+    $SectionA = $Process->SectionA ?? '';
+    $SectionB = $Process->SectionB ?? '';
+    $SectionC = $Process->SectionC ?? '';
+    $SectionD = $Process->SectionD ?? '';
+@endphp
+
+@foreach ($errors->all() as $error)
+    <p class="text-danger">{{ $error }}</p>
+@endforeach
+
+
+<form action="InsertProcess" method="post" id="processForm">
     @csrf
     <div class="card-body">
         <div class="card card-primary">
             <div class="card-header">
-            <h3 class="card-title">Process</h3>
+                <h3 class="card-title">Process</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Process Name:</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1">
+                    <label for="ProcessName">Process Name:</label>
+                    <input type="text" class="form-control" name="ProcessName" value="{{ $ProcessName }}">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Data Subject:</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1">
+                    <label for="DataSubject">Data Subject:</label>
+                    <input type="text" class="form-control" name="DataSubject" value="{{ $DataSubject }}">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Form used:</label>
-                    <input type="text" class="form-control">
-                    <form id="addDataField">
-                        <label for="exampleInputEmail1">Data Fields:</label>
-                        <div id="inp-group"></div>
-                        <button id="add" type="button" class="btn btn-secondary">Add Data field</button>
-                        <input type="hidden" id="dataCollected" name="dataCollected">
-                    </form>
+                    <label for="FormUsed">Form used:</label>
+                    <input type="text" class="form-control" name="FormUsed">
+                    <label for="Datacollected[]">Data Fields:</label>
+                    <div id="inp-group"></div>
+                    <button id="add" type="button" class="btn btn-secondary">Add Data field</button>
+                    <button type="submit" class="btn btn-primary" name="FormData" value="true">Save</button>
                 </div>
 
+<div class="card">
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover text-nowrap">
+      <tbody>
+        @if(isset($DataFields))
+            @foreach ($DataFields as $item)
+                @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                    <table>
+                        <tr>
+                            <th>{{ $item->FormUsed }}: </th>
+                            <td>{{ implode(', ', $item->Datacollected) }}</td>
+                        </tr>
+                    </table>
+                @endif
+            @endforeach
+        @endif
+    </tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Purpose/s for Processing:</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="PurposeforProcessing">Purpose/s for Processing:</label>
+                    <textarea type="text" class="form-control" name="PurposeforProcessing" row="2" value="{{ $PurposeforProcessing }}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Security Measure/s:</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SecurityMeasure">Security Measure/s:</label>
+                    <textarea type="text" class="form-control" name="SecurityMeasure" row="2" value="{{ $SecurityMeasure }}"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Process Narrative:</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="ProcessNarrative">Process Narrative:</label>
+                    <textarea type="text" class="form-control" name="ProcessNarrative" row="2" value="{{ $ProcessNarrative }}"></textarea>
                 </div>
             </div>
             <!-- /.card-body -->
@@ -55,92 +95,105 @@
             <h3 class="card-title">Data Collection</h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" id="SectionA">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Data Source:</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionA">Data Source:</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $SectionA[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Collection Method:</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionA">Collection Method:</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $SectionA[1] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Timing of Collection:</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionA">Timing of Collection:</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $SectionA[2] ?? '' }}</textarea>
                 </div>
+
+                <input type="hidden" id="SectionAHidden" name="SectionA[]" value="{{ is_array($SectionA) ? implode(',', $SectionA) : '' }}">
             </div>
             <!-- /.card-body -->
             <div class="card-header">
             <h3 class="card-title">Data Use</h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" id="SectionB">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Is the data being used as is, or does it undergo further processing?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionB">Is the data being used as is, or does it undergo further processing?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $SectionB[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Is there automated decision-making?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionB">Is there automated decision-making?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $SectionB[1] ?? '' }}</textarea>
                 </div>
+
+                <input type="hidden" id="SectionAHidden" name="SectionB[]" value="{{ is_array($SectionB) ? implode(',', $SectionB) : '' }}">
             </div>
             <!-- /.card-body -->
             <div class="card-header">
             <h3 class="card-title">Data Disclosure</h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" id="SectionC">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Is data being transferred to third parties?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionC">Is data being transferred to third parties?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Third-party recipients</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionC">Third-party recipients</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[1] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Purpose/s of the transfer to the third party?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionC">Purpose/s of the transfer to the third party?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[2] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionC">Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[3] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Is the personal data transferred outside of the Philippines? If so, where?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionC">Is the personal data transferred outside of the Philippines? If so, where?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[4] ?? '' }}</textarea>
                 </div>
                 
+                <input type="hidden" id="SectionAHidden" name="SectionC[]" value="{{ is_array($SectionC) ? implode(',', $SectionC) : '' }}">
             </div>
             <!-- /.card-body -->
             <div class="card-header">
             <h3 class="card-title">Data Storage or Disposal</h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" id="SectionD">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Retention period</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionD">Retention period</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $SectionD[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Location of data/how stored</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionD">Location of data/how stored</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $SectionD[1] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Is personal data being destroyed?</label>
-                    <textarea type="text" class="form-control" id="exampleInputEmail1" row="2"></textarea>
+                    <label for="SectionD">Is personal data being destroyed?</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $SectionD[2] ?? '' }}</textarea>
                 </div>
+
+                <input type="hidden" id="SectionAHidden" name="SectionD[]" value="{{ is_array($SectionD) ? implode(',', $SectionD) : '' }}">
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    <div class="card-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <div class="d-flex">
+        <div class="p-2">
+            <form action="proceed_to_start" method="post">
+                @csrf
+                <button type="submit" class="btn btn-secondary">Back</button>
+            </form>
+        </div>
+        <div class="ml-auto p-2">
+            <button type="submit" class="btn btn-primary" name="Submit" value="true">Next</button>
+        </div>
     </div>
 </form>
-
-
-
 
 <script>
     const addButton = document.querySelector("#add");
@@ -162,13 +215,13 @@
     }
 
     function addInput() {
-        const inputName = 'data' + counter;
+        //const inputName = 'data' + counter;
 
         const data = document.createElement("input");
         data.className = "form-control";
         data.type = "text";
         data.placeholder = "Enter data";
-        data.name = inputName;
+        data.name = "Datacollected[]";
 
         const btn = document.createElement("span");
         btn.className = "btn btn-danger";
@@ -182,29 +235,9 @@
         flex.appendChild(data);
         flex.appendChild(btn);
 
-        inputs.push(data);
-        counter++;
+        //inputs.push(data);
+        //counter++;
     }
-
     addButton.addEventListener("click", addInput);
-
-    function submitForm() {
-        const values = inputs.map(input => input.value);
-        dataCollected.value = values.join(', ');
-
-        // Your custom function logic here
-        console.log('Form submission intercepted. Running custom function...');
-        console.log('Collected data:', values);
-
-        // After your custom logic, submit the form
-        document.getElementById('addDataField').submit();
-    }
-
-    const form = document.getElementById('addDataField');
-        form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting by default
-        submitForm(); // Call your custom function
-    });
 </script>
-
 @stop

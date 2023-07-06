@@ -14,16 +14,12 @@ return new class extends Migration
         Schema::create('process', function (Blueprint $table) {
             $table->id('ProcessID');
             $table->unsignedBigInteger('PrivacyImpactAssessmentID');
-            $table->string('ProcessName');
-            $table->string('DataSubject');
-            $table->unsignedBigInteger('DataFieldsID');
-            $table->string('PurposeforProcessing');
-            $table->string('SecurityMeasure');
-            $table->string('ProcessNarrative');
-            $table->string('SectionAQuestion');
-            $table->string('SectionBQuestion');
-            $table->string('SectionCQuestion');
-            $table->string('SectionDQuestion');
+            $table->string('ProcessName')->nullable();
+            $table->string('DataSubject')->nullable();
+            $table->unsignedBigInteger('DataFieldsID')->nullable();
+            $table->string('PurposeforProcessing')->nullable();
+            $table->string('SecurityMeasure')->nullable();
+            $table->string('ProcessNarrative')->nullable();
             $table->json('SectionA')->nullable();
             $table->json('SectionB')->nullable();
             $table->json('SectionC')->nullable();

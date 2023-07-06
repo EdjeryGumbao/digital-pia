@@ -9,6 +9,8 @@ class RiskManagement extends Model
 {
     use HasFactory;
 
+    protected $table = 'risk_management';
+
     protected $primaryKey = 'RiskManagementID';
     
     protected $fillable = [

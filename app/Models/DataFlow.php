@@ -9,10 +9,13 @@ class DataFlow extends Model
 {
     use HasFactory;
 
+    protected $table = 'data_flow';
+
     protected $primaryKey = 'DataFlowID';
     
     protected $fillable = [
         'PrivacyImpactAssessmentID',
         'FileName',
+        'ImagePath',
     ];
 }

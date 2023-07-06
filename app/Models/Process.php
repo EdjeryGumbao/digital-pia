@@ -9,6 +9,8 @@ class Process extends Model
 {
     use HasFactory;
 
+    protected $table = 'process';
+
     protected $primaryKey = 'ProcessID';
     
     protected $fillable = [
@@ -19,13 +21,16 @@ class Process extends Model
         'PurposeforProcessing',
         'SecurityMeasure',
         'ProcessNarrative',
-        'SectionAQuestion',
-        'SectionBQuestion',
-        'SectionCQuestion',
-        'SectionDQuestion',
         'SectionA',
         'SectionB',
         'SectionC',
         'SectionD',
+    ];
+
+    protected $casts = [
+        'SectionA' => 'array',
+        'SectionB' => 'array',
+        'SectionC' => 'array',
+        'SectionD' => 'array',
     ];
 }
