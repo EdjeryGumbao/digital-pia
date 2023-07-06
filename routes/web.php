@@ -26,10 +26,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('edit_process', [PiaController::class, 'edit_process']);
+    Route::post('view_pia', [PiaController::class, 'view_pia']);
+    
     Route::post('delete_dataflow', [PiaController::class, 'delete_dataflow']);
     Route::post('delete_riskmanagement', [PiaController::class, 'delete_riskmanagement']);
     
     Route::get('/pialist', [PiaController::class, 'pialist']);
+
+
     Route::post('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::get('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::post('/proceed_to_process', [PiaController::class, 'proceed_to_process']);

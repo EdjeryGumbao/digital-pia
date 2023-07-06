@@ -35,6 +35,12 @@
                                                     Edit        
                                                 </button>
                                             </form>
+                                            <form action='view_pia' method='POST'>
+                                                @csrf
+                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                    View        
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                             @endif
