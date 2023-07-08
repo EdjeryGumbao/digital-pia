@@ -16,7 +16,7 @@ use App\Http\Controllers\PiaController;
 */
 
 Route::get('/', [PiaController::class, 'index'])->middleware(['auth', 'verified']);
-Route::get('/dashboard', [PiaController::class, 'index'])->middleware(['auth', 'verified']);
+Route::get('/dashboard', [PiaController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

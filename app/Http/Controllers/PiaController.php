@@ -452,8 +452,8 @@ class PiaController extends Controller
             session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
             $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
             $DataFields = DataFields::all();
-            $RiskManagement = RiskManagement::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
-            $DataFlow = DataFlow::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+            $RiskManagement = RiskManagement::all();
+            $DataFlow = DataFlow::all();
 
             return view('viewpia', compact('Process', 'DataFields', 'RiskManagement', 'DataFlow', 'PrivacyImpactAssessment'));
         }

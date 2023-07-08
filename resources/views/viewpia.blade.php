@@ -3,73 +3,120 @@
 @section('title', 'Privacy Impact Assessment List')
 
 @section('content')
-    <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <h2>University of Southeastern Philippines</h2>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <h2 class="text-center">University of Southeastern Philippines</h2>
+            <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+        </div>
+    </div>
 
-    <h2>PRIVACY IMPACT ASSESSMENT</h2>
-
-    <table>
-        <tbody>
-            @if($Process)
-                <tr>
-                    <td>
-                        <strong>Process Name:</strong><br>
-                        {{ $Process->ProcessName }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Data Subject:</strong><br>
-                        {{ $Process->DataSubject  }}
-                    </td>
-                </tr>
-
-        @if(isset($DataFields))
-            @foreach ($DataFields as $item)
-                @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                    <table>
-                        <tr>
-                            <th>{{ $item->FormUsed }}: </th>
-                            <td>{{ implode(', ', $item->Datacollected) }}</td>
-                        </tr>
+    @if($Process)
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Process Information</h5>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td><strong>Process Name:</strong></td>
+                                <td>{{ $Process->ProcessName }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Subject:</strong></td>
+                                <td>{{ $Process->DataSubject }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Fields:</strong></td>
+                                <td>
+                                    <ul>
+                                        @if(isset($DataFields))
+                                        @foreach ($DataFields as $item)
+                                        @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                                        <li>{{ $item->FormUsed }}</li>
+                                        @endif
+                                        @endforeach
+                                        @endif
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Purpose for Processing:</strong></td>
+                                <td>{{ $Process->PurposeforProcessing }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Security Measure:</strong></td>
+                                <td>{{ $Process->SecurityMeasure }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Process Narrative:</strong></td>
+                                <td>{{ $Process->ProcessNarrative }}</td>
+                            </tr>
+                        </tbody>
                     </table>
-                @endif
-            @endforeach
-        @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
-                <tr>
-                    <td></td>
-                </tr>
-            @endif
-            <tr>
-                <td>
-                        
-                            
-                            
-                        
-                        <strong>Purpose for Processing:</strong> {{ $Process->PurposeforProcessing }}<br>
-                        <strong>Security Measure:</strong> {{ $Process->SecurityMeasure }}<br>
-                        <strong>Process Narrative:</strong> {{ $Process->ProcessNarrative }}<br>
-                </td>
-                <td>
-                    @if($RiskManagement)
-                        <strong>Risk Management ID:</strong> {{ $RiskManagement->RiskManagementID }}<br>
-                        <strong>Threats/Vulnerabilities:</strong> {{ $RiskManagement->ThreatsVulnerabilities }}<br>
-                        <strong>Impact:</strong> {{ $RiskManagement->Impact }}<br>
-                        <strong>Probability:</strong> {{ $RiskManagement->Probability }}<br>
-                        <strong>Risk Rating:</strong> {{ $RiskManagement->RiskRating }}<br>
-                        <br>
-                    @endif
-                </td>
-                <td>
-                    @if($DataFlow)
-                        <strong>Data Flow ID:</strong> {{ $DataFlow->DataFlowID }}<br>
-                        <strong>File Name:</strong> {{ $DataFlow->FileName }}<br>
-                        <br>
-                    @endif
-                </td>
-            </tr>
+    @if($RiskManagement)
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Risk Management</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Threat/Vulnerability</th>
+                                <th>Impact</th>
+                                <th>Probability</th>
+                                <th>Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($RiskManagement as $item)
+                            @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                            <tr>
+                                <td>{{ $item->ThreatsVulnerabilities }}</td>
+                                <td>{{ $item->Impact }}</td>
+                                <td>{{ $item->Probability }}</td>
+                                <td>{{ $item->RiskRating }}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
-        </tbody>
-    </table>
+    @if($DataFlow)
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Data Flow</h5>
+                    <div class="row">
+                        @foreach ($DataFlow as $item)
+                        @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top">
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+</div>
 @endsection
