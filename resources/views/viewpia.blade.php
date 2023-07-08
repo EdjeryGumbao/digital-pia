@@ -1,80 +1,75 @@
-
 @extends('layouts.sidebar_layout')
 
-@section('title', '')
+@section('title', 'Privacy Impact Assessment List')
 
 @section('content')
+    <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <h2>University of Southeastern Philippines</h2>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Privacy Impact Assessment List</title>
-</head>
-<body>
-    <h1>Privacy Impact Assessment List</h1>
+    <h2>PRIVACY IMPACT ASSESSMENT</h2>
 
     <table>
-        <thead>
-            <tr>
-                <th>Privacy Impact Assessment</th>
-                <th>Process</th>
-                <th>Data Fields</th>
-                <th>Risk Management</th>
-                <th>Data Flow</th>
-            </tr>
-        </thead>
         <tbody>
-            @foreach($privacyImpactAssessments as $pia)
+            @if($Process)
+                <tr>
+                    <td>
+                        <strong>Process Name:</strong><br>
+                        {{ $Process->ProcessName }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Data Subject:</strong><br>
+                        {{ $Process->DataSubject  }}
+                    </td>
+                </tr>
+
+        @if(isset($DataFields))
+            @foreach ($DataFields as $item)
+                @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                    <table>
+                        <tr>
+                            <th>{{ $item->FormUsed }}: </th>
+                            <td>{{ implode(', ', $item->Datacollected) }}</td>
+                        </tr>
+                    </table>
+                @endif
+            @endforeach
+        @endif
+
+                <tr>
+                    <td></td>
+                </tr>
+            @endif
             <tr>
                 <td>
-                    <strong>ID:</strong> {{ $pia->PrivacyImpactAssessmentID }}<br>
-                    <strong>User ID:</strong> {{ $pia->UserID }}<br>
-                    <strong>Version:</strong> {{ $pia->Version }}<br>
-                    <strong>Name:</strong> {{ $pia->Name }}<br>
-                    <strong>Created At:</strong> {{ $pia->created_at }}<br>
-                    <strong>Updated At:</strong> {{ $pia->updated_at }}
+                        
+                            
+                            
+                        
+                        <strong>Purpose for Processing:</strong> {{ $Process->PurposeforProcessing }}<br>
+                        <strong>Security Measure:</strong> {{ $Process->SecurityMeasure }}<br>
+                        <strong>Process Narrative:</strong> {{ $Process->ProcessNarrative }}<br>
                 </td>
                 <td>
-                    <strong>Process ID:</strong> {{ $pia->process->ProcessID }}<br>
-                    <strong>Process Name:</strong> {{ $pia->process->ProcessName }}<br>
-                    <strong>Form Used:</strong> {{ $pia->process->FormUsed }}<br>
-                    <strong>Data Collected:</strong> {{ implode(', ', $pia->process->Datacollected) }}<br>
-                    <strong>Purpose for Processing:</strong> {{ $pia->process->PurposeforProcessing }}<br>
-                    <strong>Security Measure:</strong> {{ $pia->process->SecurityMeasure }}<br>
-                    <strong>Process Narrative:</strong> {{ $pia->process->ProcessNarrative }}
-                </td>
-                <td>
-                    @foreach($pia->process->dataFields as $dataField)
-                        <strong>Data Field ID:</strong> {{ $dataField->DataFieldsID }}<br>
-                        <strong>Form Used:</strong> {{ $dataField->FormUsed }}<br>
-                        <strong>Data Collected:</strong> {{ implode(', ', $dataField->Datacollected) }}<br>
+                    @if($RiskManagement)
+                        <strong>Risk Management ID:</strong> {{ $RiskManagement->RiskManagementID }}<br>
+                        <strong>Threats/Vulnerabilities:</strong> {{ $RiskManagement->ThreatsVulnerabilities }}<br>
+                        <strong>Impact:</strong> {{ $RiskManagement->Impact }}<br>
+                        <strong>Probability:</strong> {{ $RiskManagement->Probability }}<br>
+                        <strong>Risk Rating:</strong> {{ $RiskManagement->RiskRating }}<br>
                         <br>
-                    @endforeach
+                    @endif
                 </td>
                 <td>
-                    @foreach($pia->riskManagements as $riskManagement)
-                        <strong>Risk Management ID:</strong> {{ $riskManagement->RiskManagementID }}<br>
-                        <strong>Threats/Vulnerabilities:</strong> {{ $riskManagement->ThreatsVulnerabilities }}<br>
-                        <strong>Impact:</strong> {{ $riskManagement->Impact }}<br>
-                        <strong>Probability:</strong> {{ $riskManagement->Probability }}<br>
-                        <strong>Risk Rating:</strong> {{ $riskManagement->RiskRating }}<br>
+                    @if($DataFlow)
+                        <strong>Data Flow ID:</strong> {{ $DataFlow->DataFlowID }}<br>
+                        <strong>File Name:</strong> {{ $DataFlow->FileName }}<br>
                         <br>
-                    @endforeach
-                </td>
-                <td>
-                    @foreach($pia->dataFlows as $dataFlow)
-                        <strong>Data Flow ID:</strong> {{ $dataFlow->DataFlowID }}<br>
-                        <strong>File Name:</strong> {{ $dataFlow->FileName }}<br>
-                        <br>
-                    @endforeach
+                    @endif
                 </td>
             </tr>
-            @endforeach
+
         </tbody>
     </table>
-</body>
-</
-
-
-
-@stop
+@endsection

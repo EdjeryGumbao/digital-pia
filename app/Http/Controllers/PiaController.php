@@ -88,7 +88,7 @@ class PiaController extends Controller
     public function InsertPrivacyImpactAssessment(Request $request)
     {
         $PrivacyImpactAssessmentVersionID = session('PrivacyImpactAssessmentVersionID');
-        $UserID = session('UserID');
+        $UserID = auth()->id();
     
         if (session()->has('PrivacyImpactAssessmentID')) { // user returned to edit the title
             $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', session('PrivacyImpactAssessmentID'))->first();
@@ -419,9 +419,10 @@ class PiaController extends Controller
     public function pialist(Request $request)
     {
         $this->reset();
-        $data = PrivacyImpactAssessment::all();
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::all();
+        $UserID = auth()->id();
 
-        return view('pialist', compact('data'));
+        return view('pialist', compact('PrivacyImpactAssessment', 'UserID'));
     }
 
     public function edit_process(Request $request)
@@ -443,22 +444,33 @@ class PiaController extends Controller
         $request->validate([
             'PrivacyImpactAssessmentID' => 'required|integer',
         ]);
-        $ID = $request->get('PrivacyImpactAssessmentID');
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $ID)->first();
-        session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
-        session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
 
-        $privacyImpactAssessment = PrivacyImpactAssessment::with([
-            Process::class,
-            DataFields::class,
-            RiskManagement::class,
-            DataFlow::class,
-        ])->where('PrivacyImpactAssessmentID', $ID)
-          ->first();
-          
-        //return view('pialist', compact('privacyImpactAssessments'));
+        $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
+        $PrivacyImpactAssessment = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        if ($PrivacyImpactAssessment) {
+            session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
+            session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
+            $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+            $DataFields = DataFields::all();
+            $RiskManagement = RiskManagement::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+            $DataFlow = DataFlow::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
 
-        return view('viewpia', compact('privacyImpactAssessments'));
+            return view('viewpia', compact('Process', 'DataFields', 'RiskManagement', 'DataFlow', 'PrivacyImpactAssessment'));
+        }
+
+        // Handle the case when PrivacyImpactAssessment is not found
+        return redirect()->back()->with('error', 'Privacy Impact Assessment not found.');
+
+        $RiskManagement = RiskManagement::all();
+        
+        if ($RiskManagement) {
+            // Data exists, pass the data to the view
+            return view('pia2/proceed_to_risk_assessment', ['RiskManagement' => $RiskManagement]);
+        } else {
+            // Data doesn't exist
+            return view('pia2/proceed_to_risk_assessment');
+        }
+
     }
 
     public function delete_riskmanagement(Request $request)

@@ -5,7 +5,7 @@
 
 @section('content')
 
-    @if ($data->count() > 0)
+    @if ($PrivacyImpactAssessment->count() > 0)
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Privacy Impact Assessment</h3>
@@ -21,26 +21,32 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $item)
-                            @if ($item->UserID == session('UserID'))
+                        @foreach ($PrivacyImpactAssessment as $item)
+                            @if ($item->UserID == $UserID)
                                     <tr>
                                         <td>{{ $item->PrivacyImpactAssessmentVersionID }}</td>
                                         <td>{{ $item->Name }}</td>
                                         <td>{{ $item->created_at }}</td>
                                         <td>{{ $item->updated_at }}</td>
                                         <td>
-                                            <form action='proceed_to_process' method='POST'>
-                                                @csrf
-                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
-                                                    Edit        
-                                                </button>
-                                            </form>
-                                            <form action='view_pia' method='POST'>
-                                                @csrf
-                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
-                                                    View        
-                                                </button>
-                                            </form>
+                                        <div class="d-flex flex-row-reverse">
+                                            <div class="p-2">
+                                                <form action='proceed_to_process' method='POST'>
+                                                    @csrf
+                                                    <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                        Edit        
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="p-2">
+                                                <form action='view_pia' method='POST' class="">
+                                                    @csrf
+                                                    <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                        View        
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                         </td>
                                     </tr>
                             @endif
