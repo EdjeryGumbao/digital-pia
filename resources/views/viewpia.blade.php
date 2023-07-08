@@ -3,9 +3,9 @@
 @section('title', 'Privacy Impact Assessment List')
 
 @section('content')
-<div class="container">
+<div class="container"> 
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="container text-center">
             <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
             <h2 class="text-center">University of Southeastern Philippines</h2>
             <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
@@ -36,6 +36,11 @@
                                         @foreach ($DataFields as $item)
                                         @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
                                         <li>{{ $item->FormUsed }}</li>
+                                        <ul>
+                                            @foreach ($item->Datacollected as $collected)
+                                                <li>{{ $collected }}</li>
+                                            @endforeach
+                                        </ul>   
                                         @endif
                                         @endforeach
                                         @endif
@@ -101,15 +106,20 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Data Flow</h5>
+                    <h5 class="card-title">Data Flow</h5><br>
                     <div class="row">
                         @foreach ($DataFlow as $item)
                         @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                                <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-8 mb-4">
+                                    <div class="card">
+                                        <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         @endif
                         @endforeach
                     </div>
