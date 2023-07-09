@@ -123,7 +123,9 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-8 mb-4">
                                     <div class="card">
-                                        <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
+                                        <a href="/images/{{ $image->FileName }}" target="_blank">
+                                            <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
+                                        </a>
                                     </div>
                                 </div>
                             </div>

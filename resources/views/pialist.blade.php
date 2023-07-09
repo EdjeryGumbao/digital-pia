@@ -14,13 +14,13 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>Version</th>
+                            <th width="80px">@sortablelink('Version')</th>
                             @if ($CurrentUser->usertype == "admin")
-                                <th>Author</th>
+                                <th>@sortablelink('completename', 'Author')</th>
                             @endif
-                            <th>Name</th>
-                            <th>Created At</th>
-                            <th>Updated At</th>
+                            <th>@sortablelink('ProcessName')</th>
+                            <th>@sortablelink('created_at')</th>
+                            <th>@sortablelink('updated_at')</th>
                         </tr>
                     </thead>
                     <tbody>

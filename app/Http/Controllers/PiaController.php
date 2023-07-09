@@ -230,7 +230,9 @@ class PiaController extends Controller
             return $this->proceed_to_process($request);
         } elseif ($request->Button == "Back") {
             return $this->proceed_to_start($request);
-        }        
+        } else {
+            return $this->proceed_to_process($request);
+        } 
     }
 
 
@@ -435,11 +437,12 @@ class PiaController extends Controller
     public function pialist(Request $request)
     {
         $this->reset();
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::all();
-        $User = User::all();
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->paginate(10);
+        $User = User::sortable()->paginate(10);
         $CurrentUser = auth()->user();
+        
+        return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
 
-        return view('pialist', compact('PrivacyImpactAssessment', 'CurrentUser', 'User'));
     }
 
     public function manage(Request $request)

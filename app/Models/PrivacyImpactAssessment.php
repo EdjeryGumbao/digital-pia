@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Kyslik\ColumnSortable\Sortable;
+
 class PrivacyImpactAssessment extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $table = 'privacy_impact_assessment';
 
@@ -18,4 +20,6 @@ class PrivacyImpactAssessment extends Model
         'PrivacyImpactAssessmentVersionID',
         'ProcessName',
     ];
+
+    public $sortable = ['PrivacyImpactAssessmentVersionID', 'ProcessName', 'created_at', 'updated_at'];
 }

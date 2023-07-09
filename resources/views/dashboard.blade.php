@@ -3,6 +3,12 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="img/USEP_Logo.png" alt="AdminLTELogo" height="200" width="200">
+    </div>
+
     <p>Welcome to the Dashboard!</p>
 
     @if (auth()->user()->usertype == 'user')
