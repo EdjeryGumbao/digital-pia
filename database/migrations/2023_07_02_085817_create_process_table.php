@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('process', function (Blueprint $table) {
             $table->id('ProcessID');
             $table->unsignedBigInteger('PrivacyImpactAssessmentID');
-            $table->string('ProcessName')->nullable();
             $table->string('DataSubject')->nullable();
             $table->longText('PurposeforProcessing')->nullable();
             $table->longText('SecurityMeasure')->nullable();

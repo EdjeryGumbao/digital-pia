@@ -10,8 +10,11 @@ use App\Models\Process;
 use App\Models\DataFields;
 use App\Models\RiskAssessment;
 use App\Models\DataFlow;
+use App\Models\User;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+
 
 class PiaController extends Controller
 {
@@ -57,8 +60,32 @@ class PiaController extends Controller
 
 
 
+    // dpo
 
+    public function createAdminUser()
+    {
+        $adminData = [
+            'lastname' => 'DPO',
+            'firstname' => 'Admin',
+            'middlename' => '',
+            'completename' => 'DPO Admin',
+            'email' => 'admin@example.com',
+            'usertype' => 'admin',
+            'contactnumber' => '1234567890',
+            'password' => Hash::make('admin123'), // Replace 'password' with the desired password
+        ];
+    
+        // Create the admin user
+        $adminUser = User::create($adminData);
+    
+        if ($adminUser) {
+            return 'Admin user created successfully.';
+        } else {
+            return 'Failed to create admin user.';
+        }
+    }
 
+    // dept head parts
 
     public function InsertPrivacyImpactAssessmentVersion(Request $request)
     {
@@ -409,14 +436,23 @@ class PiaController extends Controller
     {
         $this->reset();
         $PrivacyImpactAssessment = PrivacyImpactAssessment::all();
-        $UserID = auth()->id();
+        $User = User::all();
+        $CurrentUser = auth()->user();
 
-        return view('pialist', compact('PrivacyImpactAssessment', 'UserID'));
+        return view('pialist', compact('PrivacyImpactAssessment', 'CurrentUser', 'User'));
     }
+
+    public function manage(Request $request)
+    {
+        return view('manage');
+    }
+
+
 
     public function test(Request $request)
     {
-        dd(Session::all());
+        //dd(Session::all());
+        dd(auth()->user());
     }
 
     public function view_pia(Request $request)

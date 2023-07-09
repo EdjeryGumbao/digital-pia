@@ -111,6 +111,17 @@
               </p>
             </a>
           </li>
+
+          @if (auth()->user()->usertype == 'admin')
+            <li class="nav-item">
+              <a href="{{ url('manage') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Manage
+                </p>
+              </a>
+            </li>
+          @endif
     
           @auth
           <li class="nav-item">

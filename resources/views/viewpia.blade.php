@@ -22,7 +22,7 @@
                         <tbody>
                             <tr>
                                 <td class="text-nowrap"><strong>Process Name:</strong></td>
-                                <td>{{ $PrivacyImpactAssessment->Name ?? '' }}</td>
+                                <td>{{ $PrivacyImpactAssessment->ProcessName ?? '' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Data Subject:</strong></td>

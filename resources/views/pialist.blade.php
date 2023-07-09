@@ -15,6 +15,9 @@
                     <thead>
                         <tr>
                             <th>Version</th>
+                            @if ($CurrentUser->usertype == "admin")
+                                <th>Author</th>
+                            @endif
                             <th>Name</th>
                             <th>Created At</th>
                             <th>Updated At</th>
@@ -22,33 +25,59 @@
                     </thead>
                     <tbody>
                         @foreach ($PrivacyImpactAssessment as $item)
-                            @if ($item->UserID == $UserID)
-                                    <tr>
-                                        <td>{{ $item->PrivacyImpactAssessmentVersionID }}</td>
-                                        <td>{{ $item->ProcessName }}</td>
-                                        <td>{{ $item->created_at->format('F d, Y') }}</td>
-                                        <td>{{ $item->updated_at->format('F d, Y') }}</td>
-                                        <td>
-                                        <div class="d-flex flex-row-reverse">
-                                            <div class="p-2">
-                                                <form action='proceed_to_process' method='POST'>
-                                                    @csrf
-                                                    <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
-                                                        Edit        
-                                                    </button>
-                                                </form>
+                            @if ($CurrentUser->usertype == "user")
+                                @if ($item->UserID == $CurrentUser->id)
+                                        <tr>
+                                            <td>{{ $item->PrivacyImpactAssessmentVersionID }}</td>
+                                            <td>{{ $item->ProcessName }}</td>
+                                            <td>{{ $item->created_at->format('F d, Y') }}</td>
+                                            <td>{{ $item->updated_at->format('F d, Y') }}</td>
+                                            <td>
+                                            <div class="d-flex flex-row-reverse">
+                                                <div class="p-2">
+                                                    <form action='proceed_to_process' method='POST'>
+                                                        @csrf
+                                                        <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                            Edit        
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                                <div class="p-2">
+                                                    <form action='view_pia' method='POST' class="">
+                                                        @csrf
+                                                        <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                            View        
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                            <div class="p-2">
-                                                <form action='view_pia' method='POST' class="">
-                                                    @csrf
-                                                    <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
-                                                        View        
-                                                    </button>
-                                                </form>
-                                            </div>
+                                            </td>
+                                        </tr>
+                                @endif
+                            @elseif ($CurrentUser->usertype == "admin")
+                                <tr>
+                                    <td>{{ $item->PrivacyImpactAssessmentVersionID }}</td>
+                                    @foreach ($User as $useritem)
+                                        @if ($useritem->id == $item->UserID)
+                                            <td>{{ $useritem->completename }}</td>
+                                        @endif
+                                    @endforeach
+                                    <td>{{ $item->ProcessName }}</td>
+                                    <td>{{ $item->created_at->format('F d, Y') }}</td>
+                                    <td>{{ $item->updated_at->format('F d, Y') }}</td>
+                                    <td>
+                                    <div class="d-flex flex-row-reverse">
+                                        <div class="p-2">
+                                            <form action='view_pia' method='POST' class="">
+                                                @csrf
+                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                    View        
+                                                </button>
+                                            </form>
                                         </div>
-                                        </td>
-                                    </tr>
+                                    </div>
+                                    </td>
+                                </tr>
                             @endif
                         @endforeach
                     </tbody>

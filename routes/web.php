@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     
     
     Route::get('/pialist', [PiaController::class, 'pialist']);
+    Route::get('/manage', [PiaController::class, 'manage']);
 
 
     Route::post('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
@@ -72,5 +73,7 @@ Route::get('InsertProcess', [PiaController::class, 'proceed_to_process']);
 Route::get('InsertDataFlow', [PiaController::class, 'proceed_to_flowchart'])->name('InsertDataFlow');
 Route::get('InsertRiskAssessment', [PiaController::class, 'proceed_to_risk_assessment'])->name('InsertRiskAssessment');
 Route::get('InsertDataFields', [PiaController::class, 'proceed_to_process']);
+
+Route::get('createAdminUser', [PiaController::class, 'createAdminUser']);
 
 require __DIR__.'/auth.php';
