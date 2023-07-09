@@ -16,6 +16,6 @@ class PrivacyImpactAssessment extends Model
     protected $fillable = [
         'UserID',
         'PrivacyImpactAssessmentVersionID',
-        'Name',
+        'ProcessName',
     ];
 }

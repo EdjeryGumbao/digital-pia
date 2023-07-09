@@ -16,10 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('PrivacyImpactAssessmentID');
             $table->string('ProcessName')->nullable();
             $table->string('DataSubject')->nullable();
-            $table->unsignedBigInteger('DataFieldsID')->nullable();
-            $table->string('PurposeforProcessing')->nullable();
-            $table->string('SecurityMeasure')->nullable();
-            $table->string('ProcessNarrative')->nullable();
+            $table->longText('PurposeforProcessing')->nullable();
+            $table->longText('SecurityMeasure')->nullable();
+            $table->longText('ProcessNarrative')->nullable();
             $table->json('SectionA')->nullable();
             $table->json('SectionB')->nullable();
             $table->json('SectionC')->nullable();

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('risk_management', function (Blueprint $table) {
-            $table->id('RiskManagementID');
+        Schema::create('risk_assessment', function (Blueprint $table) {
+            $table->id('RiskAssessmentID');
             $table->unsignedBigInteger('PrivacyImpactAssessmentID');
             $table->string('ThreatsVulnerabilities');
             $table->integer('Impact');

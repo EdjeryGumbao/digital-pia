@@ -4,24 +4,13 @@
 
 @section('content')
 
-@if(isset($PrivacyImpactAssessment))
-    @php
-        $Name = $PrivacyImpactAssessment->Name;
-    @endphp
-@else
-    @php
-        $Name = '';
-    @endphp
-@endif
-
-
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="login-box">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Enter the title of this Privacy Impact Assessment</p>
+            <p class="login-box-msg">Enter the process name of this Privacy Impact Assessment</p>
             <form action="InsertPrivacyImpactAssessment" method="post">
                 @csrf
-                <input type="text" class="form-control" name="Name" value="{{ $Name }}"><br>
+                <input type="text" class="form-control" name="ProcessName" value="{{ $PrivacyImpactAssessment->ProcessName ?? ''}}"><br>
                 <button type="submit" class="btn btn-primary btn-block">Next</button>
             </form>
         </div>

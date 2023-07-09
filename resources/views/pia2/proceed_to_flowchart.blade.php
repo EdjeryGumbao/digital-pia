@@ -6,6 +6,58 @@
 
 <p>Welcome to the Data Flows</p>
 
+<p><strong>Please submit the image of the Data Flow as a PNG file.</strong></p>
+
+<form action="{{ route('InsertDataFlow') }}" method="post" enctype='multipart/form-data'>
+    @csrf
+    <div class="form-group">
+        <label for="FileName">File input</label>
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="image" name="image" onchange="updateFileName(this)">
+                <label class="custom-file-label" for="image">Choose file</label>
+            </div>
+            <div class="input-group-append">
+                <button type="submit" class="input-group-text">Upload</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (session('success'))
+    <div class="alert alert-success">{{ session('message') }}</div>
+@endif
+
+@foreach ($errors->all() as $error)
+    <p class="text-danger">{{ $error }}</p>
+@endforeach
+
+<br>
+<div class="row">
+    @if(isset($DataFlow))
+        <h3><strong>Uploaded Image:</strong></h3>
+        @foreach ($DataFlow as $image)
+            @if ($image->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <a href="/images/{{ $image->FileName }}" target="_blank">
+                            <img src="/images/{{ $image->FileName }}" alt="{{ $image->FileName }}" class="card-img-top">
+                        </a>
+                        <div class="card-body">                                
+                            <form action="delete_dataflow" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-danger" name="DataFlowID" value="{{ $image->DataFlowID }}">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
+        @endforeach
+    @endif
+</div><br>
+
+<h3><strong>Description</strong></h3>
+
 <img src="img/sample_data_flow.png" alt="Sample Data Flow" width="600" height="300">
 
 <p><em>Figure 1. Information flow of personal information can be visualized in a work flow diagram on personal information processing.</em></p>
@@ -139,58 +191,9 @@
     </ul>
 </ul>
 
-<p><strong>Please Submit a PNG file</strong></p>
-
-<form action="InsertDataFlow" method="post" enctype='multipart/form-data'>
-    @csrf
-    <div class="form-group">
-        <label for="FileName">File input</label>
-        <div class="input-group">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="image" name="image" onchange="updateFileName(this)">
-                <label class="custom-file-label" for="image">Choose file</label>
-            </div>
-            <div class="input-group-append">
-                <button type="submit" class="input-group-text">Upload</button>
-            </div>
-        </div>
-    </div>
-</form>
-
-@if (session('success'))
-    <div class="alert alert-success">{{ session('message') }}</div>
-@endif
-
-@foreach ($errors->all() as $error)
-    <p class="text-danger">{{ $error }}</p>
-@endforeach
-
-<br>
-<h2>Uploaded Image</h2>
-<div class="row">
-    @if(isset($DataFlow))
-        @foreach ($DataFlow as $image)
-            @if ($image->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="/images/{{ $image->FileName }}" alt="{{ $image->FileName }}" class="card-img-top">
-                        <div class="card-body">                                
-                            <form action="delete_dataflow" method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-danger" name="DataFlowID" value="{{ $image->DataFlowID }}">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        @endforeach
-    @endif
-</div>
-
-
 <div class="d-flex">
     <div class="p-2">
-        <form action="proceed_to_process" method="post">
+        <form action="proceed_to_risk_assessment" method="post">
             @csrf
             <button type="submit" class="btn btn-secondary">Back</button>
         </form>
@@ -198,7 +201,7 @@
     <div class="ml-auto p-2">
         <form action="proceed_to_end" method="post">
             @csrf
-            <button type="submit" class="btn btn-primary">Next</button>
+            <button type="submit" class="btn btn-primary">Finish</button>
         </form>
     </div>
 </div>

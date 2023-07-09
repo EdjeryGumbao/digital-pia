@@ -8,7 +8,7 @@ use App\Models\PrivacyImpactAssessmentVersion;
 use App\Models\PrivacyImpactAssessment;
 use App\Models\Process;
 use App\Models\DataFields;
-use App\Models\RiskManagement;
+use App\Models\RiskAssessment;
 use App\Models\DataFlow;
 
 use Illuminate\Support\Facades\Session;
@@ -95,24 +95,24 @@ class PiaController extends Controller
             
             // Validate the request data
             request()->validate([
-                'Name' => 'required|string',
+                'ProcessName' => 'required|string',
             ]);
 
             // Update the existing Process instance with new values
             $PrivacyImpactAssessment->update([
-                'Name' => $request->get('Name'),
+                'ProcessName' => $request->get('ProcessName'),
             ]);
         } else { // user just started
             // Validate the request data
             request()->validate([
-                'Name' => 'required|string',
+                'ProcessName' => 'required|string',
             ]);
 
             // Create a new PrivacyImpactAssessment instance
             $PrivacyImpactAssessment = new PrivacyImpactAssessment([
                 'UserID' => $UserID,
                 'PrivacyImpactAssessmentVersionID' => $PrivacyImpactAssessmentVersionID,
-                'Name' => request('Name'),
+                'ProcessName' => request('ProcessName'),
             ]);
             $PrivacyImpactAssessment->save();
 
@@ -124,89 +124,86 @@ class PiaController extends Controller
     }
     
 
+
+
+
     public function InsertProcess(Request $request)
     {
-        if (isset($request->Submit)) {
-
-            $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
-            $result = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
-    
-            if ($result) {
-                // Data exists, update the data
-    
-                // Validate the request data
-                $request->validate([
-                    'ProcessName' => 'nullable|string',
-                    'DataSubject' => 'nullable|string',
-                    'DataFieldsID' => 'nullable|integer',
-                    'PurposeforProcessing' => 'nullable|string',
-                    'SecurityMeasure' => 'nullable|string',
-                    'ProcessNarrative' => 'nullable|string',
-                    'SectionA' => 'nullable|array',
-                    'SectionB' => 'nullable|array',
-                    'SectionC' => 'nullable|array',
-                    'SectionD' => 'nullable|array',
-                ]);
-    
-                // Update the existing Process instance with new values
-                $result->update([
-                    'ProcessName' => $request->get('ProcessName'),
-                    'DataSubject' => $request->get('DataSubject'),
-                    'DataFieldsID' => $request->get('DataFieldsID'),
-                    'PurposeforProcessing' => $request->get('PurposeforProcessing'),
-                    'SecurityMeasure' => $request->get('SecurityMeasure'),
-                    'ProcessNarrative' => $request->get('ProcessNarrative'),
-                    'SectionA' => $request->input('SectionA'),
-                    'SectionB' => $request->input('SectionB'),
-                    'SectionC' => $request->input('SectionC'),
-                    'SectionD' => $request->input('SectionD'),
-                ]);
-            } else {
-                // Data doesn't exist, create a new Process instance
-    
-                // Validate the request data
-                $request->validate([
-                    'ProcessName' => 'nullable|string',
-                    'DataSubject' => 'nullable|string',
-                    'DataFieldsID' => 'nullable|integer',
-                    'PurposeforProcessing' => 'nullable|string',
-                    'SecurityMeasure' => 'nullable|string',
-                    'ProcessNarrative' => 'nullable|string',
-                    'SectionA' => 'nullable|array',
-                    'SectionB' => 'nullable|array',
-                    'SectionC' => 'nullable|array',
-                    'SectionD' => 'nullable|array',
-                ]);
-    
-                // Create a new Process instance
-                $Process = new Process([
-                    'PrivacyImpactAssessmentID' => $PrivacyImpactAssessmentID,
-                    'ProcessName' => $request->get('ProcessName'),
-                    'DataSubject' => $request->get('DataSubject'),
-                    'DataFieldsID' => $request->get('DataFieldsID'),
-                    'PurposeforProcessing' => $request->get('PurposeforProcessing'),
-                    'SecurityMeasure' => $request->get('SecurityMeasure'),
-                    'ProcessNarrative' => $request->get('ProcessNarrative'),
-                    'SectionA' => $request->input('SectionA'),
-                    'SectionB' => $request->input('SectionB'),
-                    'SectionC' => $request->input('SectionC'),
-                    'SectionD' => $request->input('SectionD'),
-                ]);
-    
-                // Set values for other attributes
-                $Process->save();
+        if ($request->has('delete_datafield')) {
+            // Run the code for deleting the data field
+        
+            // Get the DataFieldsID from the request
+            $DataFieldsID = $request->input('delete_datafield');
+        
+            // Find the data field based on the DataFieldsID
+            $DataFields = DataFields::where('DataFieldsID', $DataFieldsID)->first();
+        
+            // Check if the data field exists
+            if ($DataFields) {
+                // Delete the data field
+                $DataFields->delete();
             }
-    
-            // Redirect to a specific route or URL
-            return $this->proceed_to_risk_assessment();
+        }        
+
+        $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
+        $result = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        
+        // Validate the request data
+        $request->validate([
+            'DataSubject' => 'nullable|string',
+            'PurposeforProcessing' => 'nullable|string',
+            'SecurityMeasure' => 'nullable|string',
+            'ProcessNarrative' => 'nullable|string',
+            'SectionA' => 'nullable|array',
+            'SectionB' => 'nullable|array',
+            'SectionC' => 'nullable|array',
+            'SectionD' => 'nullable|array',
+        ]);
+
+        if ($result) {
+            // Data exists, update the data
+
+            // Update the existing Process instance with new values
+            $result->update([
+                'DataSubject' => $request->get('DataSubject'),
+                'PurposeforProcessing' => $request->get('PurposeforProcessing'),
+                'SecurityMeasure' => $request->get('SecurityMeasure'),
+                'ProcessNarrative' => $request->get('ProcessNarrative'),
+                'SectionA' => $request->input('SectionA'),
+                'SectionB' => $request->input('SectionB'),
+                'SectionC' => $request->input('SectionC'),
+                'SectionD' => $request->input('SectionD'),
+            ]);
+        } else {
+            // Data doesn't exist, create a new Process instance
+
+            // Create a new Process instance
+            $Process = new Process([
+                'PrivacyImpactAssessmentID' => $PrivacyImpactAssessmentID,
+                'DataSubject' => $request->get('DataSubject'),
+                'PurposeforProcessing' => $request->get('PurposeforProcessing'),
+                'SecurityMeasure' => $request->get('SecurityMeasure'),
+                'ProcessNarrative' => $request->get('ProcessNarrative'),
+                'SectionA' => $request->input('SectionA'),
+                'SectionB' => $request->input('SectionB'),
+                'SectionC' => $request->input('SectionC'),
+                'SectionD' => $request->input('SectionD'),
+            ]);
+
+            // Set values for other attributes
+            $Process->save();
         }
 
-        if (isset($request->Datacollected) || isset($request->FormUsed)) {
+        if (isset($request->FormUsed) && isset($request->Datacollected)) {
             $this->InsertDataFields($request);
         }
-
-
-        return $this->proceed_to_process($request);
+        if ($request->Button == "Next") {
+            return $this->proceed_to_risk_assessment();
+        } elseif ($request->Button == "FormData") {
+            return $this->proceed_to_process($request);
+        } elseif ($request->Button == "Back") {
+            return $this->proceed_to_start($request);
+        }        
     }
 
 
@@ -228,14 +225,12 @@ class PiaController extends Controller
         ]);
         // Set values for other attributes
         
-        //dd($DataFields);
         $DataFields->save();
-
         // Redirect or return a response as needed
-        return $this->proceed_to_process($request);
+        return;
     }
 
-    public function InsertRiskManagement(Request $request)
+    public function InsertRiskAssessment(Request $request)
     {
         // Validate the request data
         $request->validate([
@@ -247,14 +242,14 @@ class PiaController extends Controller
         $riskRating = $request->get('Impact') * $request->get('Probability');
         $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
 
-        $RiskManagement = new RiskManagement([
+        $RiskAssessment = new RiskAssessment([
             'PrivacyImpactAssessmentID' => $PrivacyImpactAssessmentID,
             'ThreatsVulnerabilities' => $request->get('ThreatsVulnerabilities'),
             'Impact' => $request->get('Impact'),
             'Probability' => $request->get('Probability'),
             'RiskRating' => $riskRating,
         ]);
-        $RiskManagement->save();
+        $RiskAssessment->save();
 
         return $this->proceed_to_risk_assessment();
     }
@@ -281,36 +276,13 @@ class PiaController extends Controller
         }
   
         DataFlow::create($input);
-   
-        /*
-
-
-        // Validate the request data
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        // get name and store image
-        $name = $request->file('image')->getClientOriginalName();
-        $path = $request->file('image')->store('public/dataflowimages');
-
-        // upload to database
-        $DataFlow = new DataFlow([
-            'PrivacyImpactAssessmentID' => $PrivacyImpactAssessmentID,
-            'FileName' => $path,
-        ]);
-
-        //dd($DataFlow);
-        $DataFlow->save();
-
-        */
 
         return $this->proceed_to_flowchart();
     }
 
     public function proceed_to_start(Request $request)
     {        
-        if(isset($request->PrivacyImpactAssessmentID)) {
+        if(isset($request->PrivacyImpactAssessmentID)) { 
             session()->put('PrivacyImpactAssessmentID', $request->PrivacyImpactAssessmentID);
         }
 
@@ -339,8 +311,12 @@ class PiaController extends Controller
     
     public function proceed_to_process(Request $request)
     {
-        if(isset($request->PrivacyImpactAssessmentID)) {
+        if(isset($request->PrivacyImpactAssessmentID)) { // edit
             $request->session()->put('PrivacyImpactAssessmentID', $request->PrivacyImpactAssessmentID);
+        } 
+        
+        if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
+            return $this->index();
         }
 
         $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
@@ -361,12 +337,16 @@ class PiaController extends Controller
     
     
     public function proceed_to_risk_assessment()
-    {   
-        $RiskManagement = RiskManagement::all();
+    {           
+        if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
+            return $this->index();
+        }
         
-        if ($RiskManagement) {
+        $RiskAssessment = RiskAssessment::all();
+        //dd($RiskAssessment);
+        if ($RiskAssessment) {
             // Data exists, pass the data to the view
-            return view('pia2/proceed_to_risk_assessment', ['RiskManagement' => $RiskManagement]);
+            return view('pia2/proceed_to_risk_assessment', ['RiskAssessment' => $RiskAssessment]);
         } else {
             // Data doesn't exist
             return view('pia2/proceed_to_risk_assessment');
@@ -374,6 +354,10 @@ class PiaController extends Controller
     }
     public function proceed_to_flowchart()
     {   
+        if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
+            return $this->index();
+        }
+        
         $DataFlow = DataFlow::all();
         
         if ($DataFlow) {
@@ -386,14 +370,19 @@ class PiaController extends Controller
     }
     public function proceed_to_end(Request $request)
     {
-        $keysToRemove = [
-            'PrivacyImpactAssessmentVersionID',
-            'PrivacyImpactAssessmentID',
-        ];
-        foreach ($keysToRemove as $key) {
-            Session::forget($key);
+        if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
+            return $this->index();
         }
-        return view('pia2/proceed_to_end');
+
+        $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+
+        if ($PrivacyImpactAssessment) {
+            $PrivacyImpactAssessment->touch();
+            $PrivacyImpactAssessment->save();
+        }
+
+        return $this->view_pia($request);
     }
     public function reset()
     {
@@ -425,63 +414,48 @@ class PiaController extends Controller
         return view('pialist', compact('PrivacyImpactAssessment', 'UserID'));
     }
 
-    public function edit_process(Request $request)
+    public function test(Request $request)
     {
-        $request->validate([
-            'PrivacyImpactAssessmentID' => 'required|integer',
-        ]);
-        $ID = $request->get('PrivacyImpactAssessmentID');
-        $Process = Process::where('PrivacyImpactAssessmentID', $ID)->first();
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $ID)->first();
-        session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
-        session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
-
-        return view('pia2/proceed_to_process', compact('Process'));
+        dd(Session::all());
     }
 
     public function view_pia(Request $request)
     {
-        $request->validate([
-            'PrivacyImpactAssessmentID' => 'required|integer',
-        ]);
+        if(!Session::exists('PrivacyImpactAssessmentID')){ // when a user visits this page without an ID
+            $request->validate([
+                'PrivacyImpactAssessmentID' => 'required|integer',
+            ]);
+            $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
+        } else {
+            $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
+        }
 
-        $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
-        $PrivacyImpactAssessment = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+
         if ($PrivacyImpactAssessment) {
             session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
             session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
             $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
             $DataFields = DataFields::all();
-            $RiskManagement = RiskManagement::all();
+            $RiskAssessment = RiskAssessment::all();
             $DataFlow = DataFlow::all();
 
-            return view('viewpia', compact('Process', 'DataFields', 'RiskManagement', 'DataFlow', 'PrivacyImpactAssessment'));
+            return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment'));
         }
 
         // Handle the case when PrivacyImpactAssessment is not found
         return redirect()->back()->with('error', 'Privacy Impact Assessment not found.');
-
-        $RiskManagement = RiskManagement::all();
-        
-        if ($RiskManagement) {
-            // Data exists, pass the data to the view
-            return view('pia2/proceed_to_risk_assessment', ['RiskManagement' => $RiskManagement]);
-        } else {
-            // Data doesn't exist
-            return view('pia2/proceed_to_risk_assessment');
-        }
-
     }
 
-    public function delete_riskmanagement(Request $request)
+    public function delete_riskassessment(Request $request)
     {
-        $RiskManagementID = $request->get('RiskManagementID');
+        $RiskAssessmentID = $request->get('RiskAssessmentID');
         
-        $RiskManagement = RiskManagement::where('RiskManagementID', $RiskManagementID)->first();
+        $RiskAssessment = RiskAssessment::where('RiskAssessmentID', $RiskAssessmentID)->first();
 
-        if ($RiskManagement) {
+        if ($RiskAssessment) {
             // Delete the Risk Management
-            $RiskManagement->delete();
+            $RiskAssessment->delete();
         }
 
         return $this->proceed_to_risk_assessment();
@@ -498,5 +472,5 @@ class PiaController extends Controller
             $DataFlow->delete();
         }
         return $this->proceed_to_flowchart();
-    }
+    }    
 }

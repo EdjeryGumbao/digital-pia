@@ -25,9 +25,9 @@
                             @if ($item->UserID == $UserID)
                                     <tr>
                                         <td>{{ $item->PrivacyImpactAssessmentVersionID }}</td>
-                                        <td>{{ $item->Name }}</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        <td>{{ $item->updated_at }}</td>
+                                        <td>{{ $item->ProcessName }}</td>
+                                        <td>{{ $item->created_at->format('F d, Y') }}</td>
+                                        <td>{{ $item->updated_at->format('F d, Y') }}</td>
                                         <td>
                                         <div class="d-flex flex-row-reverse">
                                             <div class="p-2">
@@ -58,5 +58,4 @@
     @else
         <p>There are no PIA yet.</p>
     @endif
-
 @stop

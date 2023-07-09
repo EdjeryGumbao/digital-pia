@@ -4,19 +4,6 @@
 
 @section('content')
 
-@php
-    $ProcessID = $Process->ProcessID ?? '';
-    $ProcessName = $Process->ProcessName ?? '';
-    $DataSubject = $Process->DataSubject ?? '';
-    $DataFieldsID = $Process->DataFieldsID ?? '';
-    $PurposeforProcessing = $Process->PurposeforProcessing ?? '';
-    $SecurityMeasure = $Process->SecurityMeasure ?? '';
-    $ProcessNarrative = $Process->ProcessNarrative ?? '';
-    $SectionA = $Process->SectionA ?? '';
-    $SectionB = $Process->SectionB ?? '';
-    $SectionC = $Process->SectionC ?? '';
-    $SectionD = $Process->SectionD ?? '';
-@endphp
 
 @foreach ($errors->all() as $error)
     <p class="text-danger">{{ $error }}</p>
@@ -33,12 +20,8 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="form-group">
-                    <label for="ProcessName">Process Name:</label>
-                    <input type="text" class="form-control" name="ProcessName" value="{{ $ProcessName }}">
-                </div>
-                <div class="form-group">
                     <label for="DataSubject">Data Subject:</label>
-                    <input type="text" class="form-control" name="DataSubject" value="{{ $DataSubject }}">
+                    <input type="text" class="form-control" name="DataSubject" value="{{ $Process->DataSubject ?? ''}}" >
                 </div>
                 <div class="form-group">
                     <label for="FormUsed">Form used:</label>
@@ -46,7 +29,7 @@
                     <label for="Datacollected[]">Data Fields:</label>
                     <div id="inp-group"></div>
                     <button id="add" type="button" class="btn btn-secondary">Add Data field</button>
-                    <button type="submit" class="btn btn-primary" name="FormData" value="true">Save</button>
+                    <button type="submit" class="btn btn-primary" name="Button" value="FormData">Save</button>
                 </div>
 
 <div class="card">
@@ -56,12 +39,21 @@
         @if(isset($DataFields))
             @foreach ($DataFields as $item)
                 @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                    <table>
-                        <tr>
-                            <th>{{ $item->FormUsed }}: </th>
-                            <td>{{ implode(', ', $item->Datacollected) }}</td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>
+                            <strong>{{ $item->FormUsed }}:</strong>
+                        </td>
+                        <td>
+                            {{ implode(', ', $item->Datacollected) }}
+                        </td>
+                        <td class="d-flex flex-row-reverse">
+                            <div class="d-flex flex-row-reverse">
+                                <div class="p-2">
+                                    <button type="submit" class="btn btn-danger" name="delete_datafield" value="{{ $item->DataFieldsID }}">Delete</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                 @endif
             @endforeach
         @endif
@@ -74,15 +66,15 @@
 
                 <div class="form-group">
                     <label for="PurposeforProcessing">Purpose/s for Processing:</label>
-                    <textarea type="text" class="form-control" name="PurposeforProcessing" row="2" value="{{ $PurposeforProcessing }}"></textarea>
+                    <textarea type="text" class="form-control" name="PurposeforProcessing" row="2">{{ $Process->PurposeforProcessing ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SecurityMeasure">Security Measure/s:</label>
-                    <textarea type="text" class="form-control" name="SecurityMeasure" row="2" value="{{ $SecurityMeasure }}"></textarea>
+                    <textarea type="text" class="form-control" name="SecurityMeasure" row="2">{{ $Process->SecurityMeasure ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="ProcessNarrative">Process Narrative:</label>
-                    <textarea type="text" class="form-control" name="ProcessNarrative" row="2" value="{{ $ProcessNarrative }}"></textarea>
+                    <textarea type="text" class="form-control" name="ProcessNarrative" row="2">{{ $Process->ProcessNarrative ?? ''}}</textarea>
                 </div>
             </div>
             <!-- /.card-body -->
@@ -98,18 +90,16 @@
             <div class="card-body" id="SectionA">
                 <div class="form-group">
                     <label for="SectionA">Data Source:</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $SectionA[0] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $Process->SectionA[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionA">Collection Method:</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $SectionA[1] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $Process->SectionA[1] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionA">Timing of Collection:</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $SectionA[2] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $Process->SectionA[2] ?? '' }}</textarea>
                 </div>
-
-                <input type="hidden" id="SectionAHidden" name="SectionA[]" value="{{ is_array($SectionA) ? implode(',', $SectionA) : '' }}">
             </div>
             <!-- /.card-body -->
             <div class="card-header">
@@ -119,14 +109,12 @@
             <div class="card-body" id="SectionB">
                 <div class="form-group">
                     <label for="SectionB">Is the data being used as is, or does it undergo further processing?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $SectionB[0] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $Process->SectionB[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionB">Is there automated decision-making?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $SectionB[1] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $Process->SectionB[1] ?? '' }}</textarea>
                 </div>
-
-                <input type="hidden" id="SectionAHidden" name="SectionB[]" value="{{ is_array($SectionB) ? implode(',', $SectionB) : '' }}">
             </div>
             <!-- /.card-body -->
             <div class="card-header">
@@ -136,26 +124,24 @@
             <div class="card-body" id="SectionC">
                 <div class="form-group">
                     <label for="SectionC">Is data being transferred to third parties?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[0] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionC">Third-party recipients</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[1] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[1] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionC">Purpose/s of the transfer to the third party?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[2] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[2] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionC">Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[3] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[3] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionC">Is the personal data transferred outside of the Philippines? If so, where?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $SectionC[4] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[4] ?? '' }}</textarea>
                 </div>
-                
-                <input type="hidden" id="SectionAHidden" name="SectionC[]" value="{{ is_array($SectionC) ? implode(',', $SectionC) : '' }}">
             </div>
             <!-- /.card-body -->
             <div class="card-header">
@@ -165,18 +151,16 @@
             <div class="card-body" id="SectionD">
                 <div class="form-group">
                     <label for="SectionD">Retention period</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $SectionD[0] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $Process->SectionD[0] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionD">Location of data/how stored</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $SectionD[1] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $Process->SectionD[1] ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SectionD">Is personal data being destroyed?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $SectionD[2] ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $Process->SectionD[2] ?? '' }}</textarea>
                 </div>
-
-                <input type="hidden" id="SectionAHidden" name="SectionD[]" value="{{ is_array($SectionD) ? implode(',', $SectionD) : '' }}">
             </div>
             <!-- /.card-body -->
         </div>
@@ -184,13 +168,10 @@
     </div>
     <div class="d-flex">
         <div class="p-2">
-            <form action="proceed_to_start" method="post">
-                @csrf
-                <button type="submit" class="btn btn-secondary">Back</button>
-            </form>
+            <button type="submit" class="btn btn-secondary" name="Button" value="Back">Back</button>
         </div>
         <div class="ml-auto p-2">
-            <button type="submit" class="btn btn-primary" name="Submit" value="true">Next</button>
+            <button type="submit" class="btn btn-primary" name="Button" value="Next">Next</button>
         </div>
     </div>
 </form>

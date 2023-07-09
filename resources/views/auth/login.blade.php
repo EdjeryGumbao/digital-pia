@@ -33,7 +33,7 @@
             </label>
         </div>
         <p class="block mt-4">
-            <a class="ml-2 text-sm text-gray-600" href="{{ url('/register') }}">Register</a>
+            <a class="underline ml-2 text-sm text-gray-600" href="{{ url('/register') }}">Register</a>
         </p>
 
         <div class="flex items-center justify-end mt-4">

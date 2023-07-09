@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('PrivacyImpactAssessmentID');
             $table->unsignedBigInteger('UserID');
             $table->unsignedBigInteger('PrivacyImpactAssessmentVersionID');
-            $table->string('Name');
+            $table->string('ProcessName');
             $table->timestamps();
         });
     }

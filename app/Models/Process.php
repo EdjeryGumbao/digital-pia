@@ -15,9 +15,7 @@ class Process extends Model
     
     protected $fillable = [
         'PrivacyImpactAssessmentID',
-        'ProcessName',
         'DataSubject',
-        'DataFieldsID',
         'PurposeforProcessing',
         'SecurityMeasure',
         'ProcessNarrative',

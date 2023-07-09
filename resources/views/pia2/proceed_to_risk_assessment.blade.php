@@ -6,6 +6,116 @@
 
 <p>Welcome to the Risk Assessment</p>
 
+<p>Please input your data in the following table</p>
+
+<form method="POST" action="{{ route('InsertRiskAssessment') }}">
+  @csrf
+  <div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Risk Assessment</h3>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Threat/Vulnerability</th>
+                    <th>Impact</th>
+                    <th>Probability</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-10">
+                        <input type="text" class="form-control" name="ThreatsVulnerabilities">
+                    </td>
+                    <td class="col-1">
+                        <select class="form-control" name="Impact">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </td>
+                    <td class="col-1">
+                        <select class="form-control" name="Probability">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+
+  @if (session('success'))
+    <div>
+      <p class="text-success">{{ session('message') }}</p>
+    </div>
+  @endif
+
+  @foreach ($errors->all() as $error)
+      <p class="text-danger">{{ $error }}</p>
+  @endforeach
+
+
+</form>
+
+<div class="card">
+  <div class="card-body table-responsive p-0">
+    <table class="table table-hover text-nowrap">
+      <thead>
+        <tr>
+          <th>Threat/Vulnerability</th>
+          <th>Impact</th>
+          <th>Probability</th>
+          <th>Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+      @if(isset($RiskAssessment))
+          @foreach ($RiskAssessment as $item)
+              @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                  <tr>
+                      <td>{{ $item->ThreatsVulnerabilities }}</td>
+                      <td class="text-center">{{ $item->Impact }}</td>
+                      <td class="text-center">{{ $item->Probability }}</td>
+                      <td class="text-center" style="background-color: 
+                          @if($item->RiskRating == 1) #fafdff /* white */
+                          @elseif($item->RiskRating >= 2 && $item->RiskRating <= 5) #ffffcc /* light yellow */
+                          @elseif($item->RiskRating >= 6 && $item->RiskRating <= 8) #ffff99 /* yellow */
+                          @elseif($item->RiskRating == 9) #ffcccc /* lighter red */
+                          @elseif($item->RiskRating >= 10 && $item->RiskRating <= 15) #ff9999 /* light red */
+                          @elseif($item->RiskRating >= 16) #ff0000 /* red */
+                          @endif">
+                          {{ $item->RiskRating }}
+                      </td>
+                      <td>
+                        <form action="delete_riskassessment" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-danger" name="RiskAssessmentID" value="{{ $item->RiskAssessmentID }}">Delete</button>
+                        </form>
+                      </td>
+                  </tr>
+              @endif
+          @endforeach
+      @endif
+    </tbody>
+    </table>
+  </div>
+  <!-- /.card-body -->
+</div><br>
+
+<h3><strong>Description</strong></h3>
+
 <p>For the purpose of this section, a risk refers to the potential of an incident to result in harm or danger 
 to a data subject or organization. Risks are those that could lead to the unauthorized collection, use, 
 disclosure or access to personal data. It includes risks that the confidentiality, integrity and availability 
@@ -125,83 +235,6 @@ evaluating its impact and probability</p>
           <td>Very likely. It is expected to occur in most circumstances.</td>
         </tr>
       </tbody>
-    </table>
-  </div>
-  <!-- /.card-body -->
-</div>
-
-<p>Please input your data in the following table</p>
-
-<form method="POST" action="InsertRiskManagement">
-  @csrf
-  <div class="card card-primary">
-    <div class="card-header">
-    <h3 class="card-title">Risk Assessment</h3>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-8">
-          <label for="ThreatsVulnerabilities">Threat/Vulnerability</label>
-          <input type="text" class="form-control" name="ThreatsVulnerabilities">
-        </div>
-        <div class="col-2">
-        <label for="Impact">Impact</label>
-        <input type="text" class="form-control" name="Impact">
-        </div>
-        <div class="col-2">
-        <label for="Probability">Probability</label>
-        <input type="text" class="form-control" name="Probability">
-        </div>
-      </div>
-    </div>
-    <!-- /.card-body -->
-    <button type="submit" class="btn btn-success">Add</button>
-  </div>
-
-  @if (session('success'))
-    <div>
-      <p class="text-success">{{ session('message') }}</p>
-    </div>
-  @endif
-
-  @foreach ($errors->all() as $error)
-      <p class="text-danger">{{ $error }}</p>
-  @endforeach
-
-
-</form>
-
-<div class="card">
-  <div class="card-body table-responsive p-0">
-    <table class="table table-hover text-nowrap">
-      <thead>
-        <tr>
-          <th>Threat/Vulnerability</th>
-          <th>Impact</th>
-          <th>Probability</th>
-          <th>Risk</th>
-        </tr>
-      </thead>
-      <tbody>
-      @if(isset($RiskManagement))
-          @foreach ($RiskManagement as $item)
-              @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                  <tr>
-                      <td>{{ $item->ThreatsVulnerabilities }}</td>
-                      <td>{{ $item->Impact }}</td>
-                      <td>{{ $item->Probability }}</td>
-                      <td>{{ $item->RiskRating }}</td>
-                      <td>
-                        <form action="delete_riskmanagement" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-danger" name="RiskManagementID" value="{{ $item->RiskManagementID }}">Delete</button>
-                        </form>
-                      </td>
-                  </tr>
-              @endif
-          @endforeach
-      @endif
-    </tbody>
     </table>
   </div>
   <!-- /.card-body -->

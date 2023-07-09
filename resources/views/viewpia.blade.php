@@ -14,15 +14,15 @@
 
     @if($Process)
     <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Process Information</h5>
+                    <h5 class="card-title"><strong>Process Information</strong></h5>
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td><strong>Process Name:</strong></td>
-                                <td>{{ $Process->ProcessName }}</td>
+                                <td class="text-nowrap"><strong>Process Name:</strong></td>
+                                <td>{{ $PrivacyImpactAssessment->Name ?? '' }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Data Subject:</strong></td>
@@ -67,29 +67,38 @@
     </div>
     @endif
 
-    @if($RiskManagement)
+    @if($RiskAssessment)
     <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Risk Management</h5>
+                    <h5 class="card-title"><strong>Risk Management</strong></h5>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Threat/Vulnerability</th>
+                                <th class="text-nowrap">Threat/Vulnerability</th>
                                 <th>Impact</th>
                                 <th>Probability</th>
                                 <th>Risk</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($RiskManagement as $item)
+                            @foreach ($RiskAssessment as $item)
                             @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
                             <tr>
                                 <td>{{ $item->ThreatsVulnerabilities }}</td>
-                                <td>{{ $item->Impact }}</td>
-                                <td>{{ $item->Probability }}</td>
-                                <td>{{ $item->RiskRating }}</td>
+                                <td class="text-center">{{ $item->Impact }}</td>
+                                <td class="text-center">{{ $item->Probability }}</td>
+                                <td class="text-center" style="background-color: 
+                                    @if($item->RiskRating == 1) #fafdff /* white */
+                                    @elseif($item->RiskRating >= 2 && $item->RiskRating <= 5) #ffffcc /* light yellow */
+                                    @elseif($item->RiskRating >= 6 && $item->RiskRating <= 8) #ffff99 /* yellow */
+                                    @elseif($item->RiskRating == 9) #ffcccc /* lighter red */
+                                    @elseif($item->RiskRating >= 10 && $item->RiskRating <= 15) #ff9999 /* light red */
+                                    @elseif($item->RiskRating >= 16) #ff0000 /* red */
+                                    @endif">
+                                    {{ $item->RiskRating }}
+                                </td>
                             </tr>
                             @endif
                             @endforeach
@@ -103,10 +112,10 @@
 
     @if($DataFlow)
     <div class="row justify-content-center mt-5">
-        <div class="col-md-6">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Data Flow</h5><br>
+                    <h5 class="card-title"><strong>Data Flow</strong></h5><br>
                     <div class="row">
                         @foreach ($DataFlow as $item)
                         @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
@@ -119,7 +128,6 @@
                                 </div>
                             </div>
                         </div>
-
                         @endif
                         @endforeach
                     </div>
@@ -128,5 +136,10 @@
         </div>
     </div>
     @endif
+    <div class="d-flex">
+        <div class="ml-auto p-2">
+            <a href="{{ url('pialist') }}" class="btn btn-primary">Done</a>
+        </div>
+    </div>
 </div>
 @endsection

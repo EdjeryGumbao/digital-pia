@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RiskManagement extends Model
+class RiskAssessment extends Model
 {
     use HasFactory;
 
-    protected $table = 'risk_management';
+    protected $table = 'risk_assessment';
 
-    protected $primaryKey = 'RiskManagementID';
+    protected $primaryKey = 'RiskAssessmentID';
     
     protected $fillable = [
         'PrivacyImpactAssessmentID',

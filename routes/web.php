@@ -25,11 +25,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('edit_process', [PiaController::class, 'edit_process']);
+    Route::get('test', [PiaController::class, 'test']);
     Route::post('view_pia', [PiaController::class, 'view_pia']);
     
     Route::post('delete_dataflow', [PiaController::class, 'delete_dataflow']);
-    Route::post('delete_riskmanagement', [PiaController::class, 'delete_riskmanagement']);
+    Route::post('delete_riskassessment', [PiaController::class, 'delete_riskassessment']);
+
+    Route::get('finish', [PiaController::class, 'finish']);
+    
     
     Route::get('/pialist', [PiaController::class, 'pialist']);
 
@@ -60,8 +63,14 @@ Route::middleware('auth')->group(function () {
 
 Route::post('InsertPrivacyImpactAssessment', [PiaController::class, 'InsertPrivacyImpactAssessment']);
 Route::post('InsertProcess', [PiaController::class, 'InsertProcess']);
-Route::post('InsertDataFlow', [PiaController::class, 'InsertDataFlow']);
-Route::post('InsertRiskManagement', [PiaController::class, 'InsertRiskManagement']);
+Route::post('InsertDataFlow', [PiaController::class, 'InsertDataFlow'])->name('InsertDataFlow');
+Route::post('InsertRiskAssessment', [PiaController::class, 'InsertRiskAssessment'])->name('InsertRiskAssessment');
 Route::post('InsertDataFields', [PiaController::class, 'InsertDataFields']);
+
+Route::get('InsertPrivacyImpactAssessment', [PiaController::class, 'proceed_to_start']);
+Route::get('InsertProcess', [PiaController::class, 'proceed_to_process']);
+Route::get('InsertDataFlow', [PiaController::class, 'proceed_to_flowchart'])->name('InsertDataFlow');
+Route::get('InsertRiskAssessment', [PiaController::class, 'proceed_to_risk_assessment'])->name('InsertRiskAssessment');
+Route::get('InsertDataFields', [PiaController::class, 'proceed_to_process']);
 
 require __DIR__.'/auth.php';
