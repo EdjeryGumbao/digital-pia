@@ -27,7 +27,7 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
+        <!-- Password 
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
@@ -37,9 +37,9 @@
                             required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        </div> -->
 
-        <!-- Confirm Password -->
+        <!-- Confirm Password 
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
 
@@ -48,11 +48,19 @@
                             name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+        </div> -->
+        <br>
+        <p>Note: The default password is: 
+            <span class="password-wrapper">
+                <span class="password-cover">********</span>
+                <span class="password-content">12345678</span>
+            </span>
+        </p>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ url('manage') }}">
+                {{ __('Back') }}
             </a>
 
             <x-primary-button class="ml-4">
@@ -61,3 +69,32 @@
         </div>
     </form>
 </x-guest-layout>
+
+<style>
+.password-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.password-cover {
+  cursor: pointer;
+  padding: 2px 5px;
+  background-color: #000;
+  color: #fff;
+}
+
+.password-content {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px 5px;
+  background-color: #fff;
+  color: #000;
+}
+
+.password-wrapper:hover .password-content {
+  display: inline;
+}
+
+</style>

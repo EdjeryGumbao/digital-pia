@@ -88,4 +88,9 @@ Route::get('delete_question_set', [PiaController::class, 'manage']);
 Route::post('activate_question_set', [PiaController::class, 'activate_question_set']);
 Route::get('activate_question_set', [PiaController::class, 'manage']);
 
+Route::get('registerNewAccount', [PiaController::class, 'registerNewAccount']);
+Route::post('delete_account', [PiaController::class, 'delete_account']);
+Route::get('delete_account', [PiaController::class, 'manage']);
+
+
 require __DIR__.'/auth.php';

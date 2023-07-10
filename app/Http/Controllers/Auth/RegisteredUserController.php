@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
             
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
 
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            //'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
@@ -48,13 +48,10 @@ class RegisteredUserController extends Controller
             'completename' => $request->lastname . ', ' . $request->firstname . ' ' . ($request->middlename ?? ''),
             'email' => $request->email,
             'usertype' => $request->usertype ?? 'user',
-            'password' => Hash::make($request->password),
+            //'password' => Hash::make($request->password),
+            'password' => Hash::make('12345678'),
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->to(url('manage'));
     }
 }

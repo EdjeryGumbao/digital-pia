@@ -6,9 +6,10 @@
 @section('content')
 
     <h3><strong>Manage Accounts</strong></h3>
+
     <div class="d-flex flex-row-reverse">
         <div class="p-2">
-            <a href="" class="btn btn-primary">Create Account</a>
+            <a href="{{ url('registerNewAccount') }}" class="btn btn-primary">Create Account</a>
         </div>
     </div></br>
     <div class="card">
@@ -28,7 +29,16 @@
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->completename }}</td>
-                            <td>Delete</td>
+                            <td>
+                                <div class="d-flex">
+                                    <div class="p-2">
+                                        <form action="delete_account" method="post">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger" name="id" value="{{ $item->id }}">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     @endif
                 @endforeach

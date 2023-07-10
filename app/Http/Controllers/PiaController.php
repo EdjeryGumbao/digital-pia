@@ -59,8 +59,6 @@ class PiaController extends Controller
     }
 
 
-
-
     // dpo
 
     public function createAdminUser()
@@ -107,8 +105,18 @@ class PiaController extends Controller
         if ($ProcessQuestions) {
             $ProcessQuestions->delete();
         }
-        return $this->manage();
+        return redirect()->to(url('manage'));
     } 
+
+    public function delete_account(Request $request)
+    {
+        $UserID = $request->input('id');
+        $User = User::where('id', $UserID)->first();
+        if ($User) {
+            $User->delete();
+        }
+        return redirect()->to(url('manage'));
+    }
 
 
     public function InsertProcessQuestion(Request $request)
@@ -174,7 +182,7 @@ class PiaController extends Controller
     }
 
     public function ToggleChecked() {
-        
+
 
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
         foreach ($PrivacyImpactAssessmentVersion as $version) {
@@ -193,6 +201,9 @@ class PiaController extends Controller
         return;
     }
 
+    public function registerNewAccount() {
+        return view('auth.register');
+    }
 
 
 
