@@ -27,9 +27,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('test', [PiaController::class, 'test']);
     Route::post('view_pia', [PiaController::class, 'view_pia']);
+
+    Route::get('add_question_set', [PiaController::class, 'add_question_set']);
+    Route::post('add_question_set', [PiaController::class, 'add_question_set']);
     
     Route::post('delete_dataflow', [PiaController::class, 'delete_dataflow']);
     Route::post('delete_riskassessment', [PiaController::class, 'delete_riskassessment']);
+    Route::post('delete_pia', [PiaController::class, 'delete_pia']);
 
     Route::get('finish', [PiaController::class, 'finish']);
     
@@ -37,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pialist', [PiaController::class, 'pialist']);
     Route::get('/manage', [PiaController::class, 'manage']);
 
-
+    
     Route::post('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::get('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::post('/proceed_to_process', [PiaController::class, 'proceed_to_process']);
@@ -75,5 +79,13 @@ Route::get('InsertRiskAssessment', [PiaController::class, 'proceed_to_risk_asses
 Route::get('InsertDataFields', [PiaController::class, 'proceed_to_process']);
 
 Route::get('createAdminUser', [PiaController::class, 'createAdminUser']);
+
+// dpo stuff
+Route::post('InsertProcessQuestion ', [PiaController::class, 'InsertProcessQuestion']);
+Route::get('InsertProcessQuestion', [PiaController::class, 'manage']);
+Route::post('delete_question_set', [PiaController::class, 'delete_question_set']);
+Route::get('delete_question_set', [PiaController::class, 'manage']);    
+Route::post('activate_question_set', [PiaController::class, 'activate_question_set']);
+Route::get('activate_question_set', [PiaController::class, 'manage']);
 
 require __DIR__.'/auth.php';

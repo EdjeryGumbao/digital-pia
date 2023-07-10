@@ -18,10 +18,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Threat/Vulnerability</th>
-                    <th>Impact</th>
-                    <th>Probability</th>
-                    <th></th>
+                    <th width="70%">Threat/Vulnerability</th>
+                    <th width="10%">Impact</th>
+                    <th width="10%">Probability</th>
+                    <th width="10%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +45,7 @@
                             <option value="4">4</option>
                         </select>
                     </td>
+
                     <td>
                         <button type="submit" class="btn btn-success">Add</button>
                     </td>
@@ -94,7 +95,7 @@
                           @elseif($item->RiskRating == 9) #ffcccc /* lighter red */
                           @elseif($item->RiskRating >= 10 && $item->RiskRating <= 15) #ff9999 /* light red */
                           @elseif($item->RiskRating >= 16) #ff0000 /* red */
-                          @endif
+                          @endif;
                           color: {{ $item->RiskRating == 16 ? '#ffffff' : '#000000' }};">
                           {{ $item->RiskRating }}
                       </td>

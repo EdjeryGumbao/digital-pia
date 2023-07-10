@@ -66,101 +66,82 @@
 
                 <div class="form-group">
                     <label for="PurposeforProcessing">Purpose/s for Processing:</label>
-                    <textarea type="text" class="form-control" name="PurposeforProcessing" row="2">{{ $Process->PurposeforProcessing ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" name="PurposeforProcessing" row="2" style="white-space: pre-line;">{{ $Process->PurposeforProcessing ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="SecurityMeasure">Security Measure/s:</label>
-                    <textarea type="text" class="form-control" name="SecurityMeasure" row="2">{{ $Process->SecurityMeasure ?? '' }}</textarea>
+                    <textarea type="text" class="form-control" name="SecurityMeasure" row="2" style="white-space: pre-line;">{{ $Process->SecurityMeasure ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="ProcessNarrative">Process Narrative:</label>
-                    <textarea type="text" class="form-control" name="ProcessNarrative" row="2">{{ $Process->ProcessNarrative ?? ''}}</textarea>
+                    <textarea type="text" class="form-control" name="ProcessNarrative" row="2" style="white-space: pre-line;">{{ $Process->ProcessNarrative ?? ''}}</textarea>
                 </div>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
         <br>
-        <h1>Process-level Analysis: Data Lifecycle</h1>
+        <h1>{{ $ProcessQuestions->QuestionSetName ?? '' }}</h1>
+        
         <div class="card card-primary">
             <div class="card-header">
-            <h3 class="card-title">Data Collection</h3>
+            <h3 class="card-title">{{ $ProcessQuestions->SectionATitle ?? '' }}</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body" id="SectionA">
+                @php $count = 0; @endphp
+                @foreach($ProcessQuestions->SectionAQuestions as $item)
                 <div class="form-group">
-                    <label for="SectionA">Data Source:</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $Process->SectionA[0] ?? '' }}</textarea>
+                    <label for="SectionA">{{ $item }}</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionA[]" style="white-space: pre-line;">{{ $Process->SectionA[$count] ?? '' }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="SectionA">Collection Method:</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $Process->SectionA[1] ?? '' }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="SectionA">Timing of Collection:</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionA[]">{{ $Process->SectionA[2] ?? '' }}</textarea>
-                </div>
+                @php $count++; @endphp
+                @endforeach
             </div>
             <!-- /.card-body -->
             <div class="card-header">
-            <h3 class="card-title">Data Use</h3>
+            <h3 class="card-title">{{ $ProcessQuestions->SectionBTitle ?? '' }}</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body" id="SectionB">
+                @php $count = 0; @endphp
+                @foreach($ProcessQuestions->SectionBQuestions as $item)
                 <div class="form-group">
-                    <label for="SectionB">Is the data being used as is, or does it undergo further processing?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $Process->SectionB[0] ?? '' }}</textarea>
+                    <label for="SectionB">{{ $item }}</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionB[]" style="white-space: pre-line;">{{ $Process->SectionB[$count] ?? '' }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="SectionB">Is there automated decision-making?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionB[]">{{ $Process->SectionB[1] ?? '' }}</textarea>
-                </div>
+                @php $count++; @endphp
+                @endforeach
             </div>
             <!-- /.card-body -->
             <div class="card-header">
-            <h3 class="card-title">Data Disclosure</h3>
+            <h3 class="card-title">{{ $ProcessQuestions->SectionCTitle ?? '' }}</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body" id="SectionC">
+                @php $count = 0; @endphp
+                @foreach($ProcessQuestions->SectionCQuestions as $item)
                 <div class="form-group">
-                    <label for="SectionC">Is data being transferred to third parties?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[0] ?? '' }}</textarea>
+                    <label for="SectionC">{{ $item }}</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionC[]" style="white-space: pre-line;">{{ $Process->SectionC[$count] ?? '' }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="SectionC">Third-party recipients</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[1] ?? '' }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="SectionC">Purpose/s of the transfer to the third party?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[2] ?? '' }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="SectionC">Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[3] ?? '' }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="SectionC">Is the personal data transferred outside of the Philippines? If so, where?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionC[]">{{ $Process->SectionC[4] ?? '' }}</textarea>
-                </div>
+                @php $count++; @endphp
+                @endforeach
             </div>
             <!-- /.card-body -->
             <div class="card-header">
-            <h3 class="card-title">Data Storage or Disposal</h3>
+            <h3 class="card-title">{{ $ProcessQuestions->SectionDTitle ?? '' }}</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body" id="SectionD">
+                @php $count = 0; @endphp
+                @foreach($ProcessQuestions->SectionDQuestions as $item)
                 <div class="form-group">
-                    <label for="SectionD">Retention period</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $Process->SectionD[0] ?? '' }}</textarea>
+                    <label for="SectionD">{{ $item }}</label>
+                    <textarea type="text" class="form-control" row="2" name="SectionD[]" style="white-space: pre-line;">{{ $Process->SectionD[$count] ?? '' }}</textarea>
                 </div>
-                <div class="form-group">
-                    <label for="SectionD">Location of data/how stored</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $Process->SectionD[1] ?? '' }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="SectionD">Is personal data being destroyed?</label>
-                    <textarea type="text" class="form-control" row="2" name="SectionD[]">{{ $Process->SectionD[2] ?? '' }}</textarea>
-                </div>
+                @php $count++; @endphp
+                @endforeach
             </div>
             <!-- /.card-body -->
         </div>

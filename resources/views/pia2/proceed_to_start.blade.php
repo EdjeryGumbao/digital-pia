@@ -19,6 +19,6 @@
         @endforeach
     </div>
 </div>
-<p class="text-center">PIA Version {{ session('PrivacyImpactAssessmentVersionID') }}</p>
+<p class="text-center">PIA Version {{ session('PrivacyImpactAssessmentVersion') }}</p>
 
 @stop

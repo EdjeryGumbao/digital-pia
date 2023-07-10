@@ -1,6 +1,6 @@
 @extends('layouts.sidebar_layout')
 
-@section('title', 'Privacy Impact Assessment List')
+@section('title', 'View')
 
 @section('content')
 <div class="container"> 
@@ -124,7 +124,7 @@
                                 <div class="col-md-8 mb-4">
                                     <div class="card">
                                         <a href="/images/{{ $image->FileName }}" target="_blank">
-                                            <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
+                                            <img src="/images/{{ $image->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
                                         </a>
                                     </div>
                                 </div>

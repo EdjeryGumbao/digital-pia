@@ -11,6 +11,7 @@ use App\Models\DataFields;
 use App\Models\RiskAssessment;
 use App\Models\DataFlow;
 use App\Models\User;
+use App\Models\ProcessQuestions;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -71,7 +72,6 @@ class PiaController extends Controller
             'completename' => 'DPO Admin',
             'email' => 'admin@example.com',
             'usertype' => 'admin',
-            'contactnumber' => '1234567890',
             'password' => Hash::make('admin123'), // Replace 'password' with the desired password
         ];
     
@@ -85,6 +85,117 @@ class PiaController extends Controller
         }
     }
 
+    public function manage()
+    {
+        $User = User::sortable()->paginate(10)->sortBy('id');
+        $ProcessQuestions = ProcessQuestions::all()->sortByDesc('ProcessQuestionsID');;
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
+
+        return view('manage', compact('User', 'ProcessQuestions', 'PrivacyImpactAssessmentVersion'));
+    }
+
+    public function add_question_set(Request $request)
+    {
+        return view('add_question_set');
+    }
+    
+    public function delete_question_set(Request $request)
+    {
+        $ProcessQuestionsID = $request->input('ProcessQuestionsID');
+        $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $ProcessQuestionsID)->first();
+
+        if ($ProcessQuestions) {
+            $ProcessQuestions->delete();
+        }
+        return $this->manage();
+    } 
+
+
+    public function InsertProcessQuestion(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'QuestionSetName' => 'required|string',
+            'SectionATitle' => 'required|string',
+            'SectionBTitle' => 'required|string',
+            'SectionCTitle' => 'required|string',
+            'SectionDTitle' => 'required|string',
+            'SectionAQuestions' => 'required|array',
+            'SectionBQuestions' => 'required|array',
+            'SectionCQuestions' => 'required|array',
+            'SectionDQuestions' => 'required|array',
+        ]);
+
+        
+        //dd($request->all());
+
+        $ProcessQuestions = new ProcessQuestions();
+        $ProcessQuestions->QuestionSetName = $request->input('QuestionSetName');
+        $ProcessQuestions->SectionATitle = $request->input('SectionATitle');
+        $ProcessQuestions->SectionBTitle = $request->input('SectionBTitle');
+        $ProcessQuestions->SectionCTitle = $request->input('SectionCTitle');
+        $ProcessQuestions->SectionDTitle = $request->input('SectionDTitle');
+        $ProcessQuestions->SectionAQuestions = $request->input('SectionAQuestions');
+        $ProcessQuestions->SectionBQuestions = $request->input('SectionBQuestions');
+        $ProcessQuestions->SectionCQuestions = $request->input('SectionCQuestions');
+        $ProcessQuestions->SectionDQuestions = $request->input('SectionDQuestions');
+        
+        //dd($ProcessQuestions);
+        
+        $ProcessQuestions->save();
+
+        
+        // Set the version of the PIA
+        $data = [
+            'IsActive' => true,
+            'Version' => $ProcessQuestions->ProcessQuestionsID,
+        ];
+
+        $request = new Request($data);
+        
+        $this->InsertPrivacyImpactAssessmentVersion($request);
+
+        return redirect()->to(url('manage'));
+    }
+
+    public function activate_question_set(Request $request) {
+        $this->TurnOffAllPIA();
+
+        $ProcessQuestionsID = $request->get('ProcessQuestionsID');
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('Version', $ProcessQuestionsID)->first();
+        
+        if ($PrivacyImpactAssessmentVersion) {
+            $PrivacyImpactAssessmentVersion->IsActive = true;
+            $PrivacyImpactAssessmentVersion->save();
+        }
+        
+        return redirect()->to(url('manage'));
+        
+    }
+
+    public function ToggleChecked() {
+        
+
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
+        foreach ($PrivacyImpactAssessmentVersion as $version) {
+            $version->IsActive = false;
+            $version->save();
+        }
+        return;
+    }
+
+    public function TurnOffAllPIA() {
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
+        foreach ($PrivacyImpactAssessmentVersion as $version) {
+            $version->IsActive = false;
+            $version->save();
+        }
+        return;
+    }
+
+
+
+
     // dept head parts
 
     public function InsertPrivacyImpactAssessmentVersion(Request $request)
@@ -92,11 +203,14 @@ class PiaController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'IsActive' => 'required|boolean',
+            'Version' => 'required|integer',
         ]);
 
+        $this->TurnOffAllPIA();
         // Create a new PrivacyImpactAssessmentVersion instance
         $privacyImpactAssessmentVersion = new PrivacyImpactAssessmentVersion;
         $privacyImpactAssessmentVersion->IsActive = $validatedData['IsActive'];
+        $privacyImpactAssessmentVersion->Version = $validatedData['Version'];
         $privacyImpactAssessmentVersion->save();
 
         return;
@@ -107,38 +221,75 @@ class PiaController extends Controller
         // Create a new PrivacyImpactAssessmentVersion instance
         $privacyImpactAssessmentVersion = new PrivacyImpactAssessmentVersion;
         $privacyImpactAssessmentVersion->IsActive = true; // Set the value for IsActive as needed
+        $privacyImpactAssessmentVersion->Version = 1;
         $privacyImpactAssessmentVersion->save();
         return;
     }
     
 
+    public function CreateDefaultQuestions()
+    {
+        $processQuestions = new ProcessQuestions();
+        $processQuestions->QuestionSetName = 'Process-level Analysis: Data Lifecycle';
+        $processQuestions->SectionATitle = 'Data Collection';
+        $processQuestions->SectionBTitle = 'Data Use';
+        $processQuestions->SectionCTitle = 'Data Disclosure';
+        $processQuestions->SectionDTitle = 'Data Storage or Disposal';
+        $processQuestions->SectionAQuestions = [
+            'Data Source:',
+            'Collection Method:',
+            'Timing of Collection:',
+        ];
+        $processQuestions->SectionBQuestions = [
+            'Is the data being used as is, or does it undergo further processing?',
+            'Is there automated decision-making?',
+        ];
+        $processQuestions->SectionCQuestions = [
+            'Is data being transferred to third parties?',
+            'Third-party recipients',
+            'Purpose/s of the transfer to the third party?',
+            'Is the data transfer supported by a data sharing agreement or a data outsourcing agreement?',
+            'Is the personal data transferred outside of the Philippines? If so, where?',
+        ];
+        $processQuestions->SectionDQuestions = [
+            'Retention period',
+            'Location of data/how stored',
+            'Is personal data being destroyed?',
+        ];
+        $processQuestions->save();
+
+        return;
+    }
+
     public function InsertPrivacyImpactAssessment(Request $request)
     {
-        $PrivacyImpactAssessmentVersionID = session('PrivacyImpactAssessmentVersionID');
         $UserID = auth()->id();
+        $Author = auth()->user()->completename;
+        
+        // generating questions
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
+        $PrivacyImpactAssessmentVersionID = $PrivacyImpactAssessmentVersion->Version;
+
+        // Validate the request data
+        request()->validate([
+            'ProcessName' => 'required|string',
+        ]);
     
         if (session()->has('PrivacyImpactAssessmentID')) { // user returned to edit the title
             $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', session('PrivacyImpactAssessmentID'))->first();
             
-            // Validate the request data
-            request()->validate([
-                'ProcessName' => 'required|string',
-            ]);
 
             // Update the existing Process instance with new values
             $PrivacyImpactAssessment->update([
                 'ProcessName' => $request->get('ProcessName'),
             ]);
         } else { // user just started
-            // Validate the request data
-            request()->validate([
-                'ProcessName' => 'required|string',
-            ]);
 
             // Create a new PrivacyImpactAssessment instance
             $PrivacyImpactAssessment = new PrivacyImpactAssessment([
                 'UserID' => $UserID,
-                'PrivacyImpactAssessmentVersionID' => $PrivacyImpactAssessmentVersionID,
+                'Version' => $PrivacyImpactAssessmentVersionID,
+                'Author' => $Author,
                 'ProcessName' => request('ProcessName'),
             ]);
             $PrivacyImpactAssessment->save();
@@ -146,8 +297,8 @@ class PiaController extends Controller
         }    
 
         session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
-
-        return $this->proceed_to_process($request);
+        
+        return redirect()->to(url('proceed_to_process'));
     }
     
 
@@ -225,13 +376,13 @@ class PiaController extends Controller
             $this->InsertDataFields($request);
         }
         if ($request->Button == "Next") {
-            return $this->proceed_to_risk_assessment();
+            return redirect()->to(url('proceed_to_risk_assessment'));
         } elseif ($request->Button == "FormData") {
-            return $this->proceed_to_process($request);
+            return redirect()->to(url('proceed_to_process'));
         } elseif ($request->Button == "Back") {
-            return $this->proceed_to_start($request);
+            return redirect()->to(url('proceed_to_start')); 
         } else {
-            return $this->proceed_to_process($request);
+            return redirect()->to(url('proceed_to_process'));
         } 
     }
 
@@ -279,8 +430,8 @@ class PiaController extends Controller
             'RiskRating' => $riskRating,
         ]);
         $RiskAssessment->save();
-
-        return $this->proceed_to_risk_assessment();
+        
+        return redirect()->to(url('proceed_to_risk_assessment'));
     }
 
     public function InsertDataFlow(Request $request)
@@ -306,7 +457,7 @@ class PiaController extends Controller
   
         DataFlow::create($input);
 
-        return $this->proceed_to_flowchart();
+        return redirect()->to(url('proceed_to_flowchart'));
     }
 
     public function proceed_to_start(Request $request)
@@ -317,6 +468,10 @@ class PiaController extends Controller
 
         if(PrivacyImpactAssessmentVersion::count() === 0){ // user just started their first PIA
             $this->create_pia_version_one();
+        }
+
+        if(ProcessQuestions::count() === 0) {
+            $this->CreateDefaultQuestions();
         }
 
         if (session()->has('PrivacyImpactAssessmentID')) { // user returns back to start
@@ -333,7 +488,7 @@ class PiaController extends Controller
         }
         
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
-        $request->session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessmentVersion->PrivacyImpactAssessmentVersionID);
+        $request->session()->put('PrivacyImpactAssessmentVersion', $PrivacyImpactAssessmentVersion->Version);
 
         return view('pia2/proceed_to_start');
     }
@@ -348,6 +503,11 @@ class PiaController extends Controller
             return $this->index();
         }
 
+        // generating questions
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
+        $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->Version)->first();
+
+        // generating already given data
         $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
         $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
         $DataFields = DataFields::all();
@@ -357,10 +517,10 @@ class PiaController extends Controller
 
         if ($Process) {
             // Data exists, pass the process data to the view
-            return view('pia2/proceed_to_process', ['Process' => $Process, 'DataFields' => $DataFields]);
+            return view('pia2/proceed_to_process', compact('Process', 'DataFields', 'ProcessQuestions'));
         } else {
             // Data doesn't exist
-            return view('pia2/proceed_to_process');
+            return view('pia2/proceed_to_process', compact('ProcessQuestions'));
         }
     }
     
@@ -437,19 +597,12 @@ class PiaController extends Controller
     public function pialist(Request $request)
     {
         $this->reset();
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->paginate(10);
-        $User = User::sortable()->paginate(10);
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->paginate(10)->sortByDesc('PrivacyImpactAssessmentID');;;
+        $User = User::all();
         $CurrentUser = auth()->user();
-        
+
         return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
-
     }
-
-    public function manage(Request $request)
-    {
-        return view('manage');
-    }
-
 
 
     public function test(Request $request)
@@ -464,7 +617,7 @@ class PiaController extends Controller
             $request->validate([
                 'PrivacyImpactAssessmentID' => 'required|integer',
             ]);
-            $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
+            $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID'); // gets the value from the form
         } else {
             $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
         }
@@ -497,7 +650,52 @@ class PiaController extends Controller
             $RiskAssessment->delete();
         }
 
-        return $this->proceed_to_risk_assessment();
+        return redirect()->to(url('proceed_to_risk_assessment'));
+    }
+    public function delete_pia(Request $request)
+    {
+        $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
+        
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        $DataFields = DataFields::all();
+        $RiskAssessment = RiskAssessment::all();
+        $DataFlow = DataFlow::all();
+
+        if ($PrivacyImpactAssessment) {
+            $PrivacyImpactAssessment->delete();
+            
+            if($Process) {
+                $Process->delete();
+            }
+
+            if($DataFields) {
+                foreach ($DataFields as $dataField) {
+                    if ($dataField->PrivacyImpactAssessmentID == $PrivacyImpactAssessmentID) {
+                        $dataField->delete();
+                    }
+    
+                }
+            }
+
+            if($RiskAssessment) {
+                foreach ($RiskAssessment as $riskAssessment) {
+                    if ($riskAssessment->PrivacyImpactAssessmentID == $PrivacyImpactAssessmentID) {
+                        $riskAssessment->delete();
+                    } 
+                }
+            }
+
+            if($DataFlow) {
+                foreach ($DataFlow as $dataFlow) {
+                    if ($dataFlow->PrivacyImpactAssessmentID == $PrivacyImpactAssessmentID) {
+                        $dataFlow->delete();
+                    }
+                }
+            }
+
+        }
+        return redirect()->to(url('pialist'));
     }
 
     public function delete_dataflow(Request $request)
@@ -510,6 +708,6 @@ class PiaController extends Controller
             // Delete the data flow
             $DataFlow->delete();
         }
-        return $this->proceed_to_flowchart();
+        return redirect()->to(url('proceed_to_flowchart'));
     }    
 }

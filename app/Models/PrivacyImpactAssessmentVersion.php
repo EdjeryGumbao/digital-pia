@@ -14,5 +14,6 @@ class PrivacyImpactAssessmentVersion extends Model
 
     protected $fillable = [
         'IsActive',
+        'Version',
     ];
 }

@@ -17,9 +17,11 @@ class PrivacyImpactAssessment extends Model
 
     protected $fillable = [
         'UserID',
-        'PrivacyImpactAssessmentVersionID',
+        'Author',
+        'Version',
         'ProcessName',
+        'CheckMark',
     ];
 
-    public $sortable = ['PrivacyImpactAssessmentVersionID', 'ProcessName', 'created_at', 'updated_at'];
+    public $sortable = ['Version', 'ProcessName', 'created_at', 'updated_at', 'Author', 'CheckMark'];
 }

@@ -26,11 +26,6 @@
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
-        <div class="mt-4">
-            <x-input-label for="contactnumber" :value="__('Contact Number')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="text" name="contactnumber" :value="old('contactnumber')" required autocomplete="contactnumber" />
-            <x-input-error :messages="$errors->get('contactnumber')" class="mt-2" />
-        </div>
 
         <!-- Password -->
         <div class="mt-4">

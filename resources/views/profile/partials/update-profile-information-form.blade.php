@@ -41,10 +41,6 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
         <div class="mt-4">
-            <x-input-label for="contactnumber" :value="__('Contact Number')" />
-            <x-text-input id="email" class="mt-1 w-full" type="text" name="contactnumber" :value="old('contactnumber')" required autocomplete="contactnumber" />
-            <x-input-error :messages="$errors->get('contactnumber')" class="mt-2" />
-
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800">

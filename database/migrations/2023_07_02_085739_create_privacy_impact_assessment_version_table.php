@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('privacy_impact_assessment_version', function (Blueprint $table) {
             $table->id('PrivacyImpactAssessmentVersionID');
             $table->boolean('IsActive')->default(true);
+            $table->integer('Version');
             $table->timestamps();
         });
     }

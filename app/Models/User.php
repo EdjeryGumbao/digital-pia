@@ -13,7 +13,6 @@ use Kyslik\ColumnSortable\Sortable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Sortable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -26,9 +25,10 @@ class User extends Authenticatable
         'completename',
         'email',
         'usertype',
-        'contactnumber',
         'password',
     ];
+    
+    public $sortable = ['completename', 'id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -49,6 +49,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public $sortable = ['completename'];
+    
 }
