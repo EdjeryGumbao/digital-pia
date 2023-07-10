@@ -634,6 +634,10 @@ class PiaController extends Controller
         }
 
         $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        
+        // generating questions
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
+        $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->Version)->first();
 
         if ($PrivacyImpactAssessment) {
             session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
@@ -643,7 +647,7 @@ class PiaController extends Controller
             $RiskAssessment = RiskAssessment::all();
             $DataFlow = DataFlow::all();
 
-            return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment'));
+            return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment', 'ProcessQuestions'));
         }
 
         // Handle the case when PrivacyImpactAssessment is not found

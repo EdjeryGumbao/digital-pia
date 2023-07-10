@@ -21,7 +21,7 @@
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td class="text-nowrap"><strong>Process Name:</strong></td>
+                                <td class="text-nowrap" width="200px"><strong>Process Name:</strong></td>
                                 <td>{{ $PrivacyImpactAssessment->ProcessName ?? '' }}</td>
                             </tr>
                             <tr>
@@ -31,20 +31,18 @@
                             <tr>
                                 <td><strong>Data Fields:</strong></td>
                                 <td>
-                                    <ul>
-                                        @if(isset($DataFields))
+                                    @if(isset($DataFields))
                                         @foreach ($DataFields as $item)
-                                        @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                                        <li>{{ $item->FormUsed }}</li>
-                                        <ul>
-                                            @foreach ($item->Datacollected as $collected)
-                                                <li>{{ $collected }}</li>
-                                            @endforeach
-                                        </ul>   
-                                        @endif
+                                            @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                                            <li>{{ $item->FormUsed }}</li>
+                                            <ul>
+                                                @foreach ($item->Datacollected as $collected)
+                                                    <li>{{ $collected }}</li>
+                                                @endforeach
+                                            </ul>   
+                                            @endif
                                         @endforeach
-                                        @endif
-                                    </ul>
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
@@ -58,6 +56,49 @@
                             <tr>
                                 <td><strong>Process Narrative:</strong></td>
                                 <td>{{ $Process->ProcessNarrative }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan='2' class="text-center">{{ $ProcessQuestions->QuestionSetName ?? '' }}</th>
+                            </tr>
+                            <tr>
+                                @if(isset($Process->SectionA))
+                                    <td><strong>{{ $ProcessQuestions->SectionATitle ?? '' }}</strong></td>
+                                    <td>
+                                        @foreach($Process->SectionA as $item)
+                                            <li> {{ $item }} </li>
+                                        @endforeach
+                                    </td>
+                                @endif
+                            </tr>
+                            <tr>
+                                @if(isset($Process->SectionB))
+                                    <td><strong>{{ $ProcessQuestions->SectionBTitle ?? '' }}</strong></td>
+                                    <td>
+                                        @foreach($Process->SectionB as $item)
+                                            <li> {{ $item }} </li>
+                                        @endforeach
+                                    </td>
+                                @endif
+                            </tr>
+                            <tr>
+                                @if(isset($Process->SectionC))
+                                    <td><strong>{{ $ProcessQuestions->SectionCTitle ?? '' }}</strong></td>
+                                    <td>
+                                        @foreach($Process->SectionC as $item)
+                                            <li> {{ $item }} </li>
+                                        @endforeach
+                                    </td>
+                                @endif
+                            </tr>
+                            <tr>
+                                @if(isset($Process->SectionD))
+                                    <td><strong>{{ $ProcessQuestions->SectionDTitle ?? '' }}</strong></td>
+                                    <td>
+                                        @foreach($Process->SectionD as $item)
+                                            <li> {{ $item }} </li>
+                                        @endforeach
+                                    </td>
+                                @endif
                             </tr>
                         </tbody>
                     </table>
@@ -118,19 +159,19 @@
                     <h5 class="card-title"><strong>Data Flow</strong></h5><br>
                     <div class="row">
                         @foreach ($DataFlow as $item)
-                        @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-md-8 mb-4">
-                                    <div class="card">
-                                        <a href="/images/{{ $image->FileName }}" target="_blank">
-                                            <img src="/images/{{ $image->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
-                                        </a>
+                            @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8 mb-4">
+                                        <div class="card">
+                                            <a href="/images/{{ $item->FileName }}" target="_blank">
+                                                <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top img-fluid">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        @endif
+                            @endif
                         @endforeach
                     </div>
                 </div>

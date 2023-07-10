@@ -17,7 +17,14 @@
                     <h5 class="card-title"><strong>Questions</strong></h5>
                     <table class="table">
                         <tbody>
-
+                            <tr>
+                                <td class="text-nowrap" width="80px">
+                                        <label for="QuestionSetName"><strong>Question Set Name:</strong></label>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="QuestionSetName">
+                                    </td>
+                                </tr>
                             <tr> <!-- Section A -->
                                 <td class="text-nowrap">
                                     <label for="SectionATitle"><strong>Section A Title:</strong></label>
