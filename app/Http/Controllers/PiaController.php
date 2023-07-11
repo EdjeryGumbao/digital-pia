@@ -83,13 +83,41 @@ class PiaController extends Controller
         }
     }
 
+    public function threatlist(Request $request)
+    {   
+        if (auth()->user()->usertype == 'admin') {
+            $RiskAssessment = RiskAssessment::sortable()->orderBy('RiskAssessmentID')->get();
+            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author')->get();
+
+            return view('threatlist', compact('PrivacyImpactAssessment', 'RiskAssessment'));
+        } else {
+            return redirect()->to(url('dashboard'));
+        }
+    }
+
+    public function dataflowlist(Request $request)
+    {   
+        if (auth()->user()->usertype == 'admin') {
+            $DataFlow = DataFlow::sortable()->orderBy('DataFlowID')->get();
+            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author')->get();
+
+            return view('dataflowlist', compact('PrivacyImpactAssessment', 'DataFlow'));
+        } else {
+            return redirect()->to(url('dashboard'));
+        }
+    }
+
     public function manage()
     {
-        $User = User::sortable()->paginate(10)->sortBy('id');
-        $ProcessQuestions = ProcessQuestions::all()->sortByDesc('ProcessQuestionsID');;
-        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
-
-        return view('manage', compact('User', 'ProcessQuestions', 'PrivacyImpactAssessmentVersion'));
+        if (auth()->user()->usertype == 'admin') {
+            $User = User::sortable()->orderBy('id')->get();
+            $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
+            $ProcessQuestions = ProcessQuestions::sortable()->orderBy('ProcessQuestionsID')->get();
+    
+            return view('manage', compact('User', 'ProcessQuestions', 'PrivacyImpactAssessmentVersion'));
+        } else {
+            return redirect()->to(url('dashboard'));
+        }
     }
 
     public function add_question_set(Request $request)
@@ -151,7 +179,6 @@ class PiaController extends Controller
         //dd($ProcessQuestions);
         
         $ProcessQuestions->save();
-
         
         // Set the version of the PIA
         $data = [
@@ -178,12 +205,9 @@ class PiaController extends Controller
         }
         
         return redirect()->to(url('manage'));
-        
     }
 
     public function ToggleChecked() {
-
-
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
         foreach ($PrivacyImpactAssessmentVersion as $version) {
             $version->IsActive = false;
@@ -205,6 +229,20 @@ class PiaController extends Controller
         return view('auth.register');
     }
 
+    public function validatePIA(Request $request) {
+        $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        if ($request->get('button') == 'validate') {
+            $PrivacyImpactAssessment->CheckMark = true;
+            $PrivacyImpactAssessment->save();
+        }
+        elseif ($request->get('button') == 'unvalidate') {
+            $PrivacyImpactAssessment->CheckMark = false;
+            $PrivacyImpactAssessment->save();
+        }
+
+        return redirect()->to(url('pialist'));
+    }
 
 
     // dept head parts
@@ -471,6 +509,10 @@ class PiaController extends Controller
         return redirect()->to(url('proceed_to_flowchart'));
     }
 
+    public function proceed_to_disclaimer(Request $request) {
+        return view('pia2/proceed_to_disclaimer');
+    }
+
     public function proceed_to_start(Request $request)
     {        
         if(isset($request->PrivacyImpactAssessmentID)) { 
@@ -608,13 +650,38 @@ class PiaController extends Controller
     public function pialist(Request $request)
     {
         $this->reset();
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->paginate(10)->sortByDesc('PrivacyImpactAssessmentID');;;
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID')->get();
+
         $User = User::all();
         $CurrentUser = auth()->user();
 
         return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
     }
 
+    public function pialistsearch(Request $request) 
+    {
+        $keyword = $request->input('keyword');
+        $this->reset();
+        
+        $query = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID');
+    
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('Version', 'LIKE', "%$keyword%")
+                    ->orWhere('ProcessName', 'LIKE', "%$keyword%")
+                    ->orWhere('Author', 'LIKE', "%$keyword%")
+                    ->orWhere('CheckMark', 'LIKE', "%$keyword%")
+                    ->orWhere('created_at', 'LIKE', "%$keyword%")
+                    ->orWhere('updated_at', 'LIKE', "%$keyword%");
+            });
+        }
+    
+        $PrivacyImpactAssessment = $query->get();
+        $User = User::all();
+        $CurrentUser = auth()->user();
+    
+        return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
+    }
 
     public function test(Request $request)
     {

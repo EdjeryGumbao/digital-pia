@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Kyslik\ColumnSortable\Sortable;
+
 class DataFlow extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $table = 'data_flow';
 
@@ -16,6 +18,7 @@ class DataFlow extends Model
     protected $fillable = [
         'PrivacyImpactAssessmentID',
         'FileName',
-        'ImagePath',
     ];
+
+    public $sortable = ['created_at', 'updated_at'];
 }

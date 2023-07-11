@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Kyslik\ColumnSortable\Sortable;
+
 class RiskAssessment extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $table = 'risk_assessment';
 
@@ -20,4 +22,6 @@ class RiskAssessment extends Model
         'Probability',
         'RiskRating',
     ];
+
+    public $sortable = ['ThreatsVulnerabilities', 'RiskRating', 'created_at', 'updated_at'];
 }

@@ -112,6 +112,23 @@
 
           @if (auth()->user()->usertype == 'admin')
             <li class="nav-item">
+              <a href="{{ url('threatlist') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Risk Assessment List
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url('dataflowlist') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Data Flow List
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a href="{{ url('manage') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>

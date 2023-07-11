@@ -11,6 +11,10 @@
 
 
 <form action="InsertProcess" method="post" id="processForm">
+    
+    <h3><strong>Process Description:</strong></h3>
+    <p>Describe the process and its context. Define and specify what it intends to achieve. Fill in the form below to help you describe the process</p>
+
     @csrf
     <div class="card-body">
         <div class="card card-primary">
@@ -32,36 +36,36 @@
                     <button type="submit" class="btn btn-primary" name="Button" value="FormData">Save</button>
                 </div>
 
-<div class="card">
-  <div class="card-body table-responsive p-0">
-    <table class="table table-hover text-nowrap">
-      <tbody>
-        @if(isset($DataFields))
-            @foreach ($DataFields as $item)
-                @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                    <tr>
-                        <td>
-                            <strong>{{ $item->FormUsed }}:</strong>
-                        </td>
-                        <td>
-                            {{ implode(', ', $item->Datacollected) }}
-                        </td>
-                        <td class="d-flex flex-row-reverse">
-                            <div class="d-flex flex-row-reverse">
-                                <div class="p-2">
-                                    <button type="submit" class="btn btn-danger" name="delete_datafield" value="{{ $item->DataFieldsID }}">Delete</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                @endif
-            @endforeach
-        @endif
-    </tbody>
-    </table>
-  </div>
-  <!-- /.card-body -->
-</div>
+                <div class="card">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                        <tbody>
+                            @if(isset($DataFields))
+                                @foreach ($DataFields as $item)
+                                    @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                                        <tr>
+                                            <td>
+                                                <strong>{{ $item->FormUsed }}:</strong>
+                                            </td>
+                                            <td>
+                                                {{ implode(', ', $item->Datacollected) }}
+                                            </td>
+                                            <td class="d-flex flex-row-reverse">
+                                                <div class="d-flex flex-row-reverse">
+                                                    <div class="p-2">
+                                                        <button type="submit" class="btn btn-danger" name="delete_datafield" value="{{ $item->DataFieldsID }}">Delete</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
 
 
                 <div class="form-group">
@@ -80,9 +84,16 @@
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-        <br>
-        <h1>{{ $ProcessQuestions->QuestionSetName ?? '' }}</h1>
-        
+    </div>
+    
+    <h3><strong>{{ $ProcessQuestions->QuestionSetName ?? '' }}</strong></h3>
+    <p>
+        Each process or means for collecting personal information should be tested for consistency with the following Data Privacy 
+        Principles (as identified in Rule IV, Implementing Rules, and Regulations of Republic Act No. 10173, known as the “Data Privacy 
+        Act of 2012”). Respond accordingly by answering the following questions in the form below.  
+    </p>
+
+    <div class="card-body">
         <div class="card card-primary">
             <div class="card-header">
             <h3 class="card-title">{{ $ProcessQuestions->SectionATitle ?? '' }}</h3>

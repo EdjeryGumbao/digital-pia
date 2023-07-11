@@ -266,6 +266,7 @@
                 </div>
             </div>
         @endforeach
+    @else
+        <p>There are currently no question set, a default one will be created when a user starts the privacy impact assessment</p>
     @endif
-
 @stop

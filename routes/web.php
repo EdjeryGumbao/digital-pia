@@ -37,11 +37,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('finish', [PiaController::class, 'finish']);
     
-    
+    Route::post('validatePIA', [PiaController::class, 'validatePIA']);
+
+    Route::get('/pialistsearch', [PiaController::class, 'pialistsearch']);
     Route::get('/pialist', [PiaController::class, 'pialist']);
     Route::get('/manage', [PiaController::class, 'manage']);
+    Route::get('/threatlist', [PiaController::class, 'threatlist']);
+    Route::get('/dataflowlist', [PiaController::class, 'dataflowlist']);
 
-    
+    Route::get('/proceed_to_disclaimer', [PiaController::class, 'proceed_to_disclaimer']);
     Route::post('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::get('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::post('/proceed_to_process', [PiaController::class, 'proceed_to_process']);

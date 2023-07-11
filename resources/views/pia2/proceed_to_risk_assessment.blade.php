@@ -4,9 +4,12 @@
 
 @section('content')
 
-<p>Welcome to the Risk Assessment</p>
 
-<p>Please input your data in the following table</p>
+<h3><strong>Risk Assessment</strong></h3>
+<p>
+  In this form you will be using the risk level calculator you will simply input the Identified threat/vulnerability and 
+  choose what level of Impact and probability it has on the process.
+</p>
 
 <form method="POST" action="{{ route('InsertRiskAssessment') }}">
   @csrf
@@ -47,7 +50,7 @@
                     </td>
 
                     <td>
-                        <button type="submit" class="btn btn-success">Add</button>
+                        <button type="submit" class="btn btn-success">Calculate</button>
                     </td>
                 </tr>
             </tbody>

@@ -3,6 +3,7 @@
 @section('title', 'View')
 
 @section('content')
+
 <div class="container"> 
     <div class="row justify-content-center">
         <div class="container text-center">
@@ -179,7 +180,26 @@
         </div>
     </div>
     @endif
+
     <div class="d-flex">
+    @if (auth()->user()->usertype == 'admin')
+        @if ($PrivacyImpactAssessment->CheckMark == false)    
+        <form action="validatePIA" method="POST" enctype='multipart/form-data'>
+            @csrf
+            <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
+            <div class="p-2">
+                    <button type="submit" name="button" value="validate" class="btn btn-success">Validate</button>
+                </form>
+            </div>
+        @else
+            <div class="p-2">
+                <form>
+                    <button type="submit" name="button" value="unvalidate" class="btn btn-success">Unvalidate</button>
+            </div>
+        </form>
+        @endif
+    @endif
+
         <div class="ml-auto p-2">
             <a href="{{ url('pialist') }}" class="btn btn-primary">Done</a>
         </div>

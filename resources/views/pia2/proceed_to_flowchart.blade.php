@@ -4,9 +4,10 @@
 
 @section('content')
 
-<p>Welcome to the Data Flows</p>
+<h3><strong>Process Data Flows</strong></h3>
+<p>In this section you will submit the Process Data flow as an image(.PNG) created using a third-party software for making diagrams and charts.</p>
 
-<p><strong>Please submit the image of the Data Flow as a PNG file.</strong></p>
+<p>Proceed to this <a href="https://app.diagrams.net/?src=about" class="badge badge-info">link</a> to start making the Process data flow</p>
 
 <form action="{{ route('InsertDataFlow') }}" method="post" enctype='multipart/form-data'>
     @csrf
@@ -61,11 +62,6 @@
 </button>
 <div class="collapse" id="collapseExample">
     <h3><strong>Description</strong></h3>
-
-    <img src="img/sample_data_flow.png" alt="Sample Data Flow" width="600" height="300">
-
-    <p><em>Figure 1. Information flow of personal information can be visualized in a work flow diagram on personal information processing.</em></p>
-
     <ul>
         <li>
             <strong>Objective:</strong> To identify information flows of personal information under assessment.
@@ -194,7 +190,14 @@
             </ol>
         </ul>
     </ul>
-</div>
+</div><br>
+
+<p>Please use this sample diagram as a reference:</p>
+<a href="/images/{{ $image->FileName }}" target="_blank">
+    <img src="img/plow.png" alt="Sample Data Flow" width="600" height="300">
+</a>
+
+
 
 <div class="d-flex">
     <div class="p-2">
