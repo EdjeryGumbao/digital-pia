@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                 <th>@sortablelink('id', 'User ID')</th>
-                <th>@sortablelink('username', 'Username')</th>
+                <th>@sortablelink('username', 'Department')</th>
                 <th></th>
                 </tr>
             </thead>

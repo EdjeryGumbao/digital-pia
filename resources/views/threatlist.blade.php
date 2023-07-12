@@ -17,7 +17,7 @@
                             <th>@sortablelink('RiskRating', 'Risk Rating')</th>
                             <th>@sortablelink('created_at')</th>
                             <th>@sortablelink('updated_at')</th>
-                            <th>Author</th>
+                            <th>Department</th>
                         </tr>
                     </thead>
                     <tbody>

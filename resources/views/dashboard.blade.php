@@ -86,6 +86,52 @@
     </div>
     <!-- /.row -->
     <div class="row">
+
+      <div class="col-md-6">
+        <div class="card card-danger">
+          <div class="card-header">
+            <h3 class="card-title">Pie Chart</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 419px;" width="600" height="300" class="chartjs-render-monitor">
+              <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      var trueCount = <?php echo $trueCount; ?>;
+                      var falseCount = <?php echo $falseCount; ?>;
+                      var ctx = document.getElementById('pieChart').getContext('2d');
+                      var chart = new Chart(ctx, {
+                          type: 'pie',
+                          data: {
+                              labels: ['Validated', 'Non-Validated'],
+                              datasets: [{
+                                  data: [trueCount, falseCount],
+                                  backgroundColor: ['#00ff00', '#ff0000'],
+                              }]
+                          },
+                          options: {
+                              responsive: true,
+                              legend: {
+                                  position: 'bottom',
+                              }
+                          }
+                      });
+                  });
+              </script>
+            </canvas>
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+
       <div class="col-md-6">
         <div class="card card-warning">
           <div class="card-header">
@@ -166,50 +212,6 @@
           <!-- /.card-body -->
         </div>
         <!-- /.card -->
-      </div>
-      <div class="col-md-6">
-        <div class="card card-danger">
-          <div class="card-header">
-            <h3 class="card-title">Pie Chart</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 419px;" width="600" height="300" class="chartjs-render-monitor">
-              <script>
-                  document.addEventListener('DOMContentLoaded', function() {
-                      var trueCount = <?php echo $trueCount; ?>;
-                      var falseCount = <?php echo $falseCount; ?>;
-                      var ctx = document.getElementById('pieChart').getContext('2d');
-                      var chart = new Chart(ctx, {
-                          type: 'pie',
-                          data: {
-                              labels: ['Validated', 'Non-Validated'],
-                              datasets: [{
-                                  data: [trueCount, falseCount],
-                                  backgroundColor: ['#00ff00', '#ff0000'],
-                              }]
-                          },
-                          options: {
-                              responsive: true,
-                              legend: {
-                                  position: 'bottom',
-                              }
-                          }
-                      });
-                  });
-              </script>
-            </canvas>
-          </div>
-          <!-- /.card-body -->
-        </div>
       </div>
     </div>
     

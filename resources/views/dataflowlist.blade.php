@@ -13,7 +13,7 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th width="80px">Author</th>
+                            <th width="80px">Department</th>
                             <th>@sortablelink('created_at')</th>
                             <th>@sortablelink('updated_at')</th>
                             <th></th>

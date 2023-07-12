@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
                             @if ($CurrentUser->usertype == "admin")
-                                <th>@sortablelink('Author')</th>
+                                <th>@sortablelink('Author', 'Department')</th>
                             @endif
                             <th width="80px">@sortablelink('Version')</th>
                             <th>@sortablelink('ProcessName')</th>
