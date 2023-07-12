@@ -193,7 +193,7 @@
 </div><br>
 
 <p>Please use this sample diagram as a reference:</p>
-<a href="/images/{{ $image->FileName }}" target="_blank">
+<a href="img/plow.png" target="_blank">
     <img src="img/plow.png" alt="Sample Data Flow" width="600" height="300">
 </a>
 

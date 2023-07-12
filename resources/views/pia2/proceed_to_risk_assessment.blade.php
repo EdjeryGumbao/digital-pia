@@ -80,7 +80,7 @@
           <th>Threat/Vulnerability</th>
           <th>Impact</th>
           <th>Probability</th>
-          <th>Risk</th>
+          <th>Risk Rating</th>
         </tr>
       </thead>
       <tbody>
@@ -260,6 +260,41 @@
       @csrf
       <button type="submit" class="btn btn-primary">Next</button>
     </form>
+  </div>
+</div>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body table-responsive p-0">
+          <div class="card-header">
+            <h3 class="card-title"><strong>Risk Rating Map</strong></h3>
+          </div>    <!-- /card-header -->
+        <table class="table table-hover text-nowrap">
+            <tbody>
+                <tr>
+                  <th>Rating</th>
+                  <th>Types</th>
+                </tr>
+                <tr style="background-color: #fafdff">
+                  <td>1</td>
+                  <td>Negligible</td>
+                </tr>
+                <tr style="background-color: #ffffcc">
+                  <td>2 to 4</td>
+                  <td>Low Risk</td>
+                </tr>
+                <tr style="background-color: #ffff99">
+                  <td>6 to 9</td>
+                  <td>Medium Risk</td>
+                </tr>
+                <tr style="background-color: #ff9999">
+                  <td>10 to 16</td>
+                  <td>High Risk</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
   </div>
 </div>
 @stop

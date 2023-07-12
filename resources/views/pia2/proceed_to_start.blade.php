@@ -7,7 +7,7 @@
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="login-box">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Enter the process name of this Privacy Impact Assessment</p>
+            <p class="login-box-msg"><strong>Enter the process name of this Privacy Impact Assessment</strong></p>
             <form action="InsertPrivacyImpactAssessment" method="post">
                 @csrf
                 <input type="text" class="form-control" name="ProcessName" value="{{ $PrivacyImpactAssessment->ProcessName ?? ''}}"><br>

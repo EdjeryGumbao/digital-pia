@@ -9,7 +9,7 @@
 
     <div class="d-flex flex-row-reverse">
         <div class="p-2">
-            <a href="{{ url('registerNewAccount') }}" class="btn btn-primary">Create Account</a>
+            <a href="{{ url('registerNewAccount') }}" class="btn btn-success">Create Account</a>
         </div>
     </div></br>
     <div class="card">
@@ -167,7 +167,7 @@
 
         <div class="d-flex flex-row-reverse">
             <div class="p-2">
-                <a href="{{ url('add_question_set') }}" class="btn btn-primary">Add Question Set</a>
+                <a href="{{ url('add_question_set') }}" class="btn btn-success">Add Question Set</a>
             </div>
         </div>
 

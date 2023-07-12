@@ -32,7 +32,7 @@
                     <input type="text" class="form-control" name="FormUsed">
                     <label for="Datacollected[]">Data Fields:</label>
                     <div id="inp-group"></div>
-                    <button id="add" type="button" class="btn btn-secondary">Add Data field</button>
+                    <button id="add" type="button" class="btn btn-success">Add Data field</button>
                     <button type="submit" class="btn btn-primary" name="Button" value="FormData">Save</button>
                 </div>
 

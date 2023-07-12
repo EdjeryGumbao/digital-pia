@@ -244,7 +244,6 @@ class PiaController extends Controller
         return redirect()->to(url('pialist'));
     }
 
-
     // dept head parts
 
     public function InsertPrivacyImpactAssessmentVersion(Request $request)
@@ -642,9 +641,29 @@ class PiaController extends Controller
     {
         // Call the function you want to run
         $this->reset();
+        
+        $RiskAssessment = RiskAssessment::all();
+        $labels = ['1', '2-4', '6-8','9','12','16'];
+        $ranges = [1, 4, 8, 9, 12, 16];
+        $counts = [];
+
+        foreach ($ranges as $index => $range) {
+            if ($index === 0) {
+                $count = $RiskAssessment->where('RiskRating', '=', $range)->count();
+            } else {
+                $prevRange = $ranges[$index - 1] + 1;
+                $count = $RiskAssessment->whereBetween('RiskRating', [$prevRange, $range])->count();
+            }
+            $counts[] = $count;
+        }
+
+        $trueCount = PrivacyImpactAssessment::where('CheckMark', true)->count();
+        $falseCount = PrivacyImpactAssessment::where('CheckMark', false)->count();
+        $piaCount = PrivacyImpactAssessment::count();
+        $riskAssessment = RiskAssessment::count();
 
         // Return the dashboard view
-        return view('dashboard');
+        return view('dashboard', compact('counts', 'labels', 'trueCount', 'falseCount', 'piaCount', 'riskAssessment'));
     }
 
     public function pialist(Request $request)
