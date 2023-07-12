@@ -64,10 +64,7 @@ class PiaController extends Controller
     public function createAdminUser()
     {
         $adminData = [
-            'lastname' => 'DPO',
-            'firstname' => 'Admin',
-            'middlename' => '',
-            'completename' => 'DPO Admin',
+            'username' => 'DPO',
             'email' => 'admin@example.com',
             'usertype' => 'admin',
             'password' => Hash::make('admin123'), // Replace 'password' with the desired password
