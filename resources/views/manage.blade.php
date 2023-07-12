@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                 <th>@sortablelink('id', 'User ID')</th>
-                <th>@sortablelink('completename', 'Complete Name')</th>
+                <th>@sortablelink('username', 'Username')</th>
                 <th></th>
                 </tr>
             </thead>
@@ -28,7 +28,7 @@
                     @if ($item->usertype == 'user')
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->completename }}</td>
+                            <td>{{ $item->username }}</td>
                             <td>
                                 <div class="d-flex">
                                     <div class="p-2">

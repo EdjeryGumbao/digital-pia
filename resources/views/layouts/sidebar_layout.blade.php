@@ -77,7 +77,7 @@
         </div>
         <div class="info">
           @if(auth()->check())
-              <a href="{{ route('profile.edit') }}" class="d-block">{{ auth()->user()->completename }}</a>
+              <a href="{{ route('profile.edit') }}" class="d-block">{{ auth()->user()->username }}</a>
           @else
               <a href="{{ route('login') }}" class="d-block">Guest</a>
           @endif
