@@ -80,11 +80,13 @@
                                 @endif
                             @elseif ($CurrentUser->usertype == "admin")
                                 <tr>
-                                    @foreach ($User as $useritem)
-                                        @if ($useritem->id == $item->UserID)
-                                            <td>{{ $useritem->completename }}</td>
-                                        @endif
-                                    @endforeach
+                                    <td>
+                                        @foreach ($User as $useritem)
+                                            @if ($useritem->id == $item->UserID)
+                                                {{ $useritem->username ?? ''}}
+                                            @endif
+                                        @endforeach
+                                    </td>
                                     <td>{{ $item->Version }}</td>
                                     <td>{{ $item->ProcessName }}</td>
                                     <td>{{ $item->created_at->format('Y, F d') }}</td>

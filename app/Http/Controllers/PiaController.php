@@ -309,7 +309,7 @@ class PiaController extends Controller
     public function InsertPrivacyImpactAssessment(Request $request)
     {
         $UserID = auth()->id();
-        $Author = auth()->user()->completename;
+        $Author = auth()->user()->username;
         
         // generating questions
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
@@ -376,7 +376,7 @@ class PiaController extends Controller
             'DataSubject' => 'nullable|string',
             'PurposeforProcessing' => 'nullable|string',
             'SecurityMeasure' => 'nullable|string',
-            'ProcessNarrative' => 'nullable|string',
+            'ProcessNarrative' => 'nullable|array',
             'SectionA' => 'nullable|array',
             'SectionB' => 'nullable|array',
             'SectionC' => 'nullable|array',
@@ -391,7 +391,7 @@ class PiaController extends Controller
                 'DataSubject' => $request->get('DataSubject'),
                 'PurposeforProcessing' => $request->get('PurposeforProcessing'),
                 'SecurityMeasure' => $request->get('SecurityMeasure'),
-                'ProcessNarrative' => $request->get('ProcessNarrative'),
+                'ProcessNarrative' => $request->input('ProcessNarrative'),
                 'SectionA' => $request->input('SectionA'),
                 'SectionB' => $request->input('SectionB'),
                 'SectionC' => $request->input('SectionC'),
@@ -406,7 +406,7 @@ class PiaController extends Controller
                 'DataSubject' => $request->get('DataSubject'),
                 'PurposeforProcessing' => $request->get('PurposeforProcessing'),
                 'SecurityMeasure' => $request->get('SecurityMeasure'),
-                'ProcessNarrative' => $request->get('ProcessNarrative'),
+                'ProcessNarrative' => $request->input('ProcessNarrative'),
                 'SectionA' => $request->input('SectionA'),
                 'SectionB' => $request->input('SectionB'),
                 'SectionC' => $request->input('SectionC'),

@@ -77,8 +77,26 @@
                     <textarea type="text" class="form-control" name="SecurityMeasure" row="2" style="white-space: pre-line;">{{ $Process->SecurityMeasure ?? '' }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="ProcessNarrative">Process Narrative:</label>
-                    <textarea type="text" class="form-control" name="ProcessNarrative" row="2" style="white-space: pre-line;">{{ $Process->ProcessNarrative ?? ''}}</textarea>
+                    <tr>
+                        <td class="text-nowrap">
+                            <label for="ProcessNarrative"><strong>Process Narrative:</strong></label>
+                        </td>
+                    <tr>
+                        <td>
+                            <div id="ProcessNarrativeContainer">
+                            @if(isset($Process->ProcessNarrative))
+                                @foreach ($Process->ProcessNarrative as $item) 
+                                <div class="input-group mb-2">
+                                    <input class="form-control" type="text" placeholder="Enter process" name="ProcessNarrative[]" value="{{ $item }}">
+                                    <span class="btn btn-danger" onclick="removeProcess(this)">Remove</span>
+                                </div>
+                                @endforeach
+                            @endif
+                            </div>
+                        </td>
+                        <td><button id="addProcessNarrative" type="button" class="btn btn-secondary">Add Process</button></td>
+                    </tr>
+
                 </div>
             </div>
             <!-- /.card-body -->
@@ -168,6 +186,7 @@
     </div>
 </form>
 
+
 <script>
     const addButton = document.querySelector("#add");
     const inputContainer = document.querySelector("#inp-group");
@@ -212,5 +231,52 @@
         //counter++;
     }
     addButton.addEventListener("click", addInput);
+
+
+    
+    const addProcessNarrative = document.querySelector("#addProcessNarrative");
+
+    const ProcessNarrativeContainer = document.querySelector("#ProcessNarrativeContainer");
+
+    // Array to store the dynamically created inputs
+    const ProcessNarrativeContainerInputs = [];
+
+    // ProcessNarrative
+    function addProcessNarrativeInput() {
+        const data = document.createElement("input");
+        data.className = "form-control";
+        data.type = "text";
+        data.placeholder = "Enter process";
+        data.name = "ProcessNarrative[]";
+
+        const btn = document.createElement("span");
+        btn.className = "btn btn-danger";
+        btn.innerHTML = "Remove";
+        btn.addEventListener("click", removeProcessNarrative);
+
+        const flex = document.createElement("div");
+        flex.className = "input-group mb-2";
+
+        ProcessNarrativeContainer.appendChild(flex);
+        flex.appendChild(data);
+        flex.appendChild(btn);
+    }
+
+    function removeProcessNarrative() {
+        const parent = this.parentElement;
+        const index = ProcessNarrativeContainerInputs.indexOf(parent);
+        if (index > -1) {
+            ProcessNarrativeContainerInputs.splice(index, 1); // Remove the input from the array
+        }
+        parent.remove();
+    }
+
+    function removeProcess(element) {
+        const parentElement = element.parentNode;
+        parentElement.parentNode.removeChild(parentElement);
+    }
+
+    addProcessNarrative.addEventListener("click", addProcessNarrativeInput);
+
 </script>
 @stop

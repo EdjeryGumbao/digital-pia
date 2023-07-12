@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+use App\Models\User;
+
 class ProfileController extends Controller
 {
     /**
@@ -26,16 +28,26 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        //dd($request->user()->id);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        // Validate the incoming request data
+        $request->validate([
+            'email' => 'required|string',
+            'username' => 'required|string',
+        ]);
+       
+        $User = User::where('id', $request->user()->id)->first();
+        // Update the existing Process instance with new values
+        $User->update([
+            'username' => $request->get('username'),
+            'email' => $request->get('email'),
+        ]);
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $User->save();
+    
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
+    
 
     /**
      * Delete the user's account.

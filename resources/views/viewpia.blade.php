@@ -56,7 +56,15 @@
                             </tr>
                             <tr>
                                 <td><strong>Process Narrative:</strong></td>
-                                <td>{{ $Process->ProcessNarrative }}</td>
+                                <td>
+                                    <ol style="padding-left: 0;">
+                                    @if (isset($Process->ProcessNarrative))
+                                        @foreach ($Process->ProcessNarrative as $item) 
+                                            <li style="margin-left: 14px;  ">{{ $item }}</li>
+                                        @endforeach
+                                    @endif
+                                    </ol>
+                                </td>
                             </tr>
                             <tr>
                                 <th colspan='2' class="text-center">{{ $ProcessQuestions->QuestionSetName ?? '' }}</th>
@@ -183,21 +191,20 @@
 
     <div class="d-flex">
     @if (auth()->user()->usertype == 'admin')
+    <form action="validatePIA" method="POST">
+        @csrf
+        <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
         @if ($PrivacyImpactAssessment->CheckMark == false)    
-        <form action="validatePIA" method="POST" enctype='multipart/form-data'>
-            @csrf
-            <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
             <div class="p-2">
-                    <button type="submit" name="button" value="validate" class="btn btn-success">Validate</button>
-                </form>
+                <button type="submit" name="button" value="validate" class="btn btn-success">Validate</button>
+
             </div>
         @else
             <div class="p-2">
-                <form>
-                    <button type="submit" name="button" value="unvalidate" class="btn btn-success">Unvalidate</button>
+                <button type="submit" name="button" value="unvalidate" class="btn btn-success">Unvalidate</button>
             </div>
-        </form>
         @endif
+    </form>
     @endif
 
         <div class="ml-auto p-2">

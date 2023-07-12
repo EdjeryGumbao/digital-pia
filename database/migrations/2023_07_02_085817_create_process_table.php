@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('DataSubject')->nullable();
             $table->longText('PurposeforProcessing')->nullable();
             $table->longText('SecurityMeasure')->nullable();
-            $table->longText('ProcessNarrative')->nullable();
+            $table->json('ProcessNarrative')->nullable();
             $table->json('SectionA')->nullable();
             $table->json('SectionB')->nullable();
             $table->json('SectionC')->nullable();

@@ -19,25 +19,15 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="lastname" :value="__('Last Name')" />
-            <x-text-input id="name" class="mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus autocomplete="lastname" />
-            <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
-        </div>
-        <div>
-            <x-input-label for="firstname" :value="__('First Name')" />
-            <x-text-input id="name" class="mt-1 w-full" type="text" name="firstname" :value="old('firstname')" required autofocus autocomplete="firstname" />
-            <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
-        </div>
-        <div>
-            <x-input-label for="middlename" :value="__('Middle Name')" />
-            <x-text-input id="name" class="mt-1 w-full" type="text" name="middlename" :value="old('middlename')" required autofocus autocomplete="middlename" />
-            <x-input-error :messages="$errors->get('middlename')" class="mt-2" />
-        </div>
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="name" class="mt-1 w-full" type="text" name="username" :value="old('email', $user->username)" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
+        </div> 
 
         <!-- Contacts -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="mt-1 w-full" type="email" name="email" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" class="mt-1 w-full" type="email" name="email" :value="old('email', $user->email)" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
         <div class="mt-4">

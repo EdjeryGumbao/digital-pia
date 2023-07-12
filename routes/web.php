@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('test', [PiaController::class, 'test']);
+    Route::get('view_pia', [PiaController::class, 'pialist']);
     Route::post('view_pia', [PiaController::class, 'view_pia']);
 
     Route::get('add_question_set', [PiaController::class, 'add_question_set']);

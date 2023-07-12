@@ -26,6 +26,7 @@ class Process extends Model
     ];
 
     protected $casts = [
+        'ProcessNarrative' => 'array',
         'SectionA' => 'array',
         'SectionB' => 'array',
         'SectionC' => 'array',

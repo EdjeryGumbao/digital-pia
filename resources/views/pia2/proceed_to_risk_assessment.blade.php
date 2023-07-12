@@ -248,20 +248,7 @@
     <!-- /.card-body -->
   </div>
 </div>
-<div class="d-flex">
-  <div class="p-2">
-    <form action="proceed_to_process" method="post">
-      @csrf
-      <button type="submit" class="btn btn-secondary">Back</button>
-    </form>
-  </div>
-  <div class="ml-auto p-2">
-    <form action="proceed_to_flowchart" method="post">
-      @csrf
-      <button type="submit" class="btn btn-primary">Next</button>
-    </form>
-  </div>
-</div>
+
 <div class="row justify-content-center mt-5">
     <div class="col-md-5">
       <div class="card">
@@ -295,6 +282,21 @@
           </table>
         </div>
       </div>
+  </div>
+</div>
+
+<div class="d-flex">
+  <div class="p-2">
+    <form action="proceed_to_process" method="post">
+      @csrf
+      <button type="submit" class="btn btn-secondary">Back</button>
+    </form>
+  </div>
+  <div class="ml-auto p-2">
+    <form action="proceed_to_flowchart" method="post">
+      @csrf
+      <button type="submit" class="btn btn-primary">Next</button>
+    </form>
   </div>
 </div>
 @stop
