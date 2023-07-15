@@ -215,7 +215,7 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2023-2023 <a>USEP PIA</a>.</strong>
+    <strong>Copyright &copy; 2023 <a>USeP PIA</a>.</strong>
     All rights reserved.
   </footer>
 

@@ -1,24 +1,57 @@
-@extends('layouts.sidebar_layout')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('title', 'View')
 
-@section('content')
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'Welcome')</title>
+    <style>
+        {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
+        table {
+            page-break-inside: auto;
+        }
 
-<div class="container"> 
-    <div class="row justify-content-center">
-        <div class="container text-center">
-            <img src="{{ asset('img/USEP_Logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
-            <h2 class="text-center">University of Southeastern Philippines</h2>
-            <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="container text-center" style="margin-top: 100px">
+                <?php
+                    $imagePath = public_path('img/USEP_Logo.png');
+                    $imageData = base64_encode(file_get_contents($imagePath));
+                    $imageSrc = 'data:image/png;base64,' . $imageData;
+                ?>
+
+                <img src="{{ $imageSrc }}" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
+                <h2 class="text-center">University of Southeastern Philippines</h2>
+                <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+            </div>
         </div>
+      </div><!-- /.container-fluid -->
     </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+<div class="container-fluid" style="margin-top: 250px"><br>
 
     @if($Process)
     <div class="row justify-content-center mt-5">
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>Process Information</strong></h5>
+                    <h5 class="card-title"><strong>Process Information</strong></h5><br>
                     <table class="table">
                         <tbody>
                             <tr>
@@ -57,7 +90,7 @@
                             <tr>
                                 <td><strong>Process Narrative:</strong></td>
                                 <td>
-                                    <ol style="padding-left: 0;">
+                                    <ol style="padding-left: 0; page-break-inside: auto">
                                     @if (isset($Process->ProcessNarrative))
                                         @foreach ($Process->ProcessNarrative as $item) 
                                             <li style="margin-left: 14px;  ">{{ $item }}</li>
@@ -122,7 +155,7 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>Risk Management</strong></h5>
+                    <h5 class="card-title page-break"><strong>Risk Management</strong></h5>
                     <table class="table">
                         <thead>
                             <tr>
@@ -165,18 +198,23 @@
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><strong>Data Flow</strong></h5><br>
+                    <h5 class="card-title"><strong>Data Flow</strong></h5><br><br>
                     <div class="row">
                         @foreach ($DataFlow as $item)
                             @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
                             <div class="container">
                                 <div class="row justify-content-center">
                                     <div class="col-md-8 mb-4">
-                                        <div class="card">
-                                            <a href="/images/{{ $item->FileName }}" target="_blank"> 
-                                                <img src="{{ asset('images/'. $item->FileName) }}"   alt="{{ $item->FileName }}" class="card-img-top img-fluid">
-                                            </a>
-                                        </div>
+                                        <div class="card">  
+                                            <?php
+                                                $imagePath = public_path('images/' . $item->FileName);
+                                                $imageData = base64_encode(file_get_contents($imagePath));
+                                                $imageSrc = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
+                                            ?>
+
+                                            <img src="{{ $imageSrc }}" class="card-img-top img-fluid">
+
+                                        </div>   
                                     </div>
                                 </div>
                             </div>
@@ -189,27 +227,48 @@
     </div>
     @endif
 
-    <div class="d-flex">
-    @if (auth()->user()->usertype == 'admin')
-    <form action="validatePIA" method="POST">
-        @csrf
-        <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
-        @if ($PrivacyImpactAssessment->CheckMark == false)    
-            <div class="p-2">
-                <button type="submit" name="button" value="validate" class="btn btn-success">Validate</button>
 
-            </div>
-        @else
-            <div class="p-2">
-                <button type="submit" name="button" value="unvalidate" class="btn btn-success">Unvalidate</button>
-            </div>
-        @endif
-    </form>
-    @endif
 
-        <div class="ml-auto p-2">
-            <a href="{{ url('pialist') }}" class="btn btn-primary">Done</a>
-        </div>
-    </div>
+</div><!-- /.container-fluid -->
+    </section><br>
+    <!-- /.content -->
+
 </div>
-@endsection
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
+<!-- JQVMap -->
+<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+</body>
+</html> 

@@ -16,6 +16,8 @@ use App\Models\ProcessQuestions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
+use Barryvdh\DomPDF\Facade\PDF;
+
 
 class PiaController extends Controller
 {
@@ -706,7 +708,7 @@ class PiaController extends Controller
     }
 
     public function view_pia(Request $request)
-    {
+    {   
         if(!Session::exists('PrivacyImpactAssessmentID')){ // when a user visits this page without an ID
             $request->validate([
                 'PrivacyImpactAssessmentID' => 'required|integer',
@@ -714,22 +716,32 @@ class PiaController extends Controller
             $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID'); // gets the value from the form
         } else {
             $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
-        }
+        } 
 
         $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
         
-        // generating questions
-        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
-        $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->Version)->first();
-
+        
         if ($PrivacyImpactAssessment) {
             session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
             session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
+
+            // generating questions
+            $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('Version', $PrivacyImpactAssessment->Version)->first();
+            $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->Version)->first();
+
             $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
             $DataFields = DataFields::all();
             $RiskAssessment = RiskAssessment::all();
             $DataFlow = DataFlow::all();
+            
+            if($request->has('download')) {
+                $pdf = PDF::loadView('pdf.downloadPIA', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment', 'ProcessQuestions'))->setOptions(['defaultFont' => 'sans-serif']);
+                $filename = $PrivacyImpactAssessment->ProcessName . '.pdf';
 
+                //return $pdf->stream($filename);
+                return $pdf->stream($filename);
+            }
+            
             return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment', 'ProcessQuestions'));
         }
 
