@@ -28,8 +28,13 @@
                     <input type="text" class="form-control" name="DataSubject" value="{{ $Process->DataSubject ?? ''}}" >
                 </div>
                 <div class="form-group">
-                    <label for="FormUsed">Form used:</label>
+                    <label for="FormUsed">Data Collection Form Name:</label>
+                    <p>Note: This is the form used to collect Personal Data</p>
+                </div>
+                <div class="form-group">
                     <input type="text" class="form-control" name="FormUsed">
+                </div>
+                <div class="form-group">
                     <label for="Datacollected[]">Data Fields:</label>
                     <div id="inp-group"></div>
                     <button id="add" type="button" class="btn btn-success">Add Data field</button>

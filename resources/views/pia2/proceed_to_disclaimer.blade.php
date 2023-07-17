@@ -15,13 +15,13 @@
                     </svg>
                 </div>
                 <h2 class="text-center"><strong>Disclaimer:</strong></h2>
-                <p class="text-justify"> A Privacy Impact Assessment (PIA) is an instrument for assessing the potential impacts on privacy of a process, 
+                <p class="text-justify"> This <a href="https://privacy.gov.ph/wp-content/uploads/2022/01/NPC_PIA_0618.pdf" class="text-primary text-decoration-none" target="_blank">Privacy Impact Assessment</a> (PIA) is an instrument for assessing the potential impacts on privacy of a process, 
                     information system, program, software module, device or other initiative which processes personal information and in 
                     consultation with stakeholders, for taking actions as necessary to treat privacy risk.
                 </p>
                 <br>
                 <p class="text-justify">
-                    A PIA is more than a tool: its process that begins at the earliest possible stages of an initiative when there are still 
+                    This PIA is more than a tool: its process that begins at the earliest possible stages of an initiative when there are still 
                     opportunities to influence its outcome and thereby ensure privacy by design. It is a process that continues until, and 
                     even after, the project has been deployed. Initiatives vary substantially in scale and impact.
                 </p>

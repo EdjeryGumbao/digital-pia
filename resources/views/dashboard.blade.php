@@ -11,7 +11,7 @@
 
     @if (auth()->user()->usertype == 'admin')
     <div class="row">
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-3 col-6">  
         <!-- small box -->
         <div class="small-box bg-success">
           <div class="inner">
@@ -135,7 +135,7 @@
       <div class="col-md-6">
         <div class="card card-warning">
           <div class="card-header">
-            <h3 class="card-title">Risk Assessment</h3>
+            <h3 class="card-title" style="color: white;">Risk Assessment</h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -218,7 +218,7 @@
     @elseif (auth()->user()->usertype == 'user')
     <div class="row justify-content-center">
         <div class="container text-center">
-            <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
             <h2 class="text-center">University of Southeastern Philippines</h2>
             <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
         </div>

@@ -79,7 +79,7 @@
                                                         @csrf
                                                         <input type='hidden' name='download' value='true'>
                                                         <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
-                                                            Download PDF       
+                                                            Download PDF
                                                         </button>
                                                     </form>
                                                 </div>
@@ -128,7 +128,8 @@
                                         <div class="p-2">
                                             <form action='view_pia' method='POST' class="">
                                                 @csrf
-                                                <button type='submit' name='download' class='btn btn-primary' value='true'>
+                                                <input type='hidden' name='download' value='true'>
+                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-primary' value='{{ $item->PrivacyImpactAssessmentID }}'>
                                                     Download PDF       
                                                 </button>
                                             </form>

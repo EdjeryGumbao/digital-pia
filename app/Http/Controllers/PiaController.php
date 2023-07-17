@@ -85,8 +85,8 @@ class PiaController extends Controller
     public function threatlist(Request $request)
     {   
         if (auth()->user()->usertype == 'admin') {
-            $RiskAssessment = RiskAssessment::sortable()->orderBy('RiskAssessmentID')->get();
-            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author')->get();
+            $RiskAssessment = RiskAssessment::sortable()->orderBy('RiskAssessmentID', 'desc')->get();
+            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author', 'desc')->get();
 
             return view('threatlist', compact('PrivacyImpactAssessment', 'RiskAssessment'));
         } else {
@@ -97,8 +97,8 @@ class PiaController extends Controller
     public function dataflowlist(Request $request)
     {   
         if (auth()->user()->usertype == 'admin') {
-            $DataFlow = DataFlow::sortable()->orderBy('DataFlowID')->get();
-            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author')->get();
+            $DataFlow = DataFlow::sortable()->orderBy('DataFlowID', 'desc')->get();
+            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author', 'desc')->get();
 
             return view('dataflowlist', compact('PrivacyImpactAssessment', 'DataFlow'));
         } else {
@@ -109,9 +109,9 @@ class PiaController extends Controller
     public function manage()
     {
         if (auth()->user()->usertype == 'admin') {
-            $User = User::sortable()->orderBy('id')->get();
+            $User = User::sortable()->orderBy('id', 'desc')->get();
             $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::all();
-            $ProcessQuestions = ProcessQuestions::sortable()->orderBy('ProcessQuestionsID')->get();
+            $ProcessQuestions = ProcessQuestions::sortable()->orderBy('ProcessQuestionsID', 'desc')->get();
     
             return view('manage', compact('User', 'ProcessQuestions', 'PrivacyImpactAssessmentVersion'));
         } else {
@@ -668,7 +668,8 @@ class PiaController extends Controller
     public function pialist(Request $request)
     {
         $this->reset();
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID')->get();
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::orderBy('PrivacyImpactAssessmentID', 'desc')->get();
+
 
         $User = User::all();
         $CurrentUser = auth()->user();
@@ -708,18 +709,19 @@ class PiaController extends Controller
     }
 
     public function view_pia(Request $request)
-    {   
+    {
         if(!Session::exists('PrivacyImpactAssessmentID')){ // when a user visits this page without an ID
             $request->validate([
                 'PrivacyImpactAssessmentID' => 'required|integer',
             ]);
             $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID'); // gets the value from the form
-        } else {
+        } elseif($request->has('PrivacyImpactAssessmentID')) { // this fix the bug of downloading the same thing over again
+            $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID'); // gets the value from the form 
+        }else {
             $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
         } 
 
         $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
-        
         
         if ($PrivacyImpactAssessment) {
             session()->put('PrivacyImpactAssessmentID', $PrivacyImpactAssessment->PrivacyImpactAssessmentID);
@@ -739,7 +741,7 @@ class PiaController extends Controller
                 $filename = $PrivacyImpactAssessment->ProcessName . '.pdf';
 
                 //return $pdf->stream($filename);
-                return $pdf->stream($filename);
+                return $pdf->download($filename);
             }
             
             return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment', 'ProcessQuestions'));

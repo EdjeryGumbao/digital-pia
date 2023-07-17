@@ -13,7 +13,8 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th width="80px">@sortablelink('ThreatsVulnerabilities', 'ThreatsVulnerabilities')</th>
+                            <th>Process Name</th>
+                            <th width="80px">@sortablelink('ThreatsVulnerabilities', 'Threats/Vulnerabilities')</th>
                             <th>@sortablelink('RiskRating', 'Risk Rating')</th>
                             <th>@sortablelink('created_at')</th>
                             <th>@sortablelink('updated_at')</th>
@@ -23,7 +24,13 @@
                     <tbody>
                         @foreach ($RiskAssessment as $item)
                             <tr>
-
+                                <td>
+                                    @foreach($PrivacyImpactAssessment as $item2)
+                                        @if ($item->PrivacyImpactAssessmentID == $item2->PrivacyImpactAssessmentID)
+                                            {{ $item2->ProcessName }}
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td>{{ $item->ThreatsVulnerabilities }}</td>
                                 <td class="text-center" style="background-color: 
                                     @if($item->RiskRating == 1) #fafdff /* white */

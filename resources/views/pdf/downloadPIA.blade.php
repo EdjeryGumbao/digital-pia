@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
+ 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Welcome')</title>
     <style>
         {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
+
         table {
             page-break-inside: auto;
         }
@@ -15,7 +16,124 @@
         .page-break {
             page-break-before: always;
         }
-    </style>
+        
+    </style> 
+    <!--  -->
+  <!--  <style> 
+        .hold-transition {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .sidebar-mini {
+            position: relative;
+        }
+
+        .layout-fixed {
+            position: relative;
+            height: 100%;
+        }
+
+        .wrapper {
+            position: relative;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        .content-header {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .container-fluid {
+            position: relative;
+            margin-top: 250px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .brand-image {
+            opacity: 0.8;
+        }
+
+        .img-circle {
+            border-radius: 50%;
+        }
+
+        .elevation-3 {
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-nowrap {
+            white-space: nowrap;
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+        }
+
+        .card-body {
+            flex: 1 1 auto;
+            min-height: 1px;
+            padding: 1.25rem;
+        }
+
+        .card-title {
+            margin-bottom: 0.75rem;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .col-md-8 {
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .card-img-top {
+            width: 100%;
+            border-top-left-radius: calc(0.25rem - 1px);
+            border-top-right-radius: calc(0.25rem - 1px);
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+    </style> -->
+
 </head>
 
 
@@ -236,39 +354,5 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
 </body>
 </html> 
