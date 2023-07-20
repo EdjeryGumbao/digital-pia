@@ -16,12 +16,15 @@ class PrivacyImpactAssessment extends Model
     protected $primaryKey = 'PrivacyImpactAssessmentID';
 
     protected $fillable = [
+        'PrivacyImpactAssessmentID',
+        'PIAVersion',
         'UserID',
+        'Department',
         'Author',
-        'Version',
         'ProcessName',
-        'CheckMark',
+        'Validated',
+        'DateValidated',
     ];
 
-    public $sortable = ['Version', 'ProcessName', 'created_at', 'updated_at', 'Author', 'CheckMark'];
+    public $sortable = ['PrivacyImpactAssessmentID', 'PIAVersion', 'UserID', 'Department', 'Author', 'ProcessName',  'Validated', 'DateValidated', 'created_at', 'updated_at',];
 }

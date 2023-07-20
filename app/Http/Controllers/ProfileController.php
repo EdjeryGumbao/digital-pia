@@ -32,15 +32,21 @@ class ProfileController extends Controller
 
         // Validate the incoming request data
         $request->validate([
+            'lastname' => 'required|string',
+            'firstname' => 'required|string',
+            'middlename' => 'required|string',
+            'department' => 'required|string',
             'email' => 'required|string',
-            'username' => 'required|string',
         ]);
-       
+            
         $User = User::where('id', $request->user()->id)->first();
         // Update the existing Process instance with new values
         $User->update([
-            'username' => $request->get('username'),
-            'email' => $request->get('email'),
+            'lastname' => $request->input('lastname'),
+            'firstname' => $request->input('firstname'),
+            'middlename' => $request->input('middlename'),
+            'department' => $request->input('department'),
+            'email' => $request->input('email'),
         ]);
 
         $User->save();

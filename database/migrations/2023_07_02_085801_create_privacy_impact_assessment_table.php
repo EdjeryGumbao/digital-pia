@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('privacy_impact_assessment', function (Blueprint $table) {
             $table->id('PrivacyImpactAssessmentID');
+            $table->unsignedBigInteger('PIAVersion');
             $table->unsignedBigInteger('UserID');
             $table->string('Author');
-            $table->unsignedBigInteger('Version');
             $table->string('ProcessName');
-            $table->boolean('CheckMark')->default(false);
+            $table->string('Department');
+            $table->boolean('Validated')->default(false);
+            $table->timestamp('DateValidated')->nullable();
             $table->timestamps();
         });
     }

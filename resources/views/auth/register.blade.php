@@ -6,15 +6,33 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="username" :value="__('Department')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('username')" class="mt-2" />
-        </div>
-        
+            <x-input-label for="lastname" :value="__('Lastname')" />
+            <x-text-input id="name" class="mt-1 w-full" type="text" name="lastname" required autofocus autocomplete="lastname" />
+            <x-input-error :messages="$errors->get('lastname')" class="mt-2" />
+        </div> 
+
+        <div>
+            <x-input-label for="firstname" :value="__('Firstname')" />
+            <x-text-input id="name" class="mt-1 w-full" type="text" name="firstname" required autofocus autocomplete="firstname" />
+            <x-input-error :messages="$errors->get('firstname')" class="mt-2" />
+        </div> 
+
+        <div>
+            <x-input-label for="middlename" :value="__('Middlename')" />
+            <x-text-input id="name" class="mt-1 w-full" type="text" name="middlename" required autofocus autocomplete="middlename" />
+            <x-input-error :messages="$errors->get('middlename')" class="mt-2" />
+        </div> 
+
+        <div>
+            <x-input-label for="department" :value="__('Department')" />
+            <x-text-input id="name" class="mt-1 w-full" type="text" name="department" required autofocus autocomplete="department" />
+            <x-input-error :messages="$errors->get('department')" class="mt-2" />
+        </div> 
+
         <!-- Contacts -->
-        <div class="mt-4">
+        <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 

@@ -13,24 +13,27 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
+                            
+                            <th>Department</th>
                             <th>Process Name</th>
                             <th width="80px">@sortablelink('ThreatsVulnerabilities', 'Threats/Vulnerabilities')</th>
                             <th>@sortablelink('RiskRating', 'Risk Rating')</th>
                             <th>@sortablelink('created_at')</th>
-                            <th>@sortablelink('updated_at')</th>
-                            <th>Department</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($RiskAssessment as $item)
                             <tr>
-                                <td>
-                                    @foreach($PrivacyImpactAssessment as $item2)
-                                        @if ($item->PrivacyImpactAssessmentID == $item2->PrivacyImpactAssessmentID)
+                                @foreach($PrivacyImpactAssessment as $item2)
+                                    @if ($item->PrivacyImpactAssessmentID == $item2->PrivacyImpactAssessmentID)
+                                        <td>
+                                            {{ $item2->Author }}
+                                        </td>
+                                        <td>
                                             {{ $item2->ProcessName }}
-                                        @endif
-                                    @endforeach
-                                </td>
+                                        </td>
+                                    @endif
+                                @endforeach
                                 <td>{{ $item->ThreatsVulnerabilities }}</td>
                                 <td class="text-center" style="background-color: 
                                     @if($item->RiskRating == 1) #fafdff /* white */
@@ -43,14 +46,6 @@
                                     {{ $item->RiskRating }}
                                 </td>
                                 <td>{{ $item->created_at->format('Y, F d') }}</td>
-                                <td>{{ $item->updated_at->format('Y, F d') }}</td>
-                                <td>
-                                    @foreach($PrivacyImpactAssessment as $item2)
-                                        @if ($item->PrivacyImpactAssessmentID == $item2->PrivacyImpactAssessmentID)
-                                            {{ $item2->Author }}
-                                        @endif
-                                    @endforeach
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -18,8 +18,10 @@
             <thead>
                 <tr>
                 <th>@sortablelink('id', 'User ID')</th>
-                <th>@sortablelink('username', 'Department')</th>
-                <th></th>
+                <th>@sortablelink('department', 'Department')</th>
+                <th>@sortablelink('email', 'Email')</th>
+                <th>@sortablelink('lastname', 'Complete Name')</th>
+                <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +30,9 @@
                     @if ($item->usertype == 'user')
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->username }}</td>
+                            <td>{{ $item->department }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td>{{ $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename }}</td>
                             <td>
                                 <div class="d-flex">
                                     <div class="p-2">
@@ -54,6 +58,7 @@
 
     <h3><strong>Current Active Question Set:</strong></h3>
     <p>Note: The question set version is the version of the PIA</p>
+    <p>If there are no question set, a default one will be created when a user starts the privacy impact assessment</p>
 
     @if(isset($ProcessQuestions))
         @foreach ($ProcessQuestions as $questions)

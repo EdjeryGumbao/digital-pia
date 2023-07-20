@@ -207,9 +207,9 @@
         </form>
     </div>
     <div class="ml-auto p-2">
-        <form action="proceed_to_end" method="post">
+        <form action="proceed_to_recommendation" method="post">
             @csrf
-            <button type="submit" class="btn btn-primary">Finish</button>
+            <button type="submit" class="btn btn-primary">Next</button>
         </form>
     </div>
 </div>

@@ -24,7 +24,7 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="form-group">
-                    <label for="DataSubject">Data Subject:</label>
+                    <label for="DataSubject">Data Subject/s:</label>
                     <input type="text" class="form-control" name="DataSubject" value="{{ $Process->DataSubject ?? ''}}" >
                 </div>
                 <div class="form-group">
@@ -99,7 +99,7 @@
                             @endif
                             </div>
                         </td>
-                        <td><button id="addProcessNarrative" type="button" class="btn btn-secondary">Add Process</button></td>
+                        <td><button id="addProcessNarrative" type="button" class="btn btn-success">Add Process</button></td>
                     </tr>
 
                 </div>

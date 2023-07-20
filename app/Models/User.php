@@ -19,13 +19,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
+        'lastname',
+        'firstname',
+        'middlename',
+        'department',
         'email',
         'usertype',
         'password',
     ];
     
-    public $sortable = ['username', 'id'];
+    public $sortable = ['lastname', 'firstname', 'middlename', 'id', 'email'];
 
     /**
      * The attributes that should be hidden for serialization.

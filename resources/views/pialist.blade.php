@@ -23,11 +23,12 @@
                             @if ($CurrentUser->usertype == "admin")
                                 <th>@sortablelink('Author', 'Department')</th>
                             @endif
-                            <th width="80px">@sortablelink('Version')</th>
+                            <th width="80px">@sortablelink('PIAVersion', 'PIA Version')</th>
                             <th>@sortablelink('ProcessName')</th>
                             <th>@sortablelink('created_at')</th>
                             <th>@sortablelink('updated_at')</th>
-                            <th>@sortablelink('CheckMark', 'Validated')</th>
+                            <th>@sortablelink('Validated', 'Validated')</th>
+                            <th style='text-align:center;'>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,20 +36,22 @@
                             @if ($CurrentUser->usertype == "user")
                                 @if ($item->UserID == $CurrentUser->id)
                                         <tr>
-                                            <td>{{ $item->Version }}</td>
-                                            <td>{{ $item->ProcessName }}</td>
-                                            <td>{{ $item->created_at->format('F d, Y') }}</td>
-                                            <td>{{ $item->updated_at->format('F d, Y') }}</td>
-                                            <td>
-                                                @if ($item->CheckMark)
-                                                    <div class="p-2">
-                                                        <span class="text-success">Validated</span>
-                                                    </div>
-                                                @endif
-                                            </td>
+                                            <td><div class="p-2">{{ $item->PIAVersion }}</div></td>
+                                            <td><div class="p-2">{{ $item->ProcessName }}</div></td>
+                                            <td><div class="p-2">{{ $item->created_at->format('F d, Y') }}</div></td>
+                                            <td><div class="p-2">{{ $item->updated_at->format('F d, Y') }}</div></td>
+                                            @if ($item->Validated)
+                                                <td>
+                                                    <div class="p-2"><span class="text-success">Validated</span></div>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    <div class="p-2"><span class="text-warning">Pending</span></div>
+                                                </td>
+                                            @endif
                                             <td>
                                             <div class="d-flex flex-row-reverse">
-                                                @if (!$item->CheckMark)
+                                                @if (!$item->Validated)
                                                 <div class="p-2">
                                                     <form action='delete_pia' method='POST' class="">
                                                         @csrf
@@ -89,24 +92,20 @@
                                 @endif
                             @elseif ($CurrentUser->usertype == "admin")
                                 <tr>
-                                    <td>
-                                        @foreach ($User as $useritem)
-                                            @if ($useritem->id == $item->UserID)
-                                                {{ $useritem->username ?? ''}}
-                                            @endif
-                                        @endforeach
-                                    </td>
-                                    <td>{{ $item->Version }}</td>
-                                    <td>{{ $item->ProcessName }}</td>
-                                    <td>{{ $item->created_at->format('Y, F d') }}</td>
-                                    <td>{{ $item->updated_at->format('Y, F d') }}</td>
-                                    <td>
-                                        <div class="p-2">
-                                            @if ($item->CheckMark)
-                                                <span class="text-success">Validated</span>
-                                            @endif
-                                        </div>
-                                    </td>
+                                    <td><div class="p-2">{{ $item->Department }}</div></td>
+                                    <td><div class="p-2">{{ $item->PIAVersion }}</div></td>
+                                    <td><div class="p-2">{{ $item->ProcessName }}</div></td>
+                                    <td><div class="p-2">{{ $item->created_at->format('F d, Y') }}</div></td>
+                                    <td><div class="p-2">{{ $item->updated_at->format('F d, Y') }}</div></td>
+                                    @if ($item->Validated)
+                                        <td>
+                                            <div class="p-2"><span class="text-success">Validated</span></div>
+                                        </td>
+                                    @else
+                                        <td>
+                                            <div class="p-2"><span class="text-warning">Pending</span></div>
+                                        </td>
+                                    @endif
                                     <td>
                                     <div class="d-flex flex-row-reverse">
                                         <div class="p-2">

@@ -12,6 +12,7 @@ use App\Models\RiskAssessment;
 use App\Models\DataFlow;
 use App\Models\User;
 use App\Models\ProcessQuestions;
+use App\Models\Recommendation;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -66,8 +67,11 @@ class PiaController extends Controller
     public function createAdminUser()
     {
         $adminData = [
-            'username' => 'DPO',
-            'email' => 'admin@example.com',
+            'lastname' => '',
+            'firstname' => '',
+            'middlename' => '',
+            'department' => 'DPO',
+            'email' => 'admin@usep.edu.ph',
             'usertype' => 'admin',
             'password' => Hash::make('admin123'), // Replace 'password' with the desired password
         ];
@@ -182,7 +186,7 @@ class PiaController extends Controller
         // Set the version of the PIA
         $data = [
             'IsActive' => true,
-            'Version' => $ProcessQuestions->ProcessQuestionsID,
+            'PIAVersion' => $ProcessQuestions->ProcessQuestionsID,
         ];
 
         $request = new Request($data);
@@ -196,7 +200,7 @@ class PiaController extends Controller
         $this->TurnOffAllPIA();
 
         $ProcessQuestionsID = $request->get('ProcessQuestionsID');
-        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('Version', $ProcessQuestionsID)->first();
+        $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('PIAVersion', $ProcessQuestionsID)->first();
         
         if ($PrivacyImpactAssessmentVersion) {
             $PrivacyImpactAssessmentVersion->IsActive = true;
@@ -232,11 +236,12 @@ class PiaController extends Controller
         $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
         $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
         if ($request->get('button') == 'validate') {
-            $PrivacyImpactAssessment->CheckMark = true;
+            $PrivacyImpactAssessment->Validated = true;
+            $PrivacyImpactAssessment->DateValidated = date('Y-m-d H:i:s', time());
             $PrivacyImpactAssessment->save();
         }
-        elseif ($request->get('button') == 'unvalidate') {
-            $PrivacyImpactAssessment->CheckMark = false;
+        elseif ($request->get('button') == 'invalidate') {
+            $PrivacyImpactAssessment->Validated = false;
             $PrivacyImpactAssessment->save();
         }
 
@@ -250,14 +255,14 @@ class PiaController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'IsActive' => 'required|boolean',
-            'Version' => 'required|integer',
+            'PIAVersion' => 'required|integer',
         ]);
 
         $this->TurnOffAllPIA();
         // Create a new PrivacyImpactAssessmentVersion instance
         $privacyImpactAssessmentVersion = new PrivacyImpactAssessmentVersion;
         $privacyImpactAssessmentVersion->IsActive = $validatedData['IsActive'];
-        $privacyImpactAssessmentVersion->Version = $validatedData['Version'];
+        $privacyImpactAssessmentVersion->PIAVersion = $validatedData['PIAVersion'];
         $privacyImpactAssessmentVersion->save();
 
         return;
@@ -268,7 +273,7 @@ class PiaController extends Controller
         // Create a new PrivacyImpactAssessmentVersion instance
         $privacyImpactAssessmentVersion = new PrivacyImpactAssessmentVersion;
         $privacyImpactAssessmentVersion->IsActive = true; // Set the value for IsActive as needed
-        $privacyImpactAssessmentVersion->Version = 1;
+        $privacyImpactAssessmentVersion->PIAVersion = 1;
         $privacyImpactAssessmentVersion->save();
         return;
     }
@@ -311,11 +316,12 @@ class PiaController extends Controller
     public function InsertPrivacyImpactAssessment(Request $request)
     {
         $UserID = auth()->id();
-        $Author = auth()->user()->username;
+        $Author = auth()->user()->firstname . ' ' . substr(auth()->user()->middlename, 0, 1) . '. ' . auth()->user()->lastname;
+        $Department = auth()->user()->department;
         
         // generating questions
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
-        $PrivacyImpactAssessmentVersionID = $PrivacyImpactAssessmentVersion->Version;
+        $PrivacyImpactAssessmentVersionID = $PrivacyImpactAssessmentVersion->PIAVersion;
 
         // Validate the request data
         request()->validate([
@@ -325,7 +331,6 @@ class PiaController extends Controller
         if (session()->has('PrivacyImpactAssessmentID')) { // user returned to edit the title
             $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', session('PrivacyImpactAssessmentID'))->first();
             
-
             // Update the existing Process instance with new values
             $PrivacyImpactAssessment->update([
                 'ProcessName' => $request->get('ProcessName'),
@@ -334,9 +339,10 @@ class PiaController extends Controller
 
             // Create a new PrivacyImpactAssessment instance
             $PrivacyImpactAssessment = new PrivacyImpactAssessment([
+                'PIAVersion' => $PrivacyImpactAssessmentVersionID,
                 'UserID' => $UserID,
-                'Version' => $PrivacyImpactAssessmentVersionID,
                 'Author' => $Author,
+                'Department' => $Department,
                 'ProcessName' => request('ProcessName'),
             ]);
             $PrivacyImpactAssessment->save();
@@ -507,6 +513,37 @@ class PiaController extends Controller
         return redirect()->to(url('proceed_to_flowchart'));
     }
 
+    public function InsertRecommendation(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'Recommendation' => 'required|string',
+            'Priority' => 'required|integer',
+        ]);
+
+        $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
+
+        $Priority = $request->get('Priority');
+
+        // Check if the ranking already exists for the given PrivacyImpactAssessmentID
+        $existingRecommendation = Recommendation::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)
+            ->where('Priority', $Priority)
+            ->first();
+    
+        if ($existingRecommendation) {
+            return redirect()->back()->withErrors(['Priority' => 'The priority number already exists. Please choose a different priority number.']);
+        }
+
+        $Recommendation = new Recommendation([
+            'PrivacyImpactAssessmentID' => $PrivacyImpactAssessmentID,
+            'Recommendation' => $request->get('Recommendation'),
+            'Priority' => $request->get('Priority'),
+        ]);
+        $Recommendation->save();
+
+        return redirect()->to(url('proceed_to_recommendation'));
+    }
+
     public function proceed_to_disclaimer(Request $request) {
         return view('pia2/proceed_to_disclaimer');
     }
@@ -539,7 +576,7 @@ class PiaController extends Controller
         }
         
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
-        $request->session()->put('PrivacyImpactAssessmentVersion', $PrivacyImpactAssessmentVersion->Version);
+        $request->session()->put('PrivacyImpactAssessmentVersion', $PrivacyImpactAssessmentVersion->PIAVersion);
 
         return view('pia2/proceed_to_start');
     }
@@ -556,7 +593,7 @@ class PiaController extends Controller
 
         // generating questions
         $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('IsActive', true)->first();
-        $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->Version)->first();
+        $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->PIAVersion)->first();
 
         // generating already given data
         $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
@@ -566,7 +603,7 @@ class PiaController extends Controller
         //dd($Process);
         //dd($DataFields);
 
-        if ($Process) {
+        if ($Process || $DataFields) {
             // Data exists, pass the process data to the view
             return view('pia2/proceed_to_process', compact('Process', 'DataFields', 'ProcessQuestions'));
         } else {
@@ -608,6 +645,24 @@ class PiaController extends Controller
             return view('pia2/proceed_to_flowchart');
         }
     }
+
+    public function proceed_to_recommendation()
+    {           
+        if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
+            return $this->index();
+        }
+        
+        $Recommendation = Recommendation::all();
+        //dd($Recommendation);
+        if ($Recommendation) {
+            // Data exists, pass the data to the view
+            return view('pia2/proceed_to_recommendation', ['Recommendation' => $Recommendation]);
+        } else {
+            // Data doesn't exist
+            return view('pia2/proceed_to_recommendation');
+        }
+    }
+
     public function proceed_to_end(Request $request)
     {
         if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
@@ -656,8 +711,8 @@ class PiaController extends Controller
             $counts[] = $count;
         }
 
-        $trueCount = PrivacyImpactAssessment::where('CheckMark', true)->count();
-        $falseCount = PrivacyImpactAssessment::where('CheckMark', false)->count();
+        $trueCount = PrivacyImpactAssessment::where('Validated', true)->count();
+        $falseCount = PrivacyImpactAssessment::where('Validated', false)->count();
         $piaCount = PrivacyImpactAssessment::count();
         $riskAssessment = RiskAssessment::count();
 
@@ -669,43 +724,17 @@ class PiaController extends Controller
     {
         $this->reset();
         $PrivacyImpactAssessment = PrivacyImpactAssessment::orderBy('PrivacyImpactAssessmentID', 'desc')->get();
-
-
         $User = User::all();
         $CurrentUser = auth()->user();
 
-        return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
-    }
-
-    public function pialistsearch(Request $request) 
-    {
-        $keyword = $request->input('keyword');
-        $this->reset();
-        
-        $query = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID');
-    
-        if ($keyword) {
-            $query->where(function ($q) use ($keyword) {
-                $q->where('Version', 'LIKE', "%$keyword%")
-                    ->orWhere('ProcessName', 'LIKE', "%$keyword%")
-                    ->orWhere('Author', 'LIKE', "%$keyword%")
-                    ->orWhere('CheckMark', 'LIKE', "%$keyword%")
-                    ->orWhere('created_at', 'LIKE', "%$keyword%")
-                    ->orWhere('updated_at', 'LIKE', "%$keyword%");
-            });
-        }
-    
-        $PrivacyImpactAssessment = $query->get();
-        $User = User::all();
-        $CurrentUser = auth()->user();
-    
         return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
     }
 
     public function test(Request $request)
     {
         //dd(Session::all());
-        dd(auth()->user());
+        $Author = auth()->user()->firstname . ' ' . substr(auth()->user()->middlename, 0, 1) . '. ' . auth()->user()->lastname;
+        dd($Author);
     }
 
     public function view_pia(Request $request)
@@ -728,23 +757,24 @@ class PiaController extends Controller
             session()->put('PrivacyImpactAssessmentVersionID', $PrivacyImpactAssessment->PrivacyImpactAssessmentVersionID);
 
             // generating questions
-            $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('Version', $PrivacyImpactAssessment->Version)->first();
-            $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->Version)->first();
+            $PrivacyImpactAssessmentVersion = PrivacyImpactAssessmentVersion::where('PIAVersion', $PrivacyImpactAssessment->PIAVersion)->first();
+            $ProcessQuestions = ProcessQuestions::where('ProcessQuestionsID', $PrivacyImpactAssessmentVersion->PIAVersion)->first();
 
             $Process = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
             $DataFields = DataFields::all();
             $RiskAssessment = RiskAssessment::all();
             $DataFlow = DataFlow::all();
+            $Recommendation = Recommendation::all();
             
             if($request->has('download')) {
-                $pdf = PDF::loadView('pdf.downloadPIA', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment', 'ProcessQuestions'))->setOptions(['defaultFont' => 'sans-serif']);
+                $pdf = PDF::loadView('pdf.downloadPIA', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'Recommendation', 'PrivacyImpactAssessment', 'ProcessQuestions'))->setOptions(['defaultFont' => 'sans-serif']);
                 $filename = $PrivacyImpactAssessment->ProcessName . '.pdf';
 
-                //return $pdf->stream($filename);
-                return $pdf->download($filename);
+                return $pdf->stream($filename);
+                //return $pdf->download($filename);
             }
             
-            return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'PrivacyImpactAssessment', 'ProcessQuestions'));
+            return view('viewpia', compact('Process', 'DataFields', 'RiskAssessment', 'DataFlow', 'Recommendation', 'PrivacyImpactAssessment', 'ProcessQuestions'));
         }
 
         // Handle the case when PrivacyImpactAssessment is not found
@@ -822,4 +852,17 @@ class PiaController extends Controller
         }
         return redirect()->to(url('proceed_to_flowchart'));
     }    
+
+    public function delete_recommendation(Request $request)
+    {
+        $RecommendationID = $request->get('RecommendationID');
+        
+        $Recommendation = Recommendation::where('RecommendationID', $RecommendationID)->first();
+
+        if ($Recommendation) {
+            $Recommendation->delete();
+        }
+
+        return redirect()->to(url('proceed_to_recommendation'));
+    }
 }

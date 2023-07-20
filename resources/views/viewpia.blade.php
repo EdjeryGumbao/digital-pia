@@ -7,9 +7,10 @@
 <div class="container"> 
     <div class="row justify-content-center">
         <div class="container text-center">
-            <img src="{{ asset('img/USEP_Logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
+            <img src="{{ asset('img/USEP_Logo.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
             <h2 class="text-center">University of Southeastern Philippines</h2>
             <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+            <h3 class="text-center">{{ $PrivacyImpactAssessment->Author ?? ''}}</h3>
         </div>
     </div>
 
@@ -189,19 +190,49 @@
     </div>
     @endif
 
+    @if($Recommendation)
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Recommended Solution/s</strong></h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap">Recommendation</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($Recommendation as $item)
+                            @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                            <tr>
+                                <td>{{ $item->Recommendation }}</td>
+                                <td>{{ $item->Priority }}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="d-flex">
     @if (auth()->user()->usertype == 'admin')
     <form action="validatePIA" method="POST">
         @csrf
         <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
-        @if ($PrivacyImpactAssessment->CheckMark == false)    
+        @if ($PrivacyImpactAssessment->Validated == false)    
             <div class="p-2">
                 <button type="submit" name="button" value="validate" class="btn btn-success">Validate</button>
 
             </div>
         @else
             <div class="p-2">
-                <button type="submit" name="button" value="unvalidate" class="btn btn-success">Unvalidate</button>
+                <button type="submit" name="button" value="invalidate" class="btn btn-danger">Invalidate</button>
             </div>
         @endif
     </form>

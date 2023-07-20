@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     
     Route::post('delete_dataflow', [PiaController::class, 'delete_dataflow']);
     Route::post('delete_riskassessment', [PiaController::class, 'delete_riskassessment']);
+    Route::post('delete_recommendation', [PiaController::class, 'delete_recommendation']);
     Route::post('delete_pia', [PiaController::class, 'delete_pia']);
 
     Route::get('finish', [PiaController::class, 'finish']);
@@ -55,8 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/proceed_to_risk_assessment', [PiaController::class, 'proceed_to_risk_assessment']);
     Route::post('/proceed_to_flowchart', [PiaController::class, 'proceed_to_flowchart']);
     Route::get('/proceed_to_flowchart', [PiaController::class, 'proceed_to_flowchart']);
-    Route::get('/proceed_to_end', [PiaController::class, 'proceed_to_end']);
+    Route::post('/proceed_to_recommendation', [PiaController::class, 'proceed_to_recommendation']);
+    Route::get('/proceed_to_recommendation', [PiaController::class, 'proceed_to_recommendation']);
     Route::post('proceed_to_end', [PiaController::class, 'proceed_to_end']);
+    Route::get('/proceed_to_end', [PiaController::class, 'proceed_to_end']);
     
     Route::get('/system_description', [PiaController::class, 'proceed_to_system_description']);
     Route::get('/proceed_to_threshold_analysis', [PiaController::class, 'proceed_to_threshold_analysis']);
@@ -76,12 +79,14 @@ Route::post('InsertProcess', [PiaController::class, 'InsertProcess']);
 Route::post('InsertDataFlow', [PiaController::class, 'InsertDataFlow'])->name('InsertDataFlow');
 Route::post('InsertRiskAssessment', [PiaController::class, 'InsertRiskAssessment'])->name('InsertRiskAssessment');
 Route::post('InsertDataFields', [PiaController::class, 'InsertDataFields']);
+Route::post('InsertRecommendation', [PiaController::class, 'InsertRecommendation'])->name('InsertRecommendation');
 
 Route::get('InsertPrivacyImpactAssessment', [PiaController::class, 'proceed_to_start']);
 Route::get('InsertProcess', [PiaController::class, 'proceed_to_process']);
 Route::get('InsertDataFlow', [PiaController::class, 'proceed_to_flowchart'])->name('InsertDataFlow');
 Route::get('InsertRiskAssessment', [PiaController::class, 'proceed_to_risk_assessment'])->name('InsertRiskAssessment');
 Route::get('InsertDataFields', [PiaController::class, 'proceed_to_process']);
+Route::get('InsertRecommendation', [PiaController::class, 'InsertRecommendation'])->name('InsertRecommendation');
 
 Route::get('createAdminUser', [PiaController::class, 'createAdminUser']);
 

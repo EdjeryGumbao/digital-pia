@@ -77,7 +77,13 @@
         </div>
         <div class="info">
           @if(auth()->check())
-              <a href="{{ route('profile.edit') }}" class="d-block">{{ auth()->user()->username }}</a>
+              <a href="{{ route('profile.edit') }}" class="d-block" 
+                   style="width: 200px; /* Set the desired width of the text box */
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;">
+                  {{ auth()->user()->department }}
+              </a>
           @else
               <a href="{{ route('login') }}" class="d-block">Guest</a>
           @endif

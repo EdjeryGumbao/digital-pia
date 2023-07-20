@@ -6,8 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Welcome')</title>
+
+    <!-- -->
+
     <style>
-        {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
+            {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
 
         table {
             page-break-inside: auto;
@@ -16,6 +19,23 @@
         .page-break {
             page-break-before: always;
         }
+        .validation-box {
+            background-color: #f2f2f2;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            text-align:center;
+        }
+
+        .validation-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .validation-date {
+            font-size: 14px;
+        }
+
         
     </style> 
     <!--  -->
@@ -133,13 +153,17 @@
             height: auto;
         }
     </style> -->
-
 </head>
 
 
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-
+    @if ($PrivacyImpactAssessment->Validated == true)
+    <div class="validation-box">
+        <div class="validation-label">OLA-UDPO VALIDATED</div>
+        <div class="validation-date">Date Validated: {{ (new DateTime($PrivacyImpactAssessment->DateValidated))->format('F d, Y') }}</div>
+    </div>
+    @endif
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -154,6 +178,7 @@
                 <img src="{{ $imageSrc }}" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
                 <h2 class="text-center">University of Southeastern Philippines</h2>
                 <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+                <h3 class="text-center">{{ $PrivacyImpactAssessment->Author ?? ''}}</h3>
             </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -165,7 +190,7 @@
 <div class="container-fluid" style="margin-top: 250px"><br>
 
     @if($Process)
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-5 page-break">
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
@@ -269,11 +294,11 @@
     @endif
 
     @if($RiskAssessment)
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-5 page-break">
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title page-break"><strong>Risk Management</strong></h5>
+                    <h5 class="card-title"><strong>Risk Management</strong></h5>
                     <table class="table">
                         <thead>
                             <tr>
@@ -345,6 +370,47 @@
     </div>
     @endif
 
+    @if($Recommendation)
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Recommended Solution/s</strong></h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap">Recommendation</th>
+                                <th>Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($Recommendation as $item)
+                            @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                            <tr>
+                                <td>{{ $item->Recommendation }}</td>
+                                <td>{{ $item->Priority }}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if ($PrivacyImpactAssessment->Validated == true)
+    <div class="page-break">
+        <?php
+            $imagePath = public_path('pdf/1DPC_UAGC_Manual1024_1.png');
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+        ?>
+
+        <img src="{{ $imageSrc }}">
+    </div>
+    @endif
 
 
 </div><!-- /.container-fluid -->

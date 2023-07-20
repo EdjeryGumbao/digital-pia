@@ -33,7 +33,7 @@
                                     <input type="text" class="form-control" name="SectionATitle">
                                 </td>
                             <tr>
-                                <td><button id="addSectionA" type="button" class="btn btn-secondary">Add Data field</button></td>
+                                <td><button id="addSectionA" type="button" class="btn btn-success">Add Data field</button></td>
                                 <td><div id="sectionAContainer"></div></td>
                             </tr> <!-- Section A -->
 
@@ -45,7 +45,7 @@
                                     <input type="text" class="form-control" name="SectionBTitle">
                                 </td>
                             <tr>
-                                <td><button id="addSectionB" type="button" class="btn btn-secondary">Add Data field</button></td>
+                                <td><button id="addSectionB" type="button" class="btn btn-success">Add Data field</button></td>
                                 <td><div id="sectionBContainer"></div></td>
                             </tr> <!-- Section B -->
 
@@ -57,7 +57,7 @@
                                     <input type="text" class="form-control" name="SectionCTitle">
                                 </td>
                             <tr>
-                                <td><button id="addSectionC" type="button" class="btn btn-secondary">Add Data field</button></td>
+                                <td><button id="addSectionC" type="button" class="btn btn-success">Add Data field</button></td>
                                 <td><div id="sectionCContainer"></div></td>
                             </tr> <!-- Section C -->
 
@@ -69,7 +69,7 @@
                                     <input type="text" class="form-control" name="SectionDTitle">
                                 </td>
                             <tr>
-                                <td><button id="addSectionD" type="button" class="btn btn-secondary">Add Data field</button></td>
+                                <td><button id="addSectionD" type="button" class="btn btn-success">Add Data field</button></td>
                                 <td><div id="sectionDContainer"></div></td>
                             </tr> <!-- Section D -->
                             <tr>

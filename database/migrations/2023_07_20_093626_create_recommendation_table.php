@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('privacy_impact_assessment_version', function (Blueprint $table) {
-            $table->id('PrivacyImpactAssessmentVersionID');
-            $table->boolean('IsActive')->default(true);
-            $table->integer('PIAVersion');
+        Schema::create('recommendation', function (Blueprint $table) {
+            $table->id('RecommendationID');
+            $table->unsignedBigInteger('PrivacyImpactAssessmentID');
+            $table->string('Recommendation');
+            $table->integer('Priority');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('privacy_impact_assessment_version');
+        Schema::dropIfExists('recommendation');
     }
 };
