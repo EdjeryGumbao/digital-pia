@@ -177,7 +177,8 @@
 
                 <img src="{{ $imageSrc }}" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
                 <h2 class="text-center">University of Southeastern Philippines</h2>
-                <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+                <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2><br><br>
+                <h3 class="text-center">{{ $PrivacyImpactAssessment->Department ?? ''}}</h3>
                 <h3 class="text-center">{{ $PrivacyImpactAssessment->Author ?? ''}}</h3>
             </div>
         </div>

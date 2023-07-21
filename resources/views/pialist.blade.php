@@ -42,11 +42,11 @@
                                             <td><div class="p-2">{{ $item->updated_at->format('F d, Y') }}</div></td>
                                             @if ($item->Validated)
                                                 <td>
-                                                    <div class="p-2"><span class="text-success">Validated</span></div>
+                                                    <div class="p-2"><span class="text-success font-weight-bold">Validated</span></div>
                                                 </td>
                                             @else
                                                 <td>
-                                                    <div class="p-2"><span class="text-warning">Pending</span></div>
+                                                    <div class="p-2"><span class="text-warning font-weight-bold">Pending</span></div>
                                                 </td>
                                             @endif
                                             <td>
@@ -99,11 +99,11 @@
                                     <td><div class="p-2">{{ $item->updated_at->format('F d, Y') }}</div></td>
                                     @if ($item->Validated)
                                         <td>
-                                            <div class="p-2"><span class="text-success">Validated</span></div>
+                                            <div class="p-2"><span class="text-success font-weight-bold">Validated</span></div>
                                         </td>
                                     @else
                                         <td>
-                                            <div class="p-2"><span class="text-warning">Pending</span></div>
+                                            <div class="p-2"><span class="text-warning font-weight-bold">Pending</span></div>
                                         </td>
                                     @endif
                                     <td>
@@ -111,7 +111,7 @@
                                         <div class="p-2">
                                             <form action='delete_pia' method='POST' class="">
                                                 @csrf
-                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-danger' value='{{ $item->PrivacyImpactAssessmentID }}'>
+                                                <button type='submit' name='PrivacyImpactAssessmentID' class='btn btn-danger' value='{{ $item->PrivacyImpactAssessmentID }}' onclick="return confirmDelete()">
                                                     Delete        
                                                 </button>
                                             </form>
@@ -145,4 +145,15 @@
     @else
         <p>There are no PIA yet.</p>
     @endif
+
+<script>
+    function confirmDelete() {
+        // Show a pop-up dialog with a confirmation message
+        const confirmation = confirm("Are you sure you want to delete this? This action cannot be undone.");
+
+        // If the user clicks "OK," the form will be submitted; otherwise, the deletion process will be canceled.
+        return confirmation;
+    }
+</script>
 @stop
+

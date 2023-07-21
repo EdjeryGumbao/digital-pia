@@ -1,6 +1,6 @@
 @extends('layouts.sidebar_layout')
 
-@section('title', 'Recommendation')
+@section('title', 'D. Recommendation')
 
 @section('content')
 
@@ -74,7 +74,7 @@
                       <td>
                         <form action="delete_recommendation" method="post">
                             @csrf
-                            <button type="submit" class="btn btn-danger" name="RecommendationID" value="{{ $item->RecommendationID }}">Delete</button>
+                            <button type="submit" class="btn btn-danger" name="RecommendationID" value="{{ $item->RecommendationID }}" onclick="return confirmDelete()">Delete</button>
                         </form>
                       </td>
                   </tr>
@@ -102,5 +102,13 @@
     </div>
 </div>
 
+<script>
+    function confirmDelete() {
+        // Show a pop-up dialog with a confirmation message
+        const confirmation = confirm("Are you sure you want to delete this? This action cannot be undone.");
 
+        // If the user clicks "OK," the form will be submitted; otherwise, the deletion process will be canceled.
+        return confirmation;
+    }
+</script>
 @stop

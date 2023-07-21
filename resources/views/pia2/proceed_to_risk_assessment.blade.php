@@ -105,7 +105,7 @@
                       <td>
                         <form action="delete_riskassessment" method="post">
                             @csrf
-                            <button type="submit" class="btn btn-danger" name="RiskAssessmentID" value="{{ $item->RiskAssessmentID }}">Delete</button>
+                            <button type="submit" class="btn btn-danger" name="RiskAssessmentID" value="{{ $item->RiskAssessmentID }}" onclick="return confirmDelete()">Delete</button>
                         </form>
                       </td>
                   </tr>
@@ -299,6 +299,16 @@
     </form>
   </div>
 </div>
+
+<script>
+    function confirmDelete() {
+        // Show a pop-up dialog with a confirmation message
+        const confirmation = confirm("Are you sure you want to delete this? This action cannot be undone.");
+
+        // If the user clicks "OK," the form will be submitted; otherwise, the deletion process will be canceled.
+        return confirmation;
+    }
+</script>
 @stop
 
 

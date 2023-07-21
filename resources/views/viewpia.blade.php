@@ -1,6 +1,6 @@
 @extends('layouts.sidebar_layout')
 
-@section('title', 'View')
+@section('title', $PrivacyImpactAssessment->ProcessName ?? '' )
 
 @section('content')
 
@@ -9,7 +9,8 @@
         <div class="container text-center">
             <img src="{{ asset('img/USEP_Logo.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
             <h2 class="text-center">University of Southeastern Philippines</h2>
-            <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2>
+            <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2><br><br>
+            <h3 class="text-center">{{ $PrivacyImpactAssessment->Department ?? ''}}</h3>
             <h3 class="text-center">{{ $PrivacyImpactAssessment->Author ?? ''}}</h3>
         </div>
     </div>
@@ -220,27 +221,29 @@
     </div>
     @endif
 
-    <div class="d-flex">
-    @if (auth()->user()->usertype == 'admin')
-    <form action="validatePIA" method="POST">
-        @csrf
-        <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
-        @if ($PrivacyImpactAssessment->Validated == false)    
-            <div class="p-2">
-                <button type="submit" name="button" value="validate" class="btn btn-success">Validate</button>
-
-            </div>
-        @else
-            <div class="p-2">
-                <button type="submit" name="button" value="invalidate" class="btn btn-danger">Invalidate</button>
-            </div>
+    <div class="d-flex justify-content-center">
+        <div class="p-2">
+            <a href="{{ url('pialist') }}" class="btn btn-secondary">Back</a>
+        </div>
+      
+        <div class="p-2">
+        @if (auth()->user()->usertype == 'admin')
+            <form action="validatePIA" method="POST">
+                @csrf
+                <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
+                @if ($PrivacyImpactAssessment->Validated == false)    
+                    <div width="100%">
+                        <button type="submit" name="button" value="validate" class="btn btn-success btn-lg">Validate</button>
+                    </div>
+                @else
+                    <div width="100%">
+                        <button type="submit" name="button" value="invalidate" class="btn btn-danger btn-lg">Invalidate</button>
+                    </div>
+                @endif
+            </form>
         @endif
-    </form>
-    @endif
-
-        <div class="ml-auto p-2">
-            <a href="{{ url('pialist') }}" class="btn btn-primary">Done</a>
         </div>
     </div>
 </div>
+
 @endsection

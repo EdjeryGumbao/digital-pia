@@ -38,7 +38,7 @@
                                     <div class="p-2">
                                         <form action="delete_account" method="post">
                                             @csrf
-                                            <button type="submit" class="btn btn-danger" name="id" value="{{ $item->id }}">Delete</button>
+                                            <button type="submit" class="btn btn-danger" name="id" value="{{ $item->id }}" onclick="return confirmDelete()">Delete</button>
                                         </form>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
         @foreach ($ProcessQuestions as $questions)
             @if(isset($PrivacyImpactAssessmentVersion))
                 @foreach ($PrivacyImpactAssessmentVersion as $PIAversion)
-                    @if ($PIAversion->Version == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
+                    @if ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
                         <div class="row justify-content-center mt-5">
                             <div class="col-md-10">
                                 <div class="card">
@@ -134,14 +134,14 @@
                                                         <div class="d-flex">
                                                             @if(isset($PrivacyImpactAssessmentVersion))
                                                                 @foreach ($PrivacyImpactAssessmentVersion as $PIAversion)
-                                                                    @if ($PIAversion->Version == $questions->ProcessQuestionsID && $PIAversion->IsActive == false)
+                                                                    @if ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == false)
                                                                         <div class="p-2">
                                                                             <form action="activate_question_set" method="post">
                                                                                 @csrf
                                                                                 <button type="submit" class="btn btn-success" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}">Activate</button>
                                                                             </form>
                                                                         </div>
-                                                                    @elseif ($PIAversion->Version == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
+                                                                    @elseif ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
                                                                         <div class="p-2">
                                                                             <span class="text-success">Active</span>
                                                                         </div>
@@ -151,7 +151,7 @@
                                                             <div class="p-2">
                                                                 <form action="delete_question_set" method="post">
                                                                     @csrf
-                                                                    <button type="submit" class="btn btn-danger" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}">Delete</button>
+                                                                    <button type="submit" class="btn btn-danger" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}" onclick="return confirmDelete()">Delete</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -241,14 +241,14 @@
                                             <div class="d-flex">
                                                 @if(isset($PrivacyImpactAssessmentVersion))
                                                     @foreach ($PrivacyImpactAssessmentVersion as $PIAversion)
-                                                        @if ($PIAversion->Version == $questions->ProcessQuestionsID && $PIAversion->IsActive == false)
+                                                        @if ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == false)
                                                             <div class="p-2">
                                                                 <form action="activate_question_set" method="post">
                                                                     @csrf
                                                                     <button type="submit" class="btn btn-success" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}">Activate</button>
                                                                 </form>
                                                             </div>
-                                                        @elseif ($PIAversion->Version == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
+                                                        @elseif ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
                                                             <div class="p-2">
                                                                 <span class="text-success">Active</span>
                                                             </div>
@@ -258,7 +258,7 @@
                                                 <div class="p-2">
                                                     <form action="delete_question_set" method="post">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-danger" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}">Delete</button>
+                                                        <button type="submit" class="btn btn-danger" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}" onclick="return confirmDelete()">Delete</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -274,4 +274,15 @@
     @else
         <p>There are currently no question set, a default one will be created when a user starts the privacy impact assessment</p>
     @endif
+
+
+<script>
+    function confirmDelete() {
+        // Show a pop-up dialog with a confirmation message
+        const confirmation = confirm("Are you sure you want to delete this? This action cannot be undone.");
+
+        // If the user clicks "OK," the form will be submitted; otherwise, the deletion process will be canceled.
+        return confirmation;
+    }
+</script>
 @stop

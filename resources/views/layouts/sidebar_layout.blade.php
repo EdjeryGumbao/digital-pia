@@ -34,6 +34,18 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+.container {
+  width: 500px; /* Set the width of the container */
+  padding: 10px; /* Optional: Add some padding for spacing */
+  background-color: #f0f0f0; /* Optional: Just to visualize the container */
+}
+
+img {
+  float: left; /* or "right" if you want the image on the right side */
+  margin: 10px; /* Add some margin to create spacing around the image */
+}
+</style>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -215,6 +227,10 @@
     <section class="content">
       <div class="container-fluid">
         @yield('content')
+        <div class="container">
+        <!--<img src="bg/undraw_Documents_re_isxv.png">-->
+        <!-- Other content goes here -->
+      </div>
       </div><!-- /.container-fluid -->
     </section><br>
     <!-- /.content -->

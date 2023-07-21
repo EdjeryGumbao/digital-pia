@@ -360,6 +360,9 @@ class PiaController extends Controller
 
     public function InsertProcess(Request $request)
     {
+        $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
+        $result = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+
         if ($request->has('delete_datafield')) {
             // Run the code for deleting the data field
         
@@ -374,10 +377,12 @@ class PiaController extends Controller
                 // Delete the data field
                 $DataFields->delete();
             }
-        }        
+        } else if ($request->has('edit_datafield')) {
+            $DataFields = DataFields::where('DataFieldsID', $request->get('edit_datafield'))->first();
+            
+            return view('edit_data', compact('DataFields'));
+        }
 
-        $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
-        $result = Process::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
         
         // Validate the request data
         $request->validate([
@@ -425,7 +430,7 @@ class PiaController extends Controller
             $Process->save();
         }
 
-        if (isset($request->FormUsed) && isset($request->Datacollected)) {
+        if (isset($request->FormUsed) || isset($request->Datacollected)) {
             $this->InsertDataFields($request);
         }
         if ($request->Button == "Next") {
@@ -446,8 +451,13 @@ class PiaController extends Controller
 
         // Validate the request data
         $request->validate([
-            'FormUsed' => 'nullable|string',
-            'Datacollected' => 'nullable|array',
+            'FormUsed' => 'required|string',
+            'Datacollected' => 'required|array',
+        ], [
+            'FormUsed.required' => 'The Data Collection Form field is required.',
+            'FormUsed.string' => 'The Data Collection Form field must be a string.',
+            'Datacollected.required' => 'The Data fields is required.',
+            'Datacollected.array' => 'The Data fields must be an array.',
         ]);
 
         // Create a new DataFields instance
@@ -864,5 +874,52 @@ class PiaController extends Controller
         }
 
         return redirect()->to(url('proceed_to_recommendation'));
+    }
+
+    public function proceed_to_edit_data(Request $request)
+    {   
+        if(!Session::exists('PrivacyImpactAssessmentID')) { // when a user visits this page without an ID
+            return $this->index();
+        }
+        $PrivacyImpactAssessmentID = session('PrivacyImpactAssessmentID');
+        $DataFields = DataFields::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+        
+        return view('edit_data', compact('DataFields'));
+    }
+
+    public function edit_data(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'FormUsed' => 'required|string',
+            'Datacollected' => 'required|array',
+        ], [
+            'FormUsed.required' => 'The Data Collection Form field is required.',
+            'FormUsed.string' => 'The Data Collection Form field must be a string.',
+            'Datacollected.required' => 'The Data fields is required.',
+            'Datacollected.array' => 'The Data fields must be an array.',
+        ]);
+
+        $DataFields = DataFields::where('DataFieldsID', $request->input('DataFieldsID'))->first();
+        
+        if ($DataFields) {
+            $DataFields->FormUsed = $request->input('FormUsed');
+            $DataFields->Datacollected = $request->input('Datacollected');
+            // Set values for other attributes
+            
+            $DataFields->save();
+        } else {
+            // The record does not exist, create a new record
+            $newDataFields = new DataFields([
+                'PrivacyImpactAssessmentID' => $PrivacyImpactAssessmentID,
+                'FormUsed' => $request->input('FormUsed'),
+                'Datacollected' => $request->input('Datacollected'),
+                // Set values for other attributes
+            ]);
+
+            $newDataFields->save();
+        }
+
+        return redirect()->to(url('proceed_to_process'));
     }
 }

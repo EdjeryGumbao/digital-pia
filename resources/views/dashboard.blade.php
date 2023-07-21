@@ -3,6 +3,12 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    <!-- Popup -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
@@ -233,4 +239,44 @@
         </div>
     </div>
     @endif
+
+    <!-- the popup -->
+    <div class="modal" id="dashboardPopup" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Welcome!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                      By continuing to browse this website, you agree to the University of Southeastern Philippines’ 
+                      Data Privacy Statement. The full text of The Statement can be accessed through this 
+                      <a href="http://www.usep.edu.ph/usep-data-privacy-statement/" class="text-primary text-decoration-none" target="_blank">link</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            display: block;
+        }
+    </style>
+
+    <script>
+        // When the document is ready
+        $(document).ready(function() {
+            // Show the popup when the page loads
+            $('#dashboardPopup').modal('show');
+
+            // Close the popup when the "Close" button is clicked
+            $('#dashboardPopup .close').click(function() {
+                $('#dashboardPopup').modal('hide');
+            });
+        });
+    </script>
 @stop

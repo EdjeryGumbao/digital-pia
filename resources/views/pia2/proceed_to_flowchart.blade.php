@@ -1,6 +1,6 @@
 @extends('layouts.sidebar_layout')
 
-@section('title', 'Data Flows')
+@section('title', 'C. Data Flows')
 
 @section('content')
 
@@ -47,7 +47,7 @@
                         <div class="card-body">                                
                             <form action="delete_dataflow" method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-danger" name="DataFlowID" value="{{ $image->DataFlowID }}">Delete</button>
+                                <button type="submit" class="btn btn-danger" name="DataFlowID" value="{{ $image->DataFlowID }}" onclick="return confirmDelete()">Delete</button>
                             </form>
                         </div>
                     </div>
@@ -220,6 +220,13 @@
         var label = input.nextElementSibling;
         label.textContent = fileName;
     }
-</script>
+    
+    function confirmDelete() {
+        // Show a pop-up dialog with a confirmation message
+        const confirmation = confirm("Are you sure you want to delete this? This action cannot be undone.");
 
+        // If the user clicks "OK," the form will be submitted; otherwise, the deletion process will be canceled.
+        return confirmation;
+    }
+</script>
 @stop

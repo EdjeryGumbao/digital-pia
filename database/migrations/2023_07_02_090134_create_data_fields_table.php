@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('data_fields', function (Blueprint $table) {
             $table->id('DataFieldsID');
             $table->unsignedBigInteger('PrivacyImpactAssessmentID');
-            $table->string('FormUsed');
-            $table->json('Datacollected');
+            $table->string('FormUsed')->nullable();
+            $table->json('Datacollected')->nullable();
             $table->timestamps();
         });
     }

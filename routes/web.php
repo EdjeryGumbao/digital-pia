@@ -47,6 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/threatlist', [PiaController::class, 'threatlist']);
     Route::get('/dataflowlist', [PiaController::class, 'dataflowlist']);
 
+    Route::get('proceed_to_edit_data', [PiaController::class, 'proceed_to_edit_data']);
+    Route::post('edit_data', [PiaController::class, 'edit_data']);
+    Route::get('edit_data', [PiaController::class, 'proceed_to_edit_data']);
+
     Route::get('/proceed_to_disclaimer', [PiaController::class, 'proceed_to_disclaimer']);
     Route::post('/proceed_to_start', [PiaController::class, 'proceed_to_start']);
     Route::get('/proceed_to_start', [PiaController::class, 'proceed_to_start']);

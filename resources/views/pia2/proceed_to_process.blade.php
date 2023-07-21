@@ -53,12 +53,17 @@
                                                 <strong>{{ $item->FormUsed }}:</strong>
                                             </td>
                                             <td>
-                                                {{ implode(', ', $item->Datacollected) }}
+                                                @if ($item->Datacollected)
+                                                    {{ implode(', ', $item->Datacollected) }}
+                                                @endif
                                             </td>
                                             <td class="d-flex flex-row-reverse">
                                                 <div class="d-flex flex-row-reverse">
                                                     <div class="p-2">
-                                                        <button type="submit" class="btn btn-danger" name="delete_datafield" value="{{ $item->DataFieldsID }}">Delete</button>
+                                                        <button type="submit" class="btn btn-danger" name="delete_datafield" value="{{ $item->DataFieldsID }}" onclick="return confirmDelete()">Delete</button>
+                                                    </div>
+                                                    <div class="p-2">
+                                                        <button type="submit" class="btn btn-primary" name="edit_datafield" value="{{ $item->DataFieldsID }}">Edit</button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -283,5 +288,12 @@
 
     addProcessNarrative.addEventListener("click", addProcessNarrativeInput);
 
+    function confirmDelete() {
+        // Show a pop-up dialog with a confirmation message
+        const confirmation = confirm("Are you sure you want to delete this? This action cannot be undone.");
+
+        // If the user clicks "OK," the form will be submitted; otherwise, the deletion process will be canceled.
+        return confirmation;
+    }
 </script>
 @stop
