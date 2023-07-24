@@ -220,11 +220,14 @@
         </div>
     </div>
     @endif
+    <div class="d-flex justify-content-start">
+        
+    <div class="p-2">
+            <a href="{{ url('pialist') }}" class="btn btn-primary">Back</a>
+        </div>
+    </div>
 
     <div class="d-flex justify-content-center">
-        <div class="p-2">
-            <a href="{{ url('pialist') }}" class="btn btn-secondary">Back</a>
-        </div>
       
         <div class="p-2">
         @if (auth()->user()->usertype == 'admin')

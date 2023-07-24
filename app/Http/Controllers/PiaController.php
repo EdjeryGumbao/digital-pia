@@ -542,6 +542,8 @@ class PiaController extends Controller
     
         if ($existingRecommendation) {
             return redirect()->back()->withErrors(['Priority' => 'The priority number already exists. Please choose a different priority number.']);
+        } else if ($Priority < 1) {
+            return redirect()->back()->withErrors(['Priority' => 'Invalid priority number. Please choose a priority number greater than or equal to 1.']);
         }
 
         $Recommendation = new Recommendation([

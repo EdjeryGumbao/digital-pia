@@ -6,12 +6,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Welcome')</title>
-
-    <!-- -->
+    <link rel="stylesheet" href="css/pdf.css">
+    <!-- 
+            
+    -->
 
     <style>
-            {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
-
+        {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
         table {
             page-break-inside: auto;
         }
@@ -19,144 +20,12 @@
         .page-break {
             page-break-before: always;
         }
-        .validation-box {
-            background-color: #f2f2f2;
-            padding: 10px;
-            border: 1px solid #ccc;
-            display: inline-block;
-            text-align:center;
-        }
 
-        .validation-label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .validation-date {
-            font-size: 14px;
-        }
-
-        
     </style> 
-    <!--  -->
-  <!--  <style> 
-        .hold-transition {
-            position: relative;
-            min-height: 100vh;
-        }
-
-        .sidebar-mini {
-            position: relative;
-        }
-
-        .layout-fixed {
-            position: relative;
-            height: 100%;
-        }
-
-        .wrapper {
-            position: relative;
-            min-height: 100%;
-            overflow-x: hidden;
-        }
-
-        .content-header {
-            padding: 20px;
-            background-color: #f8f9fa;
-        }
-
-        .container-fluid {
-            position: relative;
-            margin-top: 250px;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin-right: -15px;
-            margin-left: -15px;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .brand-image {
-            opacity: 0.8;
-        }
-
-        .img-circle {
-            border-radius: 50%;
-        }
-
-        .elevation-3 {
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .text-nowrap {
-            white-space: nowrap;
-        }
-
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 1px solid rgba(0, 0, 0, 0.125);
-            border-radius: 0.25rem;
-        }
-
-        .card-body {
-            flex: 1 1 auto;
-            min-height: 1px;
-            padding: 1.25rem;
-        }
-
-        .card-title {
-            margin-bottom: 0.75rem;
-        }
-
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #212529;
-        }
-
-        .text-left {
-            text-align: left;
-        }
-
-        .page-break {
-            page-break-before: always;
-        }
-
-        .col-md-8 {
-            position: relative;
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-        }
-
-        .card-img-top {
-            width: 100%;
-            border-top-left-radius: calc(0.25rem - 1px);
-            border-top-right-radius: calc(0.25rem - 1px);
-        }
-
-        .img-fluid {
-            max-width: 100%;
-            height: auto;
-        }
-    </style> -->
 </head>
 
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body>
 <div class="wrapper">
     @if ($PrivacyImpactAssessment->Validated == true)
     <div class="validation-box">
@@ -372,7 +241,7 @@
     @endif
 
     @if($Recommendation)
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-5 page-break">
         <div class="col-md-10">
             <div class="card">
                 <div class="card-body">

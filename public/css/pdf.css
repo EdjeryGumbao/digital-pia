@@ -1,0 +1,58 @@
+.wrapper {
+    margin-top: 0;
+}
+
+.validation-box {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    text-align:center;
+}
+
+.validation-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.validation-date {
+    font-size: 14px;
+}
+
+.content-header {
+    padding: 15px 0.5rem;
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -7.5px;
+    margin-left: -7.5px;
+}
+
+.justify-content-center {
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    padding-right: 7.5px;
+    padding-left: 7.5px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.text-center {
+    text-align: center;
+}

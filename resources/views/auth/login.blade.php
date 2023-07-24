@@ -1,5 +1,6 @@
 @section('title', 'Login')
 
+
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -52,4 +53,55 @@
             </x-primary-button>
         </div>
     </form>
+
 </x-guest-layout>
+
+
+
+<!-- Popup -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- the popup -->
+<div class="modal" id="dashboardPopup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="margin:50px;">   
+                <img src="img/SecureDataStudents.5ca4bba7.png" width="450" height="450" style="opacity: .8">
+            </div>
+            <div class="modal-body text-center">   
+                <p>
+                    By continuing to browse this website, you agree to the 
+                    <a href="http://www.usep.edu.ph/usep-data-privacy-statement/" class="text-primary text-decoration-none" target="_blank">University of Southeastern Philippines’ 
+                    Data Privacy Statement</a>.
+                </p>
+            </div>
+            <div class="modal-body text-center">
+                <button type="button" class="btn btn-primary" style="text-align: center;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">Continue</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: block;
+    }
+</style>
+
+<script>
+    // When the document is ready
+    $(document).ready(function() {
+        // Show the popup when the page loads
+        $('#dashboardPopup').modal('show');
+
+        // Close the popup when the "Close" button is clicked
+        $('#dashboardPopup .close').click(function() {
+            $('#dashboardPopup').modal('hide');
+        });
+    });
+</script>
