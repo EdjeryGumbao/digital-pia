@@ -192,10 +192,32 @@
     </ul>
 </div><br>
 
-<p>Please use this sample diagram as a reference:</p>
-<a href="img/plow.png" target="_blank">
-    <img src="img/plow.png" alt="Sample Data Flow" width="600" height="300">
-</a>
+<div class="d-flex justify-content-center">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th class="text-center">
+                    <p>Sample</p>
+                </th>
+                <th class="text-center">
+                    <p>Legend</p>
+                </th>
+            </tr>
+            <tr>
+                <td class="text-center">
+                <a href="img/SampleFlowChart.png" target="_blank">
+                <img src="img/SampleFlowChart.png" alt="Sample Data Flow" width="400" height="400">
+            </a>
+                </td>
+                <td class="text-center">
+                <a href="img/FlowChartLegend.png" target="_blank">
+                <img src="img/FlowChartLegend.png" alt="Sample Data Flow" width="400" height="400">
+            </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
 
