@@ -40,7 +40,9 @@
                                             <li>{{ $item->FormUsed }}</li>
                                             <ul>
                                                 @foreach ($item->Datacollected as $collected)
-                                                    <li>{{ $collected }}</li>
+                                                    @if (isset($collected))
+                                                        <li>{{ $collected }}</li>
+                                                    @endif
                                                 @endforeach
                                             </ul>   
                                             @endif
@@ -75,8 +77,18 @@
                                 @if(isset($Process->SectionA))
                                     <td><strong>{{ $ProcessQuestions->SectionATitle ?? '[SectionATitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionA as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionA, $ProcessQuestions->SectionAQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -85,8 +97,18 @@
                                 @if(isset($Process->SectionB))
                                     <td><strong>{{ $ProcessQuestions->SectionBTitle ?? '[SectionBTitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionB as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionB, $ProcessQuestions->SectionBQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -95,8 +117,18 @@
                                 @if(isset($Process->SectionC))
                                     <td><strong>{{ $ProcessQuestions->SectionCTitle ?? '[SectionCTitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionC as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionC, $ProcessQuestions->SectionCQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -105,8 +137,18 @@
                                 @if(isset($Process->SectionD))
                                     <td><strong>{{ $ProcessQuestions->SectionDTitle ?? '[SectionDTitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionD as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionD, $ProcessQuestions->SectionDQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif

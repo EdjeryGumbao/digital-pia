@@ -6,13 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Welcome')</title>
-    <link rel="stylesheet" href="css/pdf.css">
-    <!-- 
-            
-    -->
 
-    <style>
-        {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
+
+    <!-- 
         table {
             page-break-inside: auto;
         }
@@ -20,7 +16,12 @@
         .page-break {
             page-break-before: always;
         }
+        
+        {!! file_get_contents(public_path('dist/css/adminlte.min.css')) !!}
 
+    -->
+    <style>
+            {!! file_get_contents(public_path('css/pdf.css')) !!}
     </style> 
 </head>
 
@@ -48,6 +49,7 @@
                 <h2 class="text-center">University of Southeastern Philippines</h2>
                 <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2><br><br>
                 <h3 class="text-center">{{ $PrivacyImpactAssessment->Department ?? ''}}</h3>
+                <h5 class="text-center">Prepared by:</h5>
                 <h3 class="text-center">{{ $PrivacyImpactAssessment->Author ?? ''}}</h3>
             </div>
         </div>
@@ -84,7 +86,9 @@
                                             <li>{{ $item->FormUsed }}</li>
                                             <ul>
                                                 @foreach ($item->Datacollected as $collected)
-                                                    <li>{{ $collected }}</li>
+                                                    @if (isset($collected))
+                                                        <li>{{ $collected }}</li>
+                                                    @endif
                                                 @endforeach
                                             </ul>   
                                             @endif
@@ -113,14 +117,24 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th colspan='2' class="text-center">{{ $ProcessQuestions->QuestionSetName ?? '[QuestionSetName Missing/Deleted]' }}</th>
+                                <th colspan='2' class="text-center"><h3>{{ $ProcessQuestions->QuestionSetName ?? '[QuestionSetName Missing/Deleted]' }}</h3></th>
                             </tr>
                             <tr>
                                 @if(isset($Process->SectionA))
                                     <td><strong>{{ $ProcessQuestions->SectionATitle ?? '[SectionATitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionA as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionA, $ProcessQuestions->SectionAQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -129,8 +143,18 @@
                                 @if(isset($Process->SectionB))
                                     <td><strong>{{ $ProcessQuestions->SectionBTitle ?? '[SectionBTitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionB as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionB, $ProcessQuestions->SectionBQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -139,8 +163,18 @@
                                 @if(isset($Process->SectionC))
                                     <td><strong>{{ $ProcessQuestions->SectionCTitle ?? '[SectionCTitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionC as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionC, $ProcessQuestions->SectionCQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -149,8 +183,18 @@
                                 @if(isset($Process->SectionD))
                                     <td><strong>{{ $ProcessQuestions->SectionDTitle ?? '[SectionDTitle Missing/Deleted]' }}</strong></td>
                                     <td>
-                                        @foreach($Process->SectionD as $item)
-                                            <li> {{ $item }} </li>
+                                        @php
+                                        // Combine the two arrays using array_map
+                                        $combinedArray = array_map(null, $Process->SectionD, $ProcessQuestions->SectionDQuestions);
+                                        @endphp
+
+                                        @foreach($combinedArray as $index => [$item, $item2])
+                                            <p><strong> {{ $item2 }} </strong></p>
+                                            @if (isset($item))
+                                                <li> {{ $item }} </li>
+                                            @elseif (isset($item) == null)
+                                                <li> N/A </li>
+                                            @endif
                                         @endforeach
                                     </td>
                                 @endif
@@ -212,28 +256,24 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><strong>Data Flow</strong></h5><br><br>
-                    <div class="row">
-                        @foreach ($DataFlow as $item)
-                            @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
-                            <div class="container">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-8 mb-4">
-                                        <div class="card">  
-                                            <?php
-                                                $imagePath = public_path('images/' . $item->FileName);
-                                                $imageData = base64_encode(file_get_contents($imagePath));
-                                                $imageSrc = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
-                                            ?>
+                    @foreach ($DataFlow as $item)
+                        @if ($item->PrivacyImpactAssessmentID == session('PrivacyImpactAssessmentID'))
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="card">  
+                                    <?php
+                                        $imagePath = public_path('images/' . $item->FileName);
+                                        $imageData = base64_encode(file_get_contents($imagePath));
+                                        $imageSrc = 'data:image/' . pathinfo($imagePath, PATHINFO_EXTENSION) . ';base64,' . $imageData;
+                                    ?>
 
-                                            <img src="{{ $imageSrc }}" class="card-img-top img-fluid">
+                                    <img src="{{ $imageSrc }}" class="card-img-top img-fluid">
 
-                                        </div>   
-                                    </div>
-                                </div>
+                                </div>  
                             </div>
-                            @endif
-                        @endforeach
-                    </div>
+                        </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
