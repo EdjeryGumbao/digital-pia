@@ -152,6 +152,7 @@ img {
                 </p>
               </a>
             </li>
+
             <li class="nav-item">
               <a href="{{ url('dataflowlist') }}" class="nav-link">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi-hdd-network" viewBox="0 0 16 16">
@@ -159,7 +160,18 @@ img {
                     <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8.5v3a1.5 1.5 0 0 1 1.5 1.5h5.5a.5.5 0 0 1 0 1H10A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5H.5a.5.5 0 0 1 0-1H6A1.5 1.5 0 0 1 7.5 10V7H2a2 2 0 0 1-2-2V4zm1 0v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1zm6 7.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5z"/>
                   </svg>
                 <p>
-                  Data flows
+                  Data flow List
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ url('recommendationlist') }}" class="nav-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi-lightbulb" viewBox="0 0 16 16">
+                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z"/>
+                  </svg>
+                <p>
+                  Recommendation List
                 </p>
               </a>
             </li>

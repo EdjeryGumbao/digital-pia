@@ -7,7 +7,7 @@
 <h3><strong>Process Data Flows</strong></h3>
 <p>In this section you will submit the Process Data flow as an image(.PNG) created using a third-party software for making diagrams and charts.</p>
 
-<p>Proceed to this <a href="https://app.diagrams.net/?src=about" class="badge badge-info">link</a> to start making the Process data flow</p>
+<p>Proceed to this <a href="https://app.diagrams.net/?src=about" class="badge badge-info" target="_blank">link</a> to start making the Process data flow</p>
 
 <form action="{{ route('InsertDataFlow') }}" method="post" enctype='multipart/form-data'>
     @csrf

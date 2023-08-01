@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Author');
             $table->string('ProcessName');
             $table->string('Department');
-            $table->boolean('Validated')->default(false);
+            $table->string('Status')->default('Pending');
             $table->timestamp('DateValidated')->nullable();
             $table->timestamps();
         });

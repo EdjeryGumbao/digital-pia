@@ -17,11 +17,10 @@
             <table class="table table-hover text-nowrap">
             <thead>
                 <tr>
-                <th>@sortablelink('id', 'User ID')</th>
-                <th>@sortablelink('department', 'Department')</th>
-                <th>@sortablelink('email', 'Email')</th>
-                <th>@sortablelink('lastname', 'Complete Name')</th>
-                <th>Action</th>
+                    <th>@sortablelink('department', 'Department')</th>
+                    <th>@sortablelink('email', 'Email')</th>
+                    <th>@sortablelink('lastname', 'Complete Name')</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +28,6 @@
                 @foreach ($User as $item)
                     @if ($item->usertype == 'user')
                         <tr>
-                            <td>{{ $item->id }}</td>
                             <td>{{ $item->department }}</td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->lastname . ', ' . $item->firstname . ' ' . $item->middlename }}</td>
@@ -141,10 +139,6 @@
                                                                                 <button type="submit" class="btn btn-success" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}">Activate</button>
                                                                             </form>
                                                                         </div>
-                                                                    @elseif ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
-                                                                        <div class="p-2">
-                                                                            <span class="text-success">Active</span>
-                                                                        </div>
                                                                     @endif
                                                                 @endforeach
                                                             @endif
@@ -181,7 +175,14 @@
                 <div class="col-md-10">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><strong>Questions Version: {{ $questions->ProcessQuestionsID ?? '' }}</strong></h5>
+                            <h5 class="card-title"><strong>Questions Version: {{ $questions->ProcessQuestionsID ?? '' }}</strong></h5><br>
+                            @if(isset($PrivacyImpactAssessmentVersion))
+                                @foreach ($PrivacyImpactAssessmentVersion as $PIAversion)
+                                    @if ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
+                                        <h5 class="card-title text-success">Active</h5>
+                                    @endif
+                                @endforeach
+                            @endif
                             <table class="table">
                                 <tbody>
                                     <tr>
@@ -247,10 +248,6 @@
                                                                     @csrf
                                                                     <button type="submit" class="btn btn-success" name="ProcessQuestionsID" value="{{ $questions->ProcessQuestionsID }}">Activate</button>
                                                                 </form>
-                                                            </div>
-                                                        @elseif ($PIAversion->PIAVersion == $questions->ProcessQuestionsID && $PIAversion->IsActive == true)
-                                                            <div class="p-2">
-                                                                <span class="text-success">Active</span>
                                                             </div>
                                                         @endif
                                                     @endforeach

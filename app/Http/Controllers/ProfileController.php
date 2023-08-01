@@ -34,7 +34,7 @@ class ProfileController extends Controller
         $request->validate([
             'lastname' => 'required|string',
             'firstname' => 'required|string',
-            'middlename' => 'required|string',
+            'middlename' => 'nullable|string',
             'department' => 'required|string',
             'email' => 'required|string',
         ]);

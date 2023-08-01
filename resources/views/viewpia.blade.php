@@ -89,6 +89,7 @@
                                             @elseif (isset($item) == null)
                                                 <li> N/A </li>
                                             @endif
+                                            <br>
                                         @endforeach
                                     </td>
                                 @endif
@@ -109,6 +110,7 @@
                                             @elseif (isset($item) == null)
                                                 <li> N/A </li>
                                             @endif
+                                            <br>
                                         @endforeach
                                     </td>
                                 @endif
@@ -129,6 +131,7 @@
                                             @elseif (isset($item) == null)
                                                 <li> N/A </li>
                                             @endif
+                                            <br>
                                         @endforeach
                                     </td>
                                 @endif
@@ -149,6 +152,7 @@
                                             @elseif (isset($item) == null)
                                                 <li> N/A </li>
                                             @endif
+                                            <br>
                                         @endforeach
                                     </td>
                                 @endif
@@ -262,33 +266,52 @@
         </div>
     </div>
     @endif
-    <div class="d-flex justify-content-start">
+    <div class="d-flex justify-content-between">
         
-    <div class="p-2">
+        <div class="p-2">
             <a href="{{ url('pialist') }}" class="btn btn-primary">Back</a>
+        </div>
+
+        <div class="p-2">
+            <form action="comments" method="POST">
+                @csrf
+                <button type="submit" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}" class="btn btn-primary">Comment</button>
+            </form>
         </div>
     </div>
 
     <div class="d-flex justify-content-center">
       
-        <div class="p-2">
+        <div class="p-2"> 
+        <form action="validatePIA" method="POST">
+            @csrf
+            <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
         @if (auth()->user()->usertype == 'admin')
-            <form action="validatePIA" method="POST">
-                @csrf
-                <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
-                @if ($PrivacyImpactAssessment->Validated == false)    
+            @if ($PrivacyImpactAssessment->Status != 'Validated')    
+                <div class="d-flex justify-content-center">...
                     <div width="100%">
                         <button type="submit" name="button" value="validate" class="btn btn-success btn-lg">Validate</button>
                     </div>
-                @else
-                    <div width="100%">
-                        <button type="submit" name="button" value="invalidate" class="btn btn-danger btn-lg">Invalidate</button>
+                    <div width="100%" style="color:white; padding-left:20px;">
+                        <button type="submit" name="button" value="revise" class="btn btn-warning btn-lg" style="color:white; ">Revise</button>
                     </div>
-                @endif
-            </form>
+                </div>
+            @else
+                <div width="100%">
+                    <button type="submit" name="button" value="invalidate" class="btn btn-danger btn-lg">Invalidate</button>
+                </div>
+            @endif
+        @else
+            @if ($PrivacyImpactAssessment->Status == 'Needs Revision')    
+                <div width="100%">
+                    <button type="submit" name="button" value="revised" class="btn btn-success btn-lg">Revised</button>
+                </div>
+            @endif
         @endif
+            </form>
         </div>
     </div>
 </div>
+
 
 @endsection

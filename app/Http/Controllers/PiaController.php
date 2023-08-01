@@ -13,6 +13,7 @@ use App\Models\DataFlow;
 use App\Models\User;
 use App\Models\ProcessQuestions;
 use App\Models\Recommendation;
+use App\Models\Comments;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -103,8 +104,22 @@ class PiaController extends Controller
         if (auth()->user()->usertype == 'admin') {
             $DataFlow = DataFlow::sortable()->orderBy('DataFlowID', 'desc')->get();
             $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author', 'desc')->get();
+            $User = User::sortable()->orderBy('id', 'desc')->get();
 
-            return view('dataflowlist', compact('PrivacyImpactAssessment', 'DataFlow'));
+            return view('dataflowlist', compact('PrivacyImpactAssessment', 'DataFlow', 'User'));
+        } else {
+            return redirect()->to(url('dashboard'));
+        }
+    }
+
+    public function recommendationlist(Request $request)
+    {   
+        if (auth()->user()->usertype == 'admin') {
+            $Recommendation = Recommendation::sortable()->orderBy('RecommendationID', 'desc')->get();
+            $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID', 'desc')->get();
+            $User = User::sortable()->orderBy('id', 'desc')->get();
+
+            return view('recommendationlist', compact('PrivacyImpactAssessment', 'Recommendation', 'User'));
         } else {
             return redirect()->to(url('dashboard'));
         }
@@ -236,12 +251,20 @@ class PiaController extends Controller
         $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
         $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
         if ($request->get('button') == 'validate') {
-            $PrivacyImpactAssessment->Validated = true;
+            $PrivacyImpactAssessment->Status = 'Validated'; // green
             $PrivacyImpactAssessment->DateValidated = date('Y-m-d H:i:s', time());
             $PrivacyImpactAssessment->save();
         }
         elseif ($request->get('button') == 'invalidate') {
-            $PrivacyImpactAssessment->Validated = false;
+            $PrivacyImpactAssessment->Status = 'Pending'; // yellow
+            $PrivacyImpactAssessment->save();
+        }
+        elseif ($request->get('button') == 'revise') {
+            $PrivacyImpactAssessment->Status = 'Needs Revision'; // red
+            $PrivacyImpactAssessment->save();
+        }
+        elseif ($request->get('button') == 'revised') {
+            $PrivacyImpactAssessment->Status = 'Revised'; // blue
             $PrivacyImpactAssessment->save();
         }
 
@@ -316,7 +339,13 @@ class PiaController extends Controller
     public function InsertPrivacyImpactAssessment(Request $request)
     {
         $UserID = auth()->id();
-        $Author = auth()->user()->firstname . ' ' . substr(auth()->user()->middlename, 0, 1) . '. ' . auth()->user()->lastname;
+
+        if (auth()->user()->middlename !== null && auth()->user()->middlename !== '') {
+            $Author = auth()->user()->firstname . ' ' . substr(auth()->user()->middlename, 0, 1) . '. ' . auth()->user()->lastname;
+        } else {
+            $Author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+        }
+        
         $Department = auth()->user()->department;
         
         // generating questions
@@ -723,8 +752,8 @@ class PiaController extends Controller
             $counts[] = $count;
         }
 
-        $trueCount = PrivacyImpactAssessment::where('Validated', true)->count();
-        $falseCount = PrivacyImpactAssessment::where('Validated', false)->count();
+        $trueCount = PrivacyImpactAssessment::where('Status', 'Validated')->count();
+        $falseCount = PrivacyImpactAssessment::where('Status', '<>', 'Validated')->count();
         $piaCount = PrivacyImpactAssessment::count();
         $riskAssessment = RiskAssessment::count();
 
@@ -744,9 +773,11 @@ class PiaController extends Controller
 
     public function test(Request $request)
     {
+
+        
+
         //dd(Session::all());
-        $Author = auth()->user()->firstname . ' ' . substr(auth()->user()->middlename, 0, 1) . '. ' . auth()->user()->lastname;
-        dd($Author);
+        dd(auth()->user()->id);
     }
 
     public function view_pia(Request $request)
@@ -923,5 +954,47 @@ class PiaController extends Controller
         }
 
         return redirect()->to(url('proceed_to_process'));
+    }
+
+    public function comments(Request $request)
+    {
+        if ($request->input('Button') == 'add') {
+            $request->validate([
+                'Message' => 'required|string',
+            ]);
+            $UserID = auth()->id();
+    
+            $Comment = new Comments ([
+                'PrivacyImpactAssessmentID' => $request->input('PrivacyImpactAssessmentID'),
+                'UserID' => $UserID,
+                'Message' => $request->input('Message'),
+                'Status' => 'unread',
+            ]);
+            // dd($Comment->UserID);
+            $Comment->save();
+        }
+
+
+        $PrivacyImpactAssessmentID = $request->get('PrivacyImpactAssessmentID');
+    
+        // Check if PrivacyImpactAssessmentID is set
+        if (isset($PrivacyImpactAssessmentID)) {
+            // Get the PrivacyImpactAssessment by ID
+            $PrivacyImpactAssessment = PrivacyImpactAssessment::where('PrivacyImpactAssessmentID', $PrivacyImpactAssessmentID)->first();
+    
+            // Get the current user
+            $currentUser = auth()->user();
+    
+            // Get all comments and users (you might want to modify this based on your requirements)
+            $Comments = Comments::orderBy('created_at', 'desc')->get();
+            $Users = User::all();
+    
+            // Pass the data to the 'comments' view
+            return view('comments', compact('PrivacyImpactAssessment', 'currentUser', 'Users', 'Comments'));
+        } else {
+            // PrivacyImpactAssessmentID is not set or empty, handle this case accordingly.
+            return $this->pialist($request);
+            // You can redirect to some other route or return a view with an error message.
+        }
     }
 }

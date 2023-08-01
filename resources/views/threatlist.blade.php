@@ -13,12 +13,11 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            
                             <th>Department</th>
                             <th>Process Name</th>
                             <th width="80px">@sortablelink('ThreatsVulnerabilities', 'Threats/Vulnerabilities')</th>
                             <th>@sortablelink('RiskRating', 'Risk Rating')</th>
-                            <th>@sortablelink('created_at')</th>
+                            <th>@sortablelink('created_at', 'Date Created')</th>
                         </tr>
                     </thead>
                     <tbody>

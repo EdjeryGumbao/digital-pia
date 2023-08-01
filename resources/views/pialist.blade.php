@@ -24,10 +24,10 @@
                                 <th>@sortablelink('Author', 'Department')</th>
                             @endif
                             <th width="80px">@sortablelink('PIAVersion', 'PIA Version')</th>
-                            <th>@sortablelink('ProcessName')</th>
-                            <th>@sortablelink('created_at')</th>
-                            <th>@sortablelink('updated_at')</th>
-                            <th>@sortablelink('Validated', 'Validated')</th>
+                            <th>@sortablelink('ProcessName', 'Process Name')</th>
+                            <th>@sortablelink('created_at', 'Date Created')</th>
+                            <th>@sortablelink('updated_at', 'Date Updated')</th>
+                            <th>@sortablelink('Status', 'Status')</th>
                             <th style='text-align:center;'>Action</th>
                         </tr>
                     </thead>
@@ -40,18 +40,26 @@
                                             <td><div class="p-2">{{ $item->ProcessName }}</div></td>
                                             <td><div class="p-2">{{ $item->created_at->format('F d, Y') }}</div></td>
                                             <td><div class="p-2">{{ $item->updated_at->format('F d, Y') }}</div></td>
-                                            @if ($item->Validated)
+                                            @if ($item->Status == 'Validated')
                                                 <td>
                                                     <div class="p-2"><span class="text-success font-weight-bold">Validated</span></div>
                                                 </td>
-                                            @else
+                                            @elseif ($item->Status == 'Pending')
                                                 <td>
                                                     <div class="p-2"><span class="text-warning font-weight-bold">Pending</span></div>
                                                 </td>
+                                            @elseif ($item->Status == 'Needs Revision')
+                                            <td>
+                                                <div class="p-2"><span class="text-danger font-weight-bold">Needs Revision</span></div>
+                                            </td>
+                                            @elseif ($item->Status == 'Revised')
+                                            <td>
+                                                <div class="p-2"><span class="text-primary font-weight-bold">Revised</span></div>
+                                            </td>
                                             @endif
                                             <td>
                                             <div class="d-flex flex-row-reverse">
-                                                @if (!$item->Validated)
+                                                @if ($item->Status != 'Validated')
                                                 <div class="p-2">
                                                     <form action='delete_pia' method='POST' class="">
                                                         @csrf
@@ -97,14 +105,22 @@
                                     <td><div class="p-2">{{ $item->ProcessName }}</div></td>
                                     <td><div class="p-2">{{ $item->created_at->format('F d, Y') }}</div></td>
                                     <td><div class="p-2">{{ $item->updated_at->format('F d, Y') }}</div></td>
-                                    @if ($item->Validated)
+                                    @if ($item->Status == 'Validated')
                                         <td>
                                             <div class="p-2"><span class="text-success font-weight-bold">Validated</span></div>
                                         </td>
-                                    @else
+                                    @elseif ($item->Status == 'Pending')
                                         <td>
                                             <div class="p-2"><span class="text-warning font-weight-bold">Pending</span></div>
                                         </td>
+                                    @elseif ($item->Status == 'Needs Revision')
+                                    <td>
+                                        <div class="p-2"><span class="text-danger font-weight-bold">Needs Revision</span></div>
+                                    </td>
+                                    @elseif ($item->Status == 'Revised')
+                                    <td>
+                                        <div class="p-2"><span class="text-primary font-weight-bold">Revised</span></div>
+                                    </td>
                                     @endif
                                     <td>
                                     <div class="d-flex flex-row-reverse">

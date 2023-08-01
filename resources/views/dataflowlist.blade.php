@@ -4,6 +4,31 @@
 @section('title', 'Data Flow List')
 
 @section('content')
+    <style>
+        .image-container {
+        position: relative;
+        display: inline-block;
+        }
+
+        .view-text {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        opacity: 0; /* Hide the text by default */
+        transition: opacity 0.3s ease;
+        }
+
+        .image-container:hover .view-text {
+        opacity: 1; /* Show the text when the container is hovered */
+        }
+    </style>
+
     @if ($DataFlow->count() > 0)
         <div class="card">
             <div class="card-header">
@@ -12,30 +37,35 @@
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
-                        <tr>
+                        <tr> 
                             <th width="80px">Department</th>
-                            <th>@sortablelink('created_at')</th>
-                            <th>@sortablelink('updated_at')</th>
-                            <th></th>
+                            <th class="text-center">Image</th>
+                            <th>Date Created</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($DataFlow as $item)
                             <tr>
-                                <td>
+                                <td class="text-center">
                                     @foreach($PrivacyImpactAssessment as $item2)
                                         @if ($item->PrivacyImpactAssessmentID == $item2->PrivacyImpactAssessmentID)
-                                            {{ $item2->Author }}
+                                            @foreach($User as $item3)
+                                                @if ($item2->UserID == $item3->id)
+                                                    {{ $item3->department }}
+                                                @endif
+                                            @endforeach
                                         @endif
                                     @endforeach
                                 </td>
-                                <td>{{ $item->created_at->format('Y, F d') }}</td>
-                                <td>{{ $item->updated_at->format('Y, F d') }}</td>
-                                <td>
+                                <td class="text-center">
                                     <a href="/images/{{ $item->FileName }}" target="_blank">
-                                        <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top">
+                                        <div class="image-container">
+                                            <img src="/images/{{ $item->FileName }}" alt="{{ $item->FileName }}" class="card-img-top" height="50">
+                                            <span class="view-text">View</span>
+                                        </div>
                                     </a>
                                 </td>
+                                <td>{{ $item->created_at->format('Y, F d') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
