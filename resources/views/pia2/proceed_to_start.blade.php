@@ -10,7 +10,7 @@
             <p class="login-box-msg"><strong>Enter the process name of this Privacy Impact Assessment</strong></p>
             <form action="InsertPrivacyImpactAssessment" method="post">
                 @csrf
-                <label for="Department">Department</label>
+                <label for="ProcessName">Process Name</label>
                 <select name="ProcessName" class="form-control">
                     <option value="{{ $PrivacyImpactAssessment->ProcessName ?? 'None Selected'}}"> {{ $PrivacyImpactAssessment->ProcessName ?? 'None Selected'}} </option>
                     <option value="Guidance and Counseling Service">Guidance and Counseling Service</option>
