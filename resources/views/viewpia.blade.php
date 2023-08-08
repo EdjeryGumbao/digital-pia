@@ -288,7 +288,7 @@
             <input type="hidden" name="PrivacyImpactAssessmentID" value="{{ $PrivacyImpactAssessment->PrivacyImpactAssessmentID }}">
         @if (auth()->user()->usertype == 'admin')
             @if ($PrivacyImpactAssessment->Status != 'Validated')    
-                <div class="d-flex justify-content-center">...
+                <div class="d-flex justify-content-center">
                     <div width="100%">
                         <button type="submit" name="button" value="validate" class="btn btn-success btn-lg">Validate</button>
                     </div>
