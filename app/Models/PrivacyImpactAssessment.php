@@ -22,9 +22,9 @@ class PrivacyImpactAssessment extends Model
         'Department',
         'Author',
         'ProcessName',
-        'Validated',
+        'Status',
         'DateValidated',
     ];
 
-    public $sortable = ['PrivacyImpactAssessmentID', 'PIAVersion', 'UserID', 'Department', 'Author', 'ProcessName',  'Validated', 'DateValidated', 'created_at', 'updated_at',];
+    public $sortable = ['PrivacyImpactAssessmentID', 'PIAVersion', 'UserID', 'Department', 'Author', 'ProcessName',  'Status', 'DateValidated', 'created_at', 'updated_at'];
 }

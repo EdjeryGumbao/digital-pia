@@ -28,7 +28,7 @@
 
 <body>
 <div class="wrapper">
-    @if ($PrivacyImpactAssessment->Validated == true)
+    @if ($PrivacyImpactAssessment->Status == 'Validated')
     <div class="validation-box">
         <div class="validation-label">OLA-UDPO VALIDATED</div>
         <div class="validation-date">Date Validated: {{ (new DateTime($PrivacyImpactAssessment->DateValidated))->format('F d, Y') }}</div>
@@ -310,7 +310,7 @@
     </div>
     @endif
 
-    @if ($PrivacyImpactAssessment->Validated == true)
+    @if ($PrivacyImpactAssessment->Status == 'Validated')
     <div class="page-break">
         <?php
             $imagePath = public_path('pdf/1DPC_UAGC_Manual1024_1.png');

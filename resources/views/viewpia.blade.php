@@ -7,11 +7,11 @@
 <div class="container"> 
     <div class="row justify-content-center">
         <div class="container text-center">
-            <img src="{{ asset('img/USEP_Logo.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8"><br><br>
-            <h2 class="text-center">University of Southeastern Philippines</h2>
-            <h2 class="text-center">PRIVACY IMPACT ASSESSMENT</h2><br><br>
-            <h3 class="text-center">{{ $PrivacyImpactAssessment->Department ?? ''}}</h3>
-            <h3 class="text-center">{{ $PrivacyImpactAssessment->Author ?? ''}}</h3>
+            <img src="{{ asset('img/USEP_Logo.png') }}" class="brand-image img-circle elevation-3" style="opacity: .8; width: 100px; height: 100px;"><br><br>
+            <h4 class="text-center">University of Southeastern Philippines</h4>
+            <h5 class="text-center"><i>{{ $PrivacyImpactAssessment->Department ?? ''}}</i></h5><br><br>
+            <h2 class="text-center"><b>PRIVACY IMPACT ASSESSMENT</b></h2>
+            <h4 class="text-center">Prepared by: {{ $PrivacyImpactAssessment->Author ?? ''}}</h4>
         </div>
     </div>
 

@@ -90,7 +90,7 @@ class PiaController extends Controller
     public function threatlist(Request $request)
     {   
         if (auth()->user()->usertype == 'admin') {
-            $RiskAssessment = RiskAssessment::sortable()->orderBy('RiskAssessmentID', 'desc')->get();
+            $RiskAssessment = RiskAssessment::sortable()->orderBy('RiskAssessmentID', 'desc')->paginate(20);
             $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author', 'desc')->get();
 
             return view('threatlist', compact('PrivacyImpactAssessment', 'RiskAssessment'));
@@ -102,7 +102,7 @@ class PiaController extends Controller
     public function dataflowlist(Request $request)
     {   
         if (auth()->user()->usertype == 'admin') {
-            $DataFlow = DataFlow::sortable()->orderBy('DataFlowID', 'desc')->get();
+            $DataFlow = DataFlow::sortable()->orderBy('DataFlowID', 'desc')->paginate(20);
             $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('Author', 'desc')->get();
             $User = User::sortable()->orderBy('id', 'desc')->get();
 
@@ -115,7 +115,7 @@ class PiaController extends Controller
     public function recommendationlist(Request $request)
     {   
         if (auth()->user()->usertype == 'admin') {
-            $Recommendation = Recommendation::sortable()->orderBy('RecommendationID', 'desc')->get();
+            $Recommendation = Recommendation::sortable()->orderBy('RecommendationID', 'desc')->paginate(20);
             $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID', 'desc')->get();
             $User = User::sortable()->orderBy('id', 'desc')->get();
 
@@ -764,18 +764,14 @@ class PiaController extends Controller
     public function pialist(Request $request)
     {
         $this->reset();
-        $PrivacyImpactAssessment = PrivacyImpactAssessment::orderBy('PrivacyImpactAssessmentID', 'desc')->get();
-        $User = User::all();
+        $PrivacyImpactAssessment = PrivacyImpactAssessment::sortable()->orderBy('PrivacyImpactAssessmentID', 'desc')->paginate(20);
+        // $User = User::paginate(2);
         $CurrentUser = auth()->user();
-
-        return view('pialist', compact('PrivacyImpactAssessment', 'User', 'CurrentUser'));
+        return view('pialist', compact('PrivacyImpactAssessment', 'CurrentUser'));
     }
 
     public function test(Request $request)
     {
-
-        
-
         //dd(Session::all());
         dd(auth()->user()->id);
     }

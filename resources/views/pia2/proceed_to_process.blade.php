@@ -43,7 +43,7 @@
 
                 <div class="card">
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover">
                         <tbody>
                             @if(isset($DataFields))
                                 @foreach ($DataFields as $item)

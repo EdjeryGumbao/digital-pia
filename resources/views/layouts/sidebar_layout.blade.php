@@ -76,10 +76,19 @@ img {
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ url('') }}" class="brand-link">
-      <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">USEP PIA</span>
+      <table class="brand-link">
+        <tr>
+          <td rowspan="2">
+            <img src="img/USEP_Logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+          </td>
+          <td class="brand-text font-weight-light">USeP Privacy Impact</td>
+        </tr>
+        <tr>
+          <td class="brand-text font-weight-light">Assessment Tool</td>
+        </tr>
+      </table>
     </a>
-
+    
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
